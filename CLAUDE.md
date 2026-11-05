@@ -2,6 +2,8 @@
 
 One-Pager-Website-Vorlage für einen **fiktiven Elektro-Meisterbetrieb** (Übungsprojekt). Das vollständige Briefing mit Zielen, Zielgruppe, Abschnitten und Entscheidungen steht in [docs/BRIEFING.md](docs/BRIEFING.md). Vor jeder Arbeit lesen und bei neuen Entscheidungen aktualisieren.
 
+**Aktueller Stand und nächster Schritt:** Abschnitt „7. Vorgehen und Stand“ in `docs/BRIEFING.md`. Zu Beginn einer neuen Sitzung dort nachsehen und den Entwickler kurz an den offenen Punkt erinnern. Nach jedem abgeschlossenen Schritt die Statustabelle aktualisieren.
+
 ## Abschnitte (Reihenfolge)
 
 Hero → Vertrauensleiste → Leistungen → Referenzen → Über uns → Ablauf → **Karriere** → Kontakt → Footer.

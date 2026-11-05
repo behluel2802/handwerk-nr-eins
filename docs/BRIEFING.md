@@ -82,13 +82,45 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 - **DSGVO:** keine externen CDNs oder Google Fonts, Schriften lokal oder System-Fonts, keine Tracker
 - **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Für spätere Abschnitte vorgemerkt: Pendelleuchte (Über uns / Leistungen) und deutscher Sicherungskasten (Leistungen), Links in `img/CREDITS.md`.
 
-## 7. Vorgehen
+## 7. Vorgehen und Stand
 
-1. Gerüst und Design-Tokens
-2. Abschnitte von oben nach unten aufbauen
-3. JavaScript: mobiles Menü, Galerie bzw. Lightbox, Formularvalidierung
-4. Unsplash-Fotos suchen, optimieren und einbinden
-5. Feinschliff: Responsiveness, Lighthouse-Check, SEO-Metadaten
+Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Entscheidungspunkten), der Entwickler gibt Feedback, erst dann wird umgesetzt. Nach jedem Schritt Screenshot-Prüfung (Desktop/Tablet/Handy), Commit nur auf Anweisung.
+
+| # | Schritt | Status |
+|---|---|---|
+| 1 | Fiktiven Betrieb festlegen | ✅ erledigt |
+| 2 | Gerüst (`index.html`, Ordner, README, .gitignore) | ✅ erledigt |
+| 3 | Design-Tokens und Basis-CSS | ✅ erledigt |
+| 4 | Header, Hero, mobile Anruf-Leiste | ✅ erledigt |
+| 5 | Hero-Foto (Unsplash) | ✅ erledigt, gepusht |
+| 6 | Vertrauensleiste + Leistungen | ⏸ Plan vorgestellt, **Feedback zu ①–③ steht aus** |
+| 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | offen |
+| 8 | Über uns (Innung hier erwähnen) | offen |
+| 9 | Ablauf | offen |
+| 10 | Karriere | offen |
+| 11 | Kontakt (Formular, Validierung, Endpoint) | offen |
+| 12 | Footer, Impressum/Datenschutz-Platzhalter | offen |
+| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit | offen |
+
+### Plan für Schritt 6 (vorgestellt, noch nicht freigegeben)
+
+**Vertrauensleiste:** heller Streifen unter dem Hero, 4 Punkte (Desktop 4 Spalten, Handy 2×2):
+Meisterbetrieb (eingetragen in der Handwerksrolle) · seit 1998 (über 25 Jahre Erfahrung) · 4,9/5 (127 Google-Bewertungen, Link zum Google-Profil, vorerst `#`) · 24/7 Notdienst (Nummer anklickbar).
+
+**Leistungen:** Einleitung „Alles aus einer Hand – für Privathaushalte, Vermieter und Gewerbe.“ und 6 Karten (3/2/1 Spalten), jeweils Linien-Icon, Titel, Kurztext, kein „Mehr erfahren“-Link:
+- Elektroinstallation – Neubau, Umbau, Erweiterung – vom Zählerschrank bis zur Steckdose.
+- Altbausanierung – Alte Leitungen raus, sichere Technik rein – sauber und mit wenig Schmutz.
+- Smart Home – Licht, Heizung und Rollläden bequem per App oder Sprache steuern.
+- PV & Wallbox – Solarstrom vom eigenen Dach und Laden des E-Autos in der Garage.
+- E-Check – Prüfung nach DGUV V3 für Vermieter und Gewerbe, mit Prüfprotokoll.
+- Notdienst – Stromausfall oder Kurzschluss? Wir sind rund um die Uhr erreichbar.
+
+**Offene Entscheidungspunkte:**
+1. „seit 1998“ statt „Innungsmitglied“ in der Vertrauensleiste (Innung wandert zu „Über uns“)
+2. Notdienst-Karte farblich hervorgehoben (navy, gelbes Icon) mit Notdienst-Nummer als Button
+3. Vorgemerkte Fotos noch nicht in den Leistungen verwenden, sondern für Über uns / Referenzen aufheben
+
+Technik: neue Icons in den bestehenden SVG-Sprite, Styles in `sections.css`, neue Werte als Token, kein JS nötig.
 
 ## 8. Getroffene Entscheidungen
 
