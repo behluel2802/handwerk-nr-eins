@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Design-Tokens
+   Nur Variablen – keine Selektoren außer :root.
+   Für ein anderes Gewerk reicht es meist, den Block "Marke" anzupassen.
+   ========================================================================== */
+
+:root {
+  /* --- Marke ------------------------------------------------------------ */
+  --color-primary:        #0f2a4a;  /* dunkles Blau: Vertrauen, Kompetenz */
+  --color-primary-dark:   #0a1d33;
+  --color-primary-light:  #1e4370;
+  --color-accent:         #f5b301;  /* Bernstein: Strom, Call-to-Action */
+  --color-accent-dark:    #d99a00;
+  --color-on-primary:     #ffffff;  /* Text auf Blau */
+  --color-on-accent:      #0f2a4a;  /* Text auf Bernstein (Kontrast ≈ 8:1) */
+
+  /* --- Neutrale Farben -------------------------------------------------- */
+  --color-bg:             #ffffff;
+  --color-surface:        #f4f6f9;  /* alternierende Abschnitte, Karten */
+  --color-border:         #dde3ea;
+  --color-text:           #1b2533;
+  --color-text-muted:     #536072;  /* ≥ 4.5:1 auf --color-bg und --color-surface */
+
+  /* --- Status ----------------------------------------------------------- */
+  --color-success:        #1f7a4d;
+  --color-error:          #b42318;
+
+  /* --- Typografie ------------------------------------------------------- */
+  /* System-Fonts: DSGVO-konform, kein Font-Download */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Fluide Schriftgrößen (Handy → Desktop) */
+  --fs-sm:   0.875rem;
+  --fs-base: 1.0625rem;                                 /* 17px – gut lesbar auch für ältere Zielgruppe */
+  --fs-lg:   clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);
+  --fs-xl:   clamp(1.35rem, 1.2rem + 0.75vw, 1.75rem);
+  --fs-2xl:  clamp(1.75rem, 1.45rem + 1.5vw, 2.5rem);
+  --fs-3xl:  clamp(2.1rem, 1.6rem + 2.5vw, 3.5rem);
+
+  --fw-normal: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight: 1.15;
+  --lh-base:  1.6;
+
+  /* --- Abstände (4px-Raster) -------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-section: clamp(3.5rem, 2.5rem + 5vw, 6.5rem);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --container-max: 72rem;   /* 1152px */
+  --container-pad: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+  --header-height: 4.5rem;
+
+  /* --- Form ------------------------------------------------------------- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(15 42 74 / 0.08);
+  --shadow-md: 0 4px 14px rgb(15 42 74 / 0.12);
+  --shadow-lg: 0 12px 32px rgb(15 42 74 / 0.18);
+
+  /* --- Interaktion ------------------------------------------------------ */
+  --tap-min: 2.75rem;       /* 44px Mindest-Klickfläche */
+  --focus-ring: 0 0 0 3px var(--color-accent);
+  --transition: 180ms ease;
+}

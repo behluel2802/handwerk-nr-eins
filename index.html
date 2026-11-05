@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt</title>
+  <meta name="description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst. Ihr Elektro-Meisterbetrieb in Musterstadt seit 1998.">
+  <meta name="theme-color" content="#0f2a4a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt">
+  <meta property="og:description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst.">
+  <meta property="og:locale" content="de_DE">
+  <!-- TODO: og:image und og:url ergänzen, sobald Bilder und Domain feststehen -->
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <script src="js/main.js" defer></script>
+
+  <!-- Strukturierte Daten (fiktiver Betrieb, Quelle: docs/BRIEFING.md) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Electrician",
+    "name": "Elektro Berger GmbH",
+    "description": "Elektro-Meisterbetrieb in Musterstadt seit 1998",
+    "foundingDate": "1998",
+    "telephone": "+491234567890",
+    "email": "info@elektro-berger.example",
+    "url": "https://www.elektro-berger.example",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Werkstraße 12",
+      "postalCode": "12345",
+      "addressLocality": "Musterstadt",
+      "addressCountry": "DE"
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "07:00", "closes": "17:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "14:00" }
+    ],
+    "areaServed": "Musterstadt und Umgebung (ca. 25 km)",
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "127" }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header" id="top">
+    <div class="container">
+      <!-- Schritt 4: Logo, Navigation, mobiles Menü -->
+      <a class="brand" href="#top">Elektro Berger</a>
+      <nav aria-label="Hauptnavigation">
+        <ul>
+          <li><a href="#leistungen">Leistungen</a></li>
+          <li><a href="#referenzen">Referenzen</a></li>
+          <li><a href="#ueber-uns">Über uns</a></li>
+          <li><a href="#karriere">Karriere</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--accent" href="tel:+491234567890">0123 456 789 0</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- 1. Hero -->
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <h1 id="hero-title">Ihr Elektro-Meisterbetrieb in Musterstadt</h1>
+        <p class="lead">Zuverlässig, sauber und termintreu – seit 1998.</p>
+        <div class="cluster">
+          <a class="btn btn--accent" href="tel:+491234567890">Jetzt anrufen</a>
+          <a class="btn btn--outline" href="#kontakt">Anfrage senden</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Vertrauensleiste -->
+    <section class="trust" id="vertrauen" aria-label="Warum Elektro Berger">
+      <div class="container">
+        <!-- Meisterbetrieb · Innung · 4,9 ★ Google · 24/7-Notdienst -->
+      </div>
+    </section>
+
+    <!-- 3. Leistungen -->
+    <section class="section" id="leistungen" aria-labelledby="leistungen-title">
+      <div class="container">
+        <h2 id="leistungen-title">Leistungen</h2>
+        <!-- Elektroinstallation · Altbausanierung · Smart Home · PV & Wallbox · E-Check · Notdienst -->
+      </div>
+    </section>
+
+    <!-- 4. Referenzen -->
+    <section class="section section--alt" id="referenzen" aria-labelledby="referenzen-title">
+      <div class="container">
+        <h2 id="referenzen-title">Referenzen</h2>
+        <!-- Projektgalerie mit Lightbox + Kundenstimmen -->
+      </div>
+    </section>
+
+    <!-- 5. Über uns -->
+    <section class="section" id="ueber-uns" aria-labelledby="ueber-uns-title">
+      <div class="container">
+        <h2 id="ueber-uns-title">Über uns</h2>
+        <!-- Team & Geschichte -->
+      </div>
+    </section>
+
+    <!-- 6. Ablauf -->
+    <section class="section section--alt" id="ablauf" aria-labelledby="ablauf-title">
+      <div class="container">
+        <h2 id="ablauf-title">So läuft's ab</h2>
+        <!-- Anfrage → Besichtigung → Angebot → Umsetzung -->
+      </div>
+    </section>
+
+    <!-- 7. Karriere -->
+    <section class="section section--dark" id="karriere" aria-labelledby="karriere-title">
+      <div class="container">
+        <h2 id="karriere-title">Wir suchen Verstärkung</h2>
+        <!-- Offene Stellen · Vorteile · Bewerbung ohne Anschreiben -->
+      </div>
+    </section>
+
+    <!-- 8. Kontakt -->
+    <section class="section" id="kontakt" aria-labelledby="kontakt-title">
+      <div class="container">
+        <h2 id="kontakt-title">Kontakt</h2>
+        <!-- Formular · Einzugsgebiet · Öffnungszeiten · Telefon/E-Mail -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 9. Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span data-year>2026</span> Elektro Berger GmbH · Werkstraße 12 · 12345 Musterstadt</p>
+      <ul class="cluster">
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

@@ -6,9 +6,33 @@ Stand: 05.11.2026
 
 - **Art des Projekts:** Übungsprojekt bzw. wiederverwendbare Vorlage, kein echter Kunde.
 - **Beispiel-Gewerk:** Elektriker
-- **Betrieb:** fiktiv, der Name wird beim Bau festgelegt (Arbeitstitel z. B. „Elektro Berger – Meisterbetrieb seit 1998“). Alle Firmendaten (Adresse, Telefon, Bewertungen …) sind ausgedacht und klar als Platzhalter erkennbar.
+- **Betrieb:** fiktiv, **Elektro Berger GmbH**, siehe Firmendaten unten. Alle Angaben sind ausgedacht und klar als Platzhalter erkennbar.
 - **Erfahrung des Entwicklers:** erfahren, technische Erklärungen dürfen knapp sein.
 - **Repository:** `git@github.com:behluel2802/handwerk-nr-eins.git` (Branch `main`)
+
+### Firmendaten (fiktiv)
+
+Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderungen hier und in `index.html` (sichtbarer Text und JSON-LD im `<head>`) anpassen.
+
+| Feld | Wert |
+|---|---|
+| Name | Elektro Berger GmbH |
+| Claim | Ihr Elektro-Meisterbetrieb in Musterstadt |
+| Inhaber | Thomas Berger, Elektrotechnikermeister |
+| Gegründet | 1998 |
+| Mitarbeiter | 8 (davon 2 Azubis) |
+| Adresse | Werkstraße 12, 12345 Musterstadt |
+| Telefon | 0123 456 789 0 (Link: `tel:+491234567890`) |
+| Notdienst | 0123 456 789 9, rund um die Uhr |
+| WhatsApp | +49 123 4567890 |
+| E-Mail | info@elektro-berger.example |
+| Web | www.elektro-berger.example |
+| Öffnungszeiten | Mo–Do 7:00–17:00, Fr 7:00–14:00 |
+| Einzugsgebiet | ca. 25 km um Musterstadt |
+| Mitgliedschaften | Elektro-Innung (Platzhalter), eingetragen in der Handwerksrolle |
+| Bewertung | 4,9 von 5 Sternen (127 Google-Bewertungen, fiktiv) |
+
+`Musterstadt`, `12345` und die Domain `.example` sind absichtlich als Platzhalter erkennbar.
 
 ## 2. Ziele der Website
 
@@ -83,6 +107,5 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 
 ## 9. Offene Punkte
 
-- Name und Daten des fiktiven Betriebs festlegen
 - Start der Umsetzung, sobald der Entwickler das Go gibt
 - Commit und Push nur auf ausdrückliche Anweisung

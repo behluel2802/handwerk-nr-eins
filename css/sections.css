@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Abschnitte
+   Wird ab Schritt 4 Abschnitt für Abschnitt gefüllt.
+   Reihenfolge wie in index.html: Header, Hero, Vertrauen, Leistungen,
+   Referenzen, Über uns, Ablauf, Karriere, Kontakt, Footer.
+   ========================================================================== */
+
+/* --- Header (vorläufig, Ausbau in Schritt 4) ----------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-height);
+}
+
+.site-header nav ul {
+  display: flex;
+  gap: var(--space-5);
+  list-style: none;
+  padding: 0;
+}
+
+.brand {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* --- Hero (vorläufig, Ausbau in Schritt 4) ------------------------------- */
+.hero {
+  padding-block: var(--space-section);
+}
+
+.hero .lead {
+  margin-block: var(--space-4) var(--space-6);
+}
+
+/* --- Footer (vorläufig) -------------------------------------------------- */
+.site-footer {
+  padding-block: var(--space-6);
+  background: var(--color-primary-dark);
+  color: var(--color-on-primary);
+  font-size: var(--fs-sm);
+}
+
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.site-footer a { color: var(--color-on-primary); }

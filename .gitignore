@@ -1,0 +1,17 @@
+# Betriebssystem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editoren
+.vscode/
+.idea/
+*.swp
+*~
+
+# Lokale Notizen / Entwürfe
+*.local.*
+tmp/
+
+# Original-Fotos vor der Optimierung (nur optimierte Bilder ins Repo)
+img/_originals/

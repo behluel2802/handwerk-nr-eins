@@ -22,4 +22,5 @@ Der Karriere-Block („Wir suchen Verstärkung“) ist kompakt und hat keine eig
 - DSGVO: keine externen CDNs, keine Google Fonts per Link, keine Tracker. Alles wird lokal ausgeliefert.
 - Bilder: freie Unsplash-Fotos lokal in `img/` ablegen (kein Hotlinking), komprimiert, mit `width`/`height` und `alt`. Fotograf und Link in `img/CREDITS.md` eintragen.
 - Kontaktformular nur im Frontend: JS-Validierung, Versand über einen konfigurierbaren Endpoint (z. B. Formspree) oder `mailto`.
-- Firmendaten sind fiktiv und an einer zentralen Stelle gut auffindbar, damit sie sich leicht austauschen lassen.
+- Firmendaten (fiktiv: Elektro Berger GmbH, Musterstadt) stehen ausschließlich in der Tabelle „Firmendaten“ in `docs/BRIEFING.md`. Werte von dort übernehmen, nichts Neues erfinden. Bei Änderungen sichtbaren Text und JSON-LD in `index.html` mitziehen.
+- CSS-Aufteilung: `css/tokens.css` (nur Variablen), `css/base.css` (Reset, Typografie, Layout-Helfer, Buttons), `css/sections.css` (abschnittsspezifische Styles). Neue Werte zuerst als Token anlegen, keine hartkodierten Farben in den Abschnitten.
