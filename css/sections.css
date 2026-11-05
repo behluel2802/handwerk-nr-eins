@@ -198,17 +198,26 @@
   z-index: -1;
 }
 
+.hero__media picture,
 .hero__media img {
   width: 100%;
   height: 100%;
+}
+
+.hero__media img {
   object-fit: cover;
+  object-position: 70% 30%; /* Gesicht und Hände bleiben auch im schmalen Zuschnitt sichtbar */
 }
 
 .hero__media:has(img)::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--hero-overlay);
+  background: var(--hero-overlay-mobile); /* mobil liegt Text über dem ganzen Bild */
+}
+
+@media (min-width: 60em) {
+  .hero__media:has(img)::after { background: var(--hero-overlay); }
 }
 
 .hero__inner > * { max-width: 42rem; }

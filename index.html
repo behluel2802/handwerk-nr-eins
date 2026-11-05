@@ -12,7 +12,10 @@
   <meta property="og:title" content="Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt">
   <meta property="og:description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst.">
   <meta property="og:locale" content="de_DE">
-  <!-- TODO: og:image und og:url ergänzen, sobald Bilder und Domain feststehen -->
+  <!-- TODO: og:image braucht eine absolute URL – bei echter Domain ersetzen, dazu og:url ergänzen -->
+  <meta property="og:image" content="https://www.elektro-berger.example/img/hero-1280.jpg">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="855">
 
   <!-- Progressive Enhancement: Styles für JS-abhängige Elemente erst aktivieren, wenn JS läuft -->
   <script>document.documentElement.classList.add('js');</script>
@@ -119,7 +122,12 @@
     <!-- 1. Hero -->
     <section class="hero" id="hero" aria-labelledby="hero-title" data-hero>
       <div class="hero__media" aria-hidden="true">
-        <!-- Schritt 5: <img src="img/hero.jpg" alt="" width="…" height="…" fetchpriority="high"> -->
+        <!-- Foto: Emmanuel Ikwuegbu / Unsplash (gespiegelt), siehe img/CREDITS.md -->
+        <picture>
+          <source type="image/webp" srcset="img/hero-1280.webp 1280w, img/hero-2400.webp 2400w" sizes="100vw">
+          <img src="img/hero-1280.jpg" srcset="img/hero-1280.jpg 1280w, img/hero-2400.jpg 2400w" sizes="100vw"
+               width="1280" height="855" alt="" fetchpriority="high">
+        </picture>
       </div>
       <div class="container hero__inner">
         <p class="hero__eyebrow">
