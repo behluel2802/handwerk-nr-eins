@@ -14,6 +14,9 @@
   <meta property="og:locale" content="de_DE">
   <!-- TODO: og:image und og:url ergänzen, sobald Bilder und Domain feststehen -->
 
+  <!-- Progressive Enhancement: Styles für JS-abhängige Elemente erst aktivieren, wenn JS läuft -->
+  <script>document.documentElement.classList.add('js');</script>
+
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/sections.css">
@@ -47,36 +50,99 @@
   </script>
 </head>
 <body>
+  <!-- Icon-Sprite: Verwendung per <svg class="icon"><use href="#i-name"/></svg> -->
+  <svg xmlns="http://www.w3.org/2000/svg" hidden>
+    <symbol id="i-bolt" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M13.5 2 4 13.5h7L10 22l10-12.5h-7.2L13.5 2z"/>
+    </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 6-10 7L2 6"/>
+      </g>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/>
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/>
+    </symbol>
+  </svg>
+
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <header class="site-header" id="top">
-    <div class="container">
-      <!-- Schritt 4: Logo, Navigation, mobiles Menü -->
-      <a class="brand" href="#top">Elektro Berger</a>
-      <nav aria-label="Hauptnavigation">
-        <ul>
-          <li><a href="#leistungen">Leistungen</a></li>
-          <li><a href="#referenzen">Referenzen</a></li>
-          <li><a href="#ueber-uns">Über uns</a></li>
-          <li><a href="#karriere">Karriere</a></li>
-          <li><a href="#kontakt">Kontakt</a></li>
+  <!-- Unsichtbarer Marker ganz oben: steuert den Header-Schatten beim Scrollen -->
+  <div class="scroll-sentinel" data-scroll-sentinel aria-hidden="true"></div>
+
+  <header class="site-header" id="top" data-header>
+    <div class="container site-header__inner">
+      <a class="brand" href="#top" aria-label="Elektro Berger GmbH – zum Seitenanfang">
+        <span class="brand__mark" aria-hidden="true">
+          <svg class="icon"><use href="#i-bolt"/></svg>
+        </span>
+        <span class="brand__text">Elektro <strong>Berger</strong></span>
+      </a>
+
+      <nav class="nav" id="hauptnav" aria-label="Hauptnavigation" data-nav>
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#leistungen">Leistungen</a></li>
+          <li><a class="nav__link" href="#referenzen">Referenzen</a></li>
+          <li><a class="nav__link" href="#ueber-uns">Über uns</a></li>
+          <li><a class="nav__link" href="#karriere">Karriere</a></li>
+          <li><a class="nav__link" href="#kontakt">Kontakt</a></li>
         </ul>
       </nav>
-      <a class="btn btn--accent" href="tel:+491234567890">0123 456 789 0</a>
+
+      <div class="site-header__actions">
+        <a class="btn btn--accent header-call" href="tel:+491234567890">
+          <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span class="header-call__label">0123 456 789 0</span>
+          <span class="visually-hidden header-call__sr">Anrufen</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-controls="hauptnav" aria-expanded="false" data-nav-toggle>
+          <svg class="icon nav-toggle__open" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="icon nav-toggle__close" aria-hidden="true"><use href="#i-close"/></svg>
+          <span class="visually-hidden">Menü</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="main">
 
     <!-- 1. Hero -->
-    <section class="hero" id="hero" aria-labelledby="hero-title">
-      <div class="container">
-        <h1 id="hero-title">Ihr Elektro-Meisterbetrieb in Musterstadt</h1>
-        <p class="lead">Zuverlässig, sauber und termintreu – seit 1998.</p>
-        <div class="cluster">
-          <a class="btn btn--accent" href="tel:+491234567890">Jetzt anrufen</a>
-          <a class="btn btn--outline" href="#kontakt">Anfrage senden</a>
+    <section class="hero" id="hero" aria-labelledby="hero-title" data-hero>
+      <div class="hero__media" aria-hidden="true">
+        <!-- Schritt 5: <img src="img/hero.jpg" alt="" width="…" height="…" fetchpriority="high"> -->
+      </div>
+      <div class="container hero__inner">
+        <p class="hero__eyebrow">
+          <svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg>
+          <span><span class="nowrap">Meisterbetrieb seit 1998</span> · <span class="nowrap">Musterstadt + 25 km</span></span>
+        </p>
+        <h1 id="hero-title">Ihr Elektro-Meisterbetrieb in&nbsp;Musterstadt</h1>
+        <p class="hero__lead">Elektroinstallation, Sanierung, Smart Home und PV – zuverlässig, sauber und termintreu.</p>
+        <div class="cluster hero__actions">
+          <a class="btn btn--accent btn--lg" href="tel:+491234567890">
+            <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            Jetzt anrufen
+          </a>
+          <a class="btn btn--outline-light btn--lg" href="#kontakt">
+            <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+            Anfrage senden
+          </a>
         </div>
+        <ul class="hero__usps">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Festpreis-Angebot</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Termin meist in 48&nbsp;h</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>24/7-Notdienst</li>
+        </ul>
       </div>
     </section>
 
@@ -147,5 +213,17 @@
       </ul>
     </div>
   </footer>
+
+  <!-- Feste Anruf-Leiste (nur mobil). Ohne JS immer sichtbar, mit JS erst nach dem Hero. -->
+  <div class="call-bar" data-call-bar>
+    <a class="call-bar__item call-bar__item--call" href="tel:+491234567890">
+      <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+      Anrufen
+    </a>
+    <a class="call-bar__item" href="#kontakt">
+      <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+      Anfrage
+    </a>
+  </div>
 </body>
 </html>
