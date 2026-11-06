@@ -644,6 +644,125 @@
   color: var(--color-text-muted);
 }
 
+/* --- Ablauf ------------------------------------------------------------- */
+/* Mobil/Tablet: vertikale Zeitleiste, ab 60em horizontal mit Verbindungslinie */
+.steps {
+  --step-size: 3rem;
+  --step-gap: var(--space-6);
+  display: grid;
+  gap: var(--step-gap);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--step-size) 1fr;
+  align-content: start; /* gestreckte Schritte nicht auf die Zeilen verteilen */
+  gap: var(--space-4);
+}
+
+/* Linie zum nächsten Schritt */
+.step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: var(--step-size);
+  bottom: calc(-1 * var(--step-gap));
+  left: calc(var(--step-size) / 2 - 1px);
+  width: 2px;
+  background: var(--color-step-line);
+}
+
+.step__num {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--step-size);
+  height: var(--step-size);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+}
+
+.step h3 {
+  margin-top: calc((var(--step-size) - 1.4em) / 2); /* Titel mittig zur Nummer */
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-lg);
+}
+
+.step p { color: var(--color-text-muted); }
+
+@media (min-width: 60em) {
+  .steps {
+    --step-gap: var(--space-5);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .step { grid-template-columns: 1fr; }
+
+  .step:not(:last-child)::before {
+    top: calc(var(--step-size) / 2 - 1px);
+    bottom: auto;
+    left: calc(var(--step-size) + var(--space-3));
+    right: calc(-1 * var(--step-gap) + var(--space-3));
+    width: auto;
+    height: 2px;
+  }
+
+  .step h3 { margin-top: 0; }
+}
+
+/* Abschluss-Box: drei feste Zustände, nie 2 + 1 Buttons
+   1. schmal:  Text, darunter alle Buttons untereinander (volle Breite, nur auf kleinen Boxen)
+   2. mittel:  Text, darunter 3 gleich breite Buttons in einer Reihe
+   3. breit:   Text links, Buttons rechts in einer Zeile
+   Gesteuert per Container Query über die Breite der Box. */
+.steps-cta {
+  container: steps-cta / inline-size;
+  margin-top: var(--space-7);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+}
+
+.steps-cta__inner {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.steps-cta__text {
+  color: var(--color-primary);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+}
+
+.steps-cta__actions {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.steps-cta__actions .btn {
+  width: 100%;
+  padding-inline: var(--space-4); /* kompakter, damit die Reihe früher passt */
+  white-space: nowrap;
+}
+
+@container steps-cta (min-width: 37rem) {
+  .steps-cta__actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@container steps-cta (min-width: 60rem) {
+  .steps-cta__inner {
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .steps-cta__actions { grid-template-columns: repeat(3, auto); }
+}
+
 /* --- Lightbox ------------------------------------------------------------ */
 .lightbox {
   width: 100%;

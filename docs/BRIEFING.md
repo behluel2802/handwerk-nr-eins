@@ -93,11 +93,11 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 3 | Design-Tokens und Basis-CSS | ✅ erledigt |
 | 4 | Header, Hero, mobile Anruf-Leiste | ✅ erledigt |
 | 5 | Hero-Foto (Unsplash) | ✅ erledigt, gepusht |
-| 6 | Vertrauensleiste + Leistungen | ✅ erledigt, committet |
-| 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | ✅ erledigt, committet |
-| 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, committet |
-| 9 | Ablauf | offen |
-| 10 | Karriere | offen |
+| 6 | Vertrauensleiste + Leistungen | ✅ erledigt, gepusht |
+| 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | ✅ erledigt, gepusht |
+| 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, gepusht |
+| 9 | Ablauf | ✅ erledigt, gepusht |
+| 10 | Karriere | **nächster Schritt:** Plan vorstellen |
 | 11 | Kontakt (Formular, Validierung, Endpoint) | offen |
 | 12 | Footer, Impressum/Datenschutz-Platzhalter | offen |
 | 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit | offen |
@@ -160,6 +160,24 @@ Fotos (alle freie Unsplash-Lizenz):
 3. Kennzahlen als 4 Kacheln unter dem Text (Desktop 4 nebeneinander, Handy 2×2)
 4. Innung und Handwerksrolle als Text mit Häkchen, keine Logos (Markenrechte, Platzhalter)
 5. Überschrift bleibt schlicht „Über uns“ wie in den anderen Abschnitten
+
+### Schritt 9 (Plan freigegeben, umgesetzt am 06.11.2026)
+
+**Schritte (Texte greifen nur bestehende Versprechen aus dem Hero auf):**
+1. Anfrage – Rufen Sie an, schreiben Sie per WhatsApp oder nutzen Sie das Formular. Kurz schildern, worum es geht.
+2. Besichtigung – Wir schauen uns alles vor Ort an, Termin meist innerhalb von 48 Stunden.
+3. Angebot – Sie bekommen ein verständliches Festpreis-Angebot, ohne versteckte Kosten.
+4. Umsetzung – Wir arbeiten sauber und termintreu und übergeben alles mit Dokumentation.
+
+**Layout:** Hintergrund hellgrau (wie bisher geplant). Ab 960 px 4 Schritte nebeneinander, verbunden durch eine Linie, Nummern in gelben Kreisen. Darunter eine vertikale Zeitleiste (Linie links, Nummern auf der Linie), einspaltig.
+**Abschluss:** Box „Bereit für Schritt 1?“ mit Buttons „Jetzt anrufen“, „Anfrage senden“ (#kontakt) und „WhatsApp“.
+
+**Entscheidungen (freigegeben):**
+1. Horizontale Zeitleiste ab 960 px, darunter vertikal (kein 2×2)
+2. Nur Nummern in Kreisen, keine zusätzlichen Icons
+3. Texte nur mit bestehenden Versprechen (48 h, Festpreis), keine neuen Zusagen
+4. Abschluss-Box mit drei Kontaktwegen inkl. WhatsApp (`https://wa.me/491234567890`, neutrales Chat-Icon). Buttons nie 2+1: per Container Query gestapelt (volle Breite) → 3 gleich breit in einer Reihe → Text links, Buttons rechts
+5. Kein Foto in diesem Abschnitt
 
 ## 8. Getroffene Entscheidungen
 

@@ -17,6 +17,7 @@
   --color-accent-soft:    rgb(245 179 1 / 0.4); /* dezente Akzent-Linien auf Blau */
   --color-accent-tint:    #fdf1cc;  /* heller Akzent-Hintergrund, z. B. Icon-Kacheln */
   --color-star:           #e5a400;  /* Bewertungssterne auf hellem Grund */
+  --color-step-line:      var(--color-accent); /* Verbindungslinie im Ablauf */
 
   /* Lightbox */
   --lightbox-backdrop:    rgb(10 29 51 / 0.97);
