@@ -16,6 +16,13 @@
   --color-on-primary-muted: #c5d1e0; /* Nebentext auf Blau */
   --color-accent-soft:    rgb(245 179 1 / 0.4); /* dezente Akzent-Linien auf Blau */
   --color-accent-tint:    #fdf1cc;  /* heller Akzent-Hintergrund, z. B. Icon-Kacheln */
+  --color-star:           #e5a400;  /* Bewertungssterne auf hellem Grund */
+
+  /* Lightbox */
+  --lightbox-backdrop:    rgb(10 29 51 / 0.97);
+  --lightbox-btn-bg:      rgb(255 255 255 / 0.14);
+  --lightbox-btn-bg-hover: rgb(255 255 255 / 0.26);
+  --gallery-zoom-bg:      rgb(15 42 74 / 0.75);
 
   /* Hero: Platzhalter ohne Foto + Overlay über dem Foto (Text links bleibt lesbar) */
   --hero-placeholder: radial-gradient(ellipse at 85% 20%, #1e4370 0%, transparent 55%),

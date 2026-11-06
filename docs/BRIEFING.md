@@ -80,7 +80,7 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 - **Kontaktformular nur im Frontend:** Validierung in JS, Versand über einen austauschbaren Endpoint (z. B. Formspree) oder `mailto`, kein eigenes Backend
 - **SEO:** Meta-Tags, Open Graph, Schema.org-Daten (`Electrician` bzw. `LocalBusiness`)
 - **DSGVO:** keine externen CDNs oder Google Fonts, Schriften lokal oder System-Fonts, keine Tracker
-- **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Für spätere Abschnitte vorgemerkt: Pendelleuchte (Über uns / Leistungen) und deutscher Sicherungskasten (Leistungen), Links in `img/CREDITS.md`.
+- **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Referenzen: 6 Projektfotos. Für „Über uns“ vorgemerkt: Pendelleuchte. Alle Links in `img/CREDITS.md`.
 
 ## 7. Vorgehen und Stand
 
@@ -94,8 +94,8 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 4 | Header, Hero, mobile Anruf-Leiste | ✅ erledigt |
 | 5 | Hero-Foto (Unsplash) | ✅ erledigt, gepusht |
 | 6 | Vertrauensleiste + Leistungen | ✅ erledigt, committet |
-| 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | **nächster Schritt:** Plan vorstellen |
-| 8 | Über uns (Innung hier erwähnen) | offen |
+| 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | ✅ erledigt, committet |
+| 8 | Über uns (Innung hier erwähnen) | **nächster Schritt:** Plan vorstellen |
 | 9 | Ablauf | offen |
 | 10 | Karriere | offen |
 | 11 | Kontakt (Formular, Validierung, Endpoint) | offen |
@@ -123,6 +123,28 @@ Meisterbetrieb (eingetragen in der Handwerksrolle) · seit 1998 (über 25 Jahre 
 Offen: Link zum Google-Profil ist noch `#` (TODO in `index.html`). Vertrauensleiste unter 640 px: Icon über dem Text, zentriert (2×2); ab 640 px Icon links.
 
 Technik: neue Icons im bestehenden SVG-Sprite, neues Token `--color-accent-tint`, Styles in `sections.css`, neue Werte als Token, kein JS nötig.
+
+### Schritt 7 (Plan freigegeben, umgesetzt am 06.11.2026)
+
+**Galerie:** 6 Projekte als Kacheln (ab 960 px 3, ab 480 px 2, darunter 1 Spalte), einheitlich 4:3 zugeschnitten, Bildunterschrift „Leistung · Objekt, Ort“. Klick öffnet die Lightbox mit dem Bild im Originalformat.
+Fotos (alle freie Unsplash-Lizenz):
+- Unterverteilung – Markus Spiske, `kK7uPfb2YWU`
+- PV-Anlage – Watt A Lot, `gqpuuF3a2tY`
+- Wallbox in der Garage – Andersen EV, `CRa_dWoilkg`
+- Smart-Home-Taster – `3ci2aJgGi1c`
+- Küchenbeleuchtung – Clay Banks, `i6SOaGYmNOA`
+- Bad mit LED-Spiegel – `nZmJVbFWsvU`
+
+**Lightbox:** natives `<dialog>`, Vor/Zurück, Pfeiltasten, Esc, Wischen, Fokus zurück auf die Kachel. Ohne JS öffnen die Links das große Bild direkt.
+
+**Kundenstimmen:** Überschrift mit „4,9 ★ aus 127 Google-Bewertungen“, 3 statische Karten (Sterne, Zitat, „Familie K., Musterstadt · Wallbox“), Button „Alle Bewertungen auf Google“ (Link vorerst `#`).
+
+**Entscheidungen (freigegeben):**
+1. Fotoauswahl wie oben (Pendelleuchte bleibt für „Über uns“ reserviert)
+2. Lightbox mit `<dialog>` und Wischgeste, ohne Bibliothek
+3. Bildunterschriften mit fiktivem Objekt und Ortsteil (z. B. „Wallbox · Einfamilienhaus, Musterstadt-Nord“)
+4. Kundenstimmen als 3 feste Karten statt Slider
+5. Fiktive Inhalte nur per HTML-Kommentar kennzeichnen, nicht sichtbar
 
 ## 8. Getroffene Entscheidungen
 

@@ -296,7 +296,7 @@
   color: var(--color-primary);
 }
 
-.trust__icon--star { color: var(--color-accent-dark); }
+.trust__icon--star { color: var(--color-star); }
 
 .trust__item strong {
   display: block;
@@ -396,6 +396,223 @@
 .service__cta {
   align-self: flex-start;
   margin-top: auto; /* Button unten bündig, auch bei unterschiedlich langen Texten */
+}
+
+/* --- Referenzen: Galerie ------------------------------------------------- */
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr; /* Handy: 1 Spalte */
+  gap: var(--space-5) var(--space-4);
+}
+
+@media (min-width: 30em) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Schmale 2-Spalten-Ansicht: kleinere Lupe */
+@media (min-width: 30em) and (max-width: 39.99em) {
+  .gallery__zoom { width: 1.75rem; height: 1.75rem; }
+  .gallery__zoom .icon { width: 1rem; height: 1rem; }
+}
+
+@media (min-width: 60em) {
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6) var(--space-5); }
+}
+
+.gallery__link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.gallery__link img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+
+.gallery__link:hover img { transform: scale(1.04); }
+
+.gallery__zoom {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--gallery-zoom-bg);
+  color: var(--color-on-primary);
+}
+
+.gallery__caption {
+  margin-top: var(--space-2);
+  overflow-wrap: break-word; /* lange Wörter auf kleinen Handys umbrechen */
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.gallery__caption strong {
+  display: block;
+  color: var(--color-primary);
+  font-size: var(--fs-base);
+}
+
+.gallery__caption span { color: var(--color-text-muted); }
+
+/* --- Referenzen: Kundenstimmen ------------------------------------------- */
+.reviews { margin-top: var(--space-8); }
+
+.reviews__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.reviews__score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.reviews__score strong { color: var(--color-primary); }
+
+.review__stars {
+  display: inline-flex;
+  gap: 0.1rem;
+  color: var(--color-star);
+}
+
+.review__stars .icon { width: 1.1rem; height: 1.1rem; }
+
+.reviews__list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 60em) {
+  .reviews__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+}
+
+.review figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.review blockquote { flex-grow: 1; }
+
+.review figcaption {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.review figcaption strong { color: var(--color-text); }
+
+.reviews__cta { margin-top: var(--space-6); }
+
+/* --- Lightbox ------------------------------------------------------------ */
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: var(--space-8) var(--space-3) calc(var(--tap-min) + var(--space-5)); /* unten Platz für die Pfeile */
+  border: 0;
+  background: transparent;
+  color: var(--color-on-primary);
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.lightbox::backdrop { background: var(--lightbox-backdrop); }
+
+/* Seite hinter der offenen Lightbox nicht scrollen */
+html:has(.lightbox[open]) { overflow: hidden; }
+
+.lightbox__figure {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  max-width: 100%;
+}
+
+.lightbox__img {
+  width: auto;
+  max-width: min(100%, 75rem);
+  max-height: calc(100svh - 9rem);
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  touch-action: pan-y pinch-zoom; /* horizontales Wischen übernimmt das JS */
+}
+
+.lightbox__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1) var(--space-3);
+  text-align: center;
+  color: var(--color-on-primary-muted);
+}
+
+.lightbox__counter { color: var(--color-accent); font-weight: var(--fw-semibold); }
+
+.lightbox__btn {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--lightbox-btn-bg);
+  color: var(--color-on-primary);
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.lightbox__btn:hover { background: var(--lightbox-btn-bg-hover); }
+.lightbox__btn .icon { width: 1.5rem; height: 1.5rem; }
+
+.lightbox__close { top: var(--space-3); right: var(--space-3); }
+
+/* Handy: Pfeile unten, damit sie das Bild nicht verdecken */
+.lightbox__prev,
+.lightbox__next { bottom: var(--space-3); }
+.lightbox__prev { left: var(--space-3); }
+.lightbox__next { right: var(--space-3); }
+
+@media (min-width: 40em) {
+  .lightbox { padding: var(--space-6) var(--space-8); }
+
+  .lightbox__prev,
+  .lightbox__next {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__prev { left: var(--space-4); }
+  .lightbox__next { right: var(--space-4); }
 }
 
 /* --- Footer (vorläufig) -------------------------------------------------- */
