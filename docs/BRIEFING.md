@@ -80,7 +80,7 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 - **Kontaktformular nur im Frontend:** Validierung in JS, Versand über einen austauschbaren Endpoint (z. B. Formspree) oder `mailto`, kein eigenes Backend
 - **SEO:** Meta-Tags, Open Graph, Schema.org-Daten (`Electrician` bzw. `LocalBusiness`)
 - **DSGVO:** keine externen CDNs oder Google Fonts, Schriften lokal oder System-Fonts, keine Tracker
-- **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Referenzen: 6 Projektfotos. Für „Über uns“ vorgemerkt: Pendelleuchte. Alle Links in `img/CREDITS.md`.
+- **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Referenzen: 6 Projektfotos. Über uns: Pendelleuchte. Alle Links in `img/CREDITS.md`.
 
 ## 7. Vorgehen und Stand
 
@@ -95,7 +95,7 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 5 | Hero-Foto (Unsplash) | ✅ erledigt, gepusht |
 | 6 | Vertrauensleiste + Leistungen | ✅ erledigt, committet |
 | 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | ✅ erledigt, committet |
-| 8 | Über uns (Innung hier erwähnen) | **nächster Schritt:** Plan vorstellen |
+| 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, committet |
 | 9 | Ablauf | offen |
 | 10 | Karriere | offen |
 | 11 | Kontakt (Formular, Validierung, Endpoint) | offen |
@@ -145,6 +145,21 @@ Fotos (alle freie Unsplash-Lizenz):
 3. Bildunterschriften mit fiktivem Objekt und Ortsteil (z. B. „Wallbox · Einfamilienhaus, Musterstadt-Nord“)
 4. Kundenstimmen als 3 feste Karten statt Slider
 5. Fiktive Inhalte nur per HTML-Kommentar kennzeichnen, nicht sichtbar
+
+### Schritt 8 (Plan freigegeben, umgesetzt am 06.11.2026)
+
+**Layout:** ab 768 px zweispaltig (links Foto im Hochformat 4:5, rechts Text), darunter Foto oben (4:3) und Text darunter. Hintergrund weiß.
+**Foto:** Pendelleuchten-Montage von Ewan Buck (`4HjF7TNV1us`).
+**Text:** Gründung 1998 durch Elektrotechnikermeister Thomas Berger, heute 8 Leute inkl. 2 Azubis, Kunden im Umkreis von ca. 25 km. Handwerksrolle und Elektro-Innung (Platzhalter) mit Nutzen für den Kunden.
+**Inhaber-Zitat (fiktiv):** „Bei uns bekommen Sie einen festen Ansprechpartner, ein ehrliches Angebot und eine Baustelle, die wir sauber hinterlassen.“ – Thomas Berger, Elektrotechnikermeister und Inhaber
+**Kennzahlen (4 Kacheln, unter 480 px 1 Spalte, ab 480 px 2×2, ab 640 px 4 nebeneinander):** 1998 gegründet · 8 Mitarbeitende · 2 Azubis (Ausbildungsbetrieb) · ca. 25 km Einzugsgebiet
+
+**Entscheidungen (freigegeben):**
+1. Pendelleuchten-Foto, kein Team-Raster mit erfundenen Personen (Firmendaten nennen nur den Inhaber)
+2. Fiktives Inhaber-Zitat mit Name und Titel
+3. Kennzahlen als 4 Kacheln unter dem Text (Desktop 4 nebeneinander, Handy 2×2)
+4. Innung und Handwerksrolle als Text mit Häkchen, keine Logos (Markenrechte, Platzhalter)
+5. Überschrift bleibt schlicht „Über uns“ wie in den anderen Abschnitten
 
 ## 8. Getroffene Entscheidungen
 

@@ -412,8 +412,43 @@
     <!-- 5. Über uns -->
     <section class="section" id="ueber-uns" aria-labelledby="ueber-uns-title">
       <div class="container">
-        <h2 id="ueber-uns-title">Über uns</h2>
-        <!-- Team & Geschichte -->
+        <div class="about">
+          <div class="about__media">
+            <!-- Foto: Ewan Buck / Unsplash, siehe img/CREDITS.md. Desktop Hochformat, darunter 4:3-Ausschnitt -->
+            <picture>
+              <source media="(min-width: 48em)" type="image/webp" srcset="img/about-600.webp 600w, img/about-1000.webp 1000w" sizes="(min-width: 72em) 440px, 40vw" width="600" height="750">
+              <source media="(min-width: 48em)" srcset="img/about-600.jpg 600w, img/about-1000.jpg 1000w" sizes="(min-width: 72em) 440px, 40vw" width="600" height="750">
+              <source type="image/webp" srcset="img/about-wide-800.webp 800w, img/about-wide-1200.webp 1200w" sizes="92vw">
+              <img src="img/about-wide-800.jpg" srcset="img/about-wide-800.jpg 800w, img/about-wide-1200.jpg 1200w" sizes="92vw"
+                   width="800" height="600" alt="Elektriker montiert eine Pendelleuchte in einem Raum mit Holzlamellen-Wand" loading="lazy" decoding="async">
+            </picture>
+          </div>
+
+          <div class="about__body">
+            <h2 id="ueber-uns-title">Über uns</h2>
+            <p>1998 hat Elektrotechnikermeister Thomas Berger den Betrieb in Musterstadt gegründet. Heute sind wir ein Team aus acht Leuten, darunter zwei Auszubildende, und kümmern uns um Privathaushalte, Vermieter und Gewerbe im Umkreis von rund 25&nbsp;Kilometern.</p>
+            <p>Als eingetragener Meisterbetrieb arbeiten wir nach den aktuellen Normen und Vorschriften – und bilden selbst aus, damit gutes Handwerk in der Region bleibt.</p>
+            <ul class="about__badges">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Eingetragen in der Handwerksrolle</li>
+              <!-- Innung ist ein Platzhalter (siehe Firmendaten in docs/BRIEFING.md) -->
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Mitglied der Elektro-Innung</li>
+            </ul>
+            <!-- Fiktives Zitat (Übungsprojekt) -->
+            <figure class="about__quote">
+              <blockquote>
+                <p>„Bei uns bekommen Sie einen festen Ansprechpartner, ein ehrliches Angebot und eine Baustelle, die wir sauber hinterlassen.“</p>
+              </blockquote>
+              <figcaption><strong>Thomas Berger</strong> Elektrotechnikermeister und Inhaber</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <ul class="facts" aria-label="Elektro Berger in Zahlen">
+          <li class="facts__item"><strong class="facts__value">1998</strong> <span>gegründet</span></li>
+          <li class="facts__item"><strong class="facts__value">8</strong> <span>Mitarbeitende</span></li>
+          <li class="facts__item"><strong class="facts__value">2</strong> <span>Auszubildende</span></li>
+          <li class="facts__item"><strong class="facts__value"><small>ca.</small> 25&nbsp;km</strong> <span>Einzugsgebiet</span></li>
+        </ul>
       </div>
     </section>
 

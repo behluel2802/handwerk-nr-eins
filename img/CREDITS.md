@@ -13,9 +13,8 @@ Originale liegen lokal in `img/_originals/` (nicht im Repo, siehe `.gitignore`).
 | `ref-wallbox-{480,800,1600}.{webp,jpg}` | Elektroauto an Wallbox vor der Garage | [Andersen EV](https://unsplash.com/@andersen_ev) | [Unsplash](https://unsplash.com/photos/a-blue-electric-car-plugged-in-to-a-garage-CRa_dWoilkg) | 4:3-Ausschnitt (Kacheln), skaliert, komprimiert |
 | `ref-bad-{480,800,1600}.{webp,jpg}` | Bad mit beleuchtetem Spiegel | [Aleksandra Dementeva](https://unsplash.com/@alexphotogram) | [Unsplash](https://unsplash.com/photos/modern-bathroom-with-backlit-mirror-washing-machine-and-bathtub-nZmJVbFWsvU) | 4:3-Ausschnitt (Kacheln), skaliert, komprimiert |
 | `ref-smarthome-{480,800,1600}.{webp,jpg}` | Smart-Home-Taster neben einer Tür | [Jakub Żerdzicki](https://unsplash.com/@jakubzerdzicki) | [Unsplash](https://unsplash.com/photos/a-close-up-of-a-light-switch-on-a-wall-3ci2aJgGi1c) | 4:3-Ausschnitt (Kacheln), skaliert, komprimiert |
+| `about-{600,1000}.{webp,jpg}`, `about-wide-{800,1200}.{webp,jpg}` | Montage einer Pendelleuchte, warmes Licht | [Ewan Buck](https://unsplash.com/@e1buck) | [Unsplash](https://unsplash.com/photos/person-adjusting-light-in-wooden-room-4HjF7TNV1us) | Hochformat 4:5 und 4:3-Ausschnitt (mobil), skaliert, komprimiert |
 
 ## Vorgemerkt für spätere Abschnitte
 
-| Motiv | Fotograf | Quelle | Idee |
-|---|---|---|---|
-| Montage einer Pendelleuchte, warmes Licht (Hochformat) | [Ewan Buck](https://unsplash.com/@e1buck) | [Unsplash](https://unsplash.com/photos/person-adjusting-light-in-wooden-room-4HjF7TNV1us) | Über uns |
+Derzeit keine.
