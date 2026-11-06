@@ -15,6 +15,7 @@
   --color-on-accent:      #0f2a4a;  /* Text auf Bernstein (Kontrast ≈ 8:1) */
   --color-on-primary-muted: #c5d1e0; /* Nebentext auf Blau */
   --color-accent-soft:    rgb(245 179 1 / 0.4); /* dezente Akzent-Linien auf Blau */
+  --color-accent-tint:    #fdf1cc;  /* heller Akzent-Hintergrund, z. B. Icon-Kacheln */
 
   /* Hero: Platzhalter ohne Foto + Overlay über dem Foto (Text links bleibt lesbar) */
   --hero-placeholder: radial-gradient(ellipse at 85% 20%, #1e4370 0%, transparent 55%),

@@ -269,6 +269,135 @@
 
 .hero__usps .icon { color: var(--color-accent); }
 
+/* --- Vertrauensleiste ---------------------------------------------------- */
+.trust {
+  padding-block: var(--space-5);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.trust__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 × 2, gleich breite Spalten */
+  gap: var(--space-5) var(--space-4);
+}
+
+.trust__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.trust__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-primary);
+}
+
+.trust__icon--star { color: var(--color-accent-dark); }
+
+.trust__item strong {
+  display: block;
+  color: var(--color-primary);
+  font-size: var(--fs-base);
+}
+
+.trust__item span { color: var(--color-text-muted); }
+
+/* Links in der Leiste (Google, Notdienst) mit ausreichend Klickfläche */
+.trust__item a {
+  display: inline-block;
+  padding-block: var(--space-1);
+  font-weight: var(--fw-semibold);
+}
+
+.trust__item a[href^="tel:"] { white-space: nowrap; }
+
+/* Handy: Icon über dem Text, zentriert – volle Spaltenbreite für den Text */
+@media (max-width: 39.99em) {
+  .trust__item {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    text-align: center;
+  }
+}
+
+@media (min-width: 60em) {
+  .trust__list { grid-template-columns: repeat(4, 1fr); }
+  .trust__item { align-items: center; gap: var(--space-3); }
+  .trust__icon { width: 1.75rem; height: 1.75rem; }
+}
+
+/* --- Leistungen ---------------------------------------------------------- */
+.section__intro {
+  max-width: 48rem;
+  margin-top: calc(-1 * var(--space-3));
+  margin-bottom: var(--space-6);
+}
+
+.services {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 40em) {
+  .services { grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
+}
+
+@media (min-width: 60em) {
+  .services { grid-template-columns: repeat(3, 1fr); }
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.service__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-tint);
+  color: var(--color-primary);
+}
+
+.service__icon .icon { width: 1.6rem; height: 1.6rem; }
+
+.service h3 { font-size: var(--fs-lg); }
+.service p { color: var(--color-text-muted); }
+
+/* Notdienst: hervorgehoben */
+.service--highlight {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.service--highlight .service__icon {
+  background: var(--color-primary-light);
+  color: var(--color-accent);
+}
+
+.service--highlight h3 { color: var(--color-on-primary); }
+.service--highlight p { color: var(--color-on-primary-muted); }
+
+.service__cta {
+  align-self: flex-start;
+  margin-top: auto; /* Button unten bündig, auch bei unterschiedlich langen Texten */
+}
+
 /* --- Footer (vorläufig) -------------------------------------------------- */
 .site-footer {
   padding-block: var(--space-6);
