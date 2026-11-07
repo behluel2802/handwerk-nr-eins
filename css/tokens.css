@@ -18,6 +18,8 @@
   --color-accent-tint:    #fdf1cc;  /* heller Akzent-Hintergrund, z. B. Icon-Kacheln */
   --color-star:           #e5a400;  /* Bewertungssterne auf hellem Grund */
   --color-step-line:      var(--color-accent); /* Verbindungslinie im Ablauf */
+  --color-border-on-primary: rgb(255 255 255 / 0.16); /* Rahmen/Trenner auf Blau */
+  --color-surface-on-primary: var(--color-primary-light); /* Karten auf Blau */
 
   /* Lightbox */
   --lightbox-backdrop:    rgb(10 29 51 / 0.97);

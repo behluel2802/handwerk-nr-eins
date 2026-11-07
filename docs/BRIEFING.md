@@ -97,10 +97,10 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 7 | Referenzen (Galerie + Lightbox, Kundenstimmen) | ✅ erledigt, gepusht |
 | 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, gepusht |
 | 9 | Ablauf | ✅ erledigt, gepusht |
-| 10 | Karriere | **nächster Schritt:** Plan vorstellen |
-| 11 | Kontakt (Formular, Validierung, Endpoint) | offen |
+| 10 | Karriere | ✅ erledigt, committet |
+| 11 | Kontakt (Formular, Validierung, Endpoint) | **nächster Schritt:** Plan vorstellen |
 | 12 | Footer, Impressum/Datenschutz-Platzhalter | offen |
-| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit | offen |
+| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidung JSON-LD `JobPosting`) | offen |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -178,6 +178,31 @@ Fotos (alle freie Unsplash-Lizenz):
 3. Texte nur mit bestehenden Versprechen (48 h, Festpreis), keine neuen Zusagen
 4. Abschluss-Box mit drei Kontaktwegen inkl. WhatsApp (`https://wa.me/491234567890`, neutrales Chat-Icon). Buttons nie 2+1: per Container Query gestapelt (volle Breite) → 3 gleich breit in einer Reihe → Text links, Buttons rechts
 5. Kein Foto in diesem Abschnitt
+
+### Schritt 10 (Plan freigegeben, umgesetzt am 07.11.2026)
+
+**Hintergrund:** Navy (`section--dark`), Einleitung: „Wir sind ein Team aus acht Leuten – und suchen Verstärkung, die Lust auf saubere Arbeit und abwechslungsreiche Aufgaben hat.“
+**Layout:** ab 960 px zweispaltig (links Stellen, rechts Vorteile), darunter einspaltig. Darunter Bewerbungs-Box über die volle Breite.
+
+**Stellen (2 Karten, Details per `<details>` aufklappbar, ohne JS):**
+- Elektroniker/in für Energie- und Gebäudetechnik (m/w/d): Vollzeit, unbefristet, ab sofort. Aufgaben: Installation Neubau/Umbau/Altbau, PV/Wallbox/Smart Home, DGUV-V3-Prüfungen, Notdienst-Bereitschaft im Wechsel. Anforderungen: abgeschlossene Ausbildung, Führerschein B, Zuverlässigkeit.
+- Ausbildung Elektroniker/in EGT (m/w/d): Start jeweils 1. August, 3,5 Jahre, Übernahme bei guten Leistungen möglich. Voraussetzungen: Haupt- oder Realschulabschluss, Interesse an Technik/Mathe/Physik.
+- Je Stelle ein Link „Per E-Mail bewerben“ (`mailto:` mit vorbelegtem Betreff).
+
+**Vorteile:** aus Firmendaten abgeleitet: Freitags 14 Uhr Feierabend · kurze Wege (ca. 25 km, keine Montage) · kleines Team, direkter Draht zum Chef · Meisterbetrieb seit 1998.
+Freigegebene Platzhalter (nicht aus den Firmendaten): Weiterbildung bis zur Meisterprüfung · modernes Werkzeug und Messtechnik · eigenes Firmenfahrzeug.
+
+**Bewerbungs-Box:** „Bewerben in 2 Minuten“, „Kein Anschreiben nötig …, Ansprechpartner ist Thomas Berger“, Buttons Anrufen · WhatsApp · E-Mail.
+
+**Entscheidungen (freigegeben):**
+1. Nur zwei Stellen (Geselle/Gesellin + Azubi)
+2. Erfundene Vorteile als Platzhalter erlaubt (siehe oben), kein Gehalt/Tarif
+3. Kein Foto, Abschnitt bleibt kompakt
+4. Stellen-Details aufklappbar (`<details>`)
+5. JSON-LD `JobPosting` erst in Schritt 13 klären
+6. Ansprache „Sie“ wie im Rest der Seite
+
+Technik: Abschluss-Box aus dem Ablauf zur allgemeinen `.cta-box` umbenannt (Variante `.cta-box--dark`), neue Tokens `--color-border-on-primary` und `--color-surface-on-primary`, `.section--dark .lead` in `base.css`.
 
 ## 8. Getroffene Entscheidungen
 

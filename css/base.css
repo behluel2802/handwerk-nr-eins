@@ -146,6 +146,7 @@ a:hover { color: var(--color-primary); }
 
 .section--dark :is(h1, h2, h3, h4) { color: var(--color-on-primary); }
 .section--dark a:not(.btn) { color: var(--color-accent); }
+.section--dark .lead { color: var(--color-on-primary-muted); }
 
 /* Elemente nebeneinander, umbrechend */
 .cluster {

@@ -493,10 +493,10 @@
         </ol>
 
         <!-- Container Query: Layout richtet sich nach der Breite der Box, Buttons nie 2+1 -->
-        <div class="steps-cta">
-          <div class="steps-cta__inner">
-            <p class="steps-cta__text">Bereit für Schritt&nbsp;1?</p>
-            <div class="steps-cta__actions">
+        <div class="cta-box">
+          <div class="cta-box__inner">
+            <p class="cta-box__text">Bereit für Schritt&nbsp;1?</p>
+            <div class="cta-box__actions">
               <a class="btn btn--accent" href="tel:+491234567890">
                 <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
                 Jetzt anrufen
@@ -519,7 +519,120 @@
     <section class="section section--dark" id="karriere" aria-labelledby="karriere-title">
       <div class="container">
         <h2 id="karriere-title">Wir suchen Verstärkung</h2>
-        <!-- Offene Stellen · Vorteile · Bewerbung ohne Anschreiben -->
+        <p class="lead section__intro">Wir sind ein Team aus acht Leuten – und suchen Verstärkung, die Lust auf saubere Arbeit und abwechslungsreiche Aufgaben hat.</p>
+
+        <!-- Stelleninhalte und Vorteile teils fiktiv (Platzhalter, siehe docs/BRIEFING.md) -->
+        <div class="career">
+          <div class="career__jobs">
+            <h3 class="visually-hidden">Offene Stellen</h3>
+
+            <article class="job" aria-labelledby="job-geselle-title">
+              <h4 class="job__title" id="job-geselle-title">Elektroniker/in für Energie- und Gebäudetechnik (m/w/d)</h4>
+              <ul class="job__meta" aria-label="Eckdaten">
+                <li>Vollzeit</li>
+                <li>unbefristet</li>
+                <li>ab sofort</li>
+              </ul>
+              <p>Installation, Sanierung, PV und Wallbox, Smart Home – bei uns wird es nicht langweilig.</p>
+              <details class="job__details">
+                <summary>
+                  Aufgaben und Anforderungen
+                  <svg class="icon job__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                </summary>
+                <div class="job__body">
+                  <h5>Ihre Aufgaben</h5>
+                  <ul class="job__list">
+                    <li>Elektroinstallation in Neubau, Umbau und Altbau</li>
+                    <li>Montage von PV-Anlagen, Wallboxen und Smart-Home-Technik</li>
+                    <li>Prüfungen nach DGUV V3 (E&#8209;Check) mit Protokoll</li>
+                    <li>Notdienst-Bereitschaft im Wechsel mit dem Team</li>
+                  </ul>
+                  <h5>Das bringen Sie mit</h5>
+                  <ul class="job__list">
+                    <li>Abgeschlossene Ausbildung als Elektroniker/in oder vergleichbar</li>
+                    <li>Führerschein Klasse B</li>
+                    <li>Zuverlässigkeit und freundlicher Umgang mit Kunden</li>
+                  </ul>
+                  <a class="job__apply" href="mailto:info@elektro-berger.example?subject=Bewerbung%20als%20Elektroniker%2Fin">
+                    <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+                    Per E-Mail bewerben
+                  </a>
+                </div>
+              </details>
+            </article>
+
+            <article class="job" aria-labelledby="job-azubi-title">
+              <h4 class="job__title" id="job-azubi-title">Ausbildung Elektroniker/in für Energie- und Gebäudetechnik (m/w/d)</h4>
+              <ul class="job__meta" aria-label="Eckdaten">
+                <li>Start jeweils 1.&nbsp;August</li>
+                <li>3,5&nbsp;Jahre</li>
+                <li>Übernahme möglich</li>
+              </ul>
+              <p>Vom ersten Tag an mit auf der Baustelle – mit festem Ansprechpartner im Team.</p>
+              <details class="job__details">
+                <summary>
+                  Ausbildung und Voraussetzungen
+                  <svg class="icon job__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                </summary>
+                <div class="job__body">
+                  <h5>Das erwartet Sie</h5>
+                  <ul class="job__list">
+                    <li>Duale Ausbildung im Betrieb und in der Berufsschule</li>
+                    <li>Abwechslung von der Steckdose bis zur PV-Anlage</li>
+                    <li>Übernahme bei guten Leistungen</li>
+                  </ul>
+                  <h5>Das bringen Sie mit</h5>
+                  <ul class="job__list">
+                    <li>Haupt- oder Realschulabschluss</li>
+                    <li>Interesse an Technik, Mathe und Physik</li>
+                    <li>Handwerkliches Geschick und Teamgeist</li>
+                  </ul>
+                  <a class="job__apply" href="mailto:info@elektro-berger.example?subject=Bewerbung%20um%20einen%20Ausbildungsplatz">
+                    <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+                    Per E-Mail bewerben
+                  </a>
+                </div>
+              </details>
+            </article>
+          </div>
+
+          <div class="career__perks">
+            <h3>Was Sie bei uns erwartet</h3>
+            <ul class="perks">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Freitags um 14&nbsp;Uhr Feierabend</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Kurze Wege: Einsätze im Umkreis von ca. 25&nbsp;km, keine Montage</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Kleines Team mit direktem Draht zum Chef</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sicherer Arbeitsplatz im Meisterbetrieb seit 1998</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Weiterbildung, z.&nbsp;B. bis zur Meisterprüfung</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Modernes Werkzeug und Messtechnik</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Eigenes Firmenfahrzeug</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Gleiche CTA-Box wie im Ablauf (Container Query, Buttons nie 2+1) -->
+        <div class="cta-box cta-box--dark">
+          <div class="cta-box__inner">
+            <div>
+              <p class="cta-box__text">Bewerben in 2&nbsp;Minuten</p>
+              <p class="cta-box__sub">Kein Anschreiben nötig: Ein Anruf, eine WhatsApp oder Ihr Lebenslauf per E-Mail genügt. Ansprechpartner ist Thomas Berger.</p>
+            </div>
+            <div class="cta-box__actions">
+              <a class="btn btn--accent" href="tel:+491234567890">
+                <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+                Anrufen
+              </a>
+              <a class="btn btn--outline-light" href="https://wa.me/491234567890">
+                <svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>
+                WhatsApp
+              </a>
+              <a class="btn btn--outline-light" href="mailto:info@elektro-berger.example?subject=Bewerbung">
+                <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+                E-Mail
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
