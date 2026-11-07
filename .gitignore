@@ -14,4 +14,9 @@ desktop.ini
 tmp/
 
 # Original-Fotos vor der Optimierung (nur optimierte Bilder ins Repo)
-img/_originals/
+frontend/img/_originals/
+
+# Backend: Abhängigkeiten, Zugangsdaten, lokale Daten
+node_modules/
+.env
+backend/data/
