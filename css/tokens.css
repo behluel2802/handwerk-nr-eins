@@ -42,7 +42,13 @@
 
   /* --- Status ----------------------------------------------------------- */
   --color-success:        #1f7a4d;
+  --color-success-tint:   #e6f4ec;
   --color-error:          #b42318;
+  --color-error-tint:     #fdecea;
+
+  /* --- Formulare -------------------------------------------------------- */
+  --color-input-bg:       #ffffff;
+  --color-input-border:   #7c8899;  /* ≥ 3:1 auf Weiß (WCAG 1.4.11) */
 
   /* --- Typografie ------------------------------------------------------- */
   /* System-Fonts: DSGVO-konform, kein Font-Download */

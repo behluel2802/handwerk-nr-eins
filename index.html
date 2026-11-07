@@ -147,6 +147,20 @@
         <path d="M12 9v4M12 17h.01"/>
       </g>
     </symbol>
+    <!-- Kontakt -->
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </g>
+    </symbol>
+    <symbol id="i-radius" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" stroke-dasharray="3 3"/>
+        <circle cx="12" cy="12" r="2"/>
+        <path d="M14 12h8"/>
+      </g>
+    </symbol>
   </svg>
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -640,7 +654,135 @@
     <section class="section" id="kontakt" aria-labelledby="kontakt-title">
       <div class="container">
         <h2 id="kontakt-title">Kontakt</h2>
-        <!-- Formular · Einzugsgebiet · Öffnungszeiten · Telefon/E-Mail -->
+        <p class="lead section__intro">Rufen Sie an oder schreiben Sie uns – wir melden uns innerhalb eines Werktags.</p>
+
+        <div class="contact">
+          <div class="contact__info">
+            <a class="btn btn--accent btn--lg contact__call" href="tel:+491234567890">
+              <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
+              0123 456 789 0
+            </a>
+
+            <ul class="contact__list">
+              <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+                <div><strong>Notdienst rund um die Uhr</strong> <a href="tel:+491234567899">0123 456 789 9</a></div>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>
+                <div><strong>WhatsApp</strong> <a href="https://wa.me/491234567890">+49 123 4567890</a></div>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+                <div><strong>E-Mail</strong> <a href="mailto:info@elektro-berger.example">info@elektro-berger.example</a></div>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
+                <div>
+                  <strong>Adresse</strong>
+                  <address>Werkstraße 12<br>12345 Musterstadt</address>
+                  <!-- Nur Link, keine eingebettete Karte (DSGVO). Zwei-Klick-Karte ggf. später nachrüsten. -->
+                  <a href="https://www.openstreetmap.org/search?query=Werkstra%C3%9Fe%2012%2C%2012345%20Musterstadt" target="_blank" rel="noopener">Route planen<span class="visually-hidden"> auf OpenStreetMap (öffnet neues Fenster)</span></a>
+                </div>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true"><use href="#i-radius"/></svg>
+                <div><strong>Einzugsgebiet</strong> <span>ca. 25&nbsp;km um Musterstadt</span></div>
+              </li>
+            </ul>
+
+            <div class="contact__hours">
+              <h3>
+                <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+                Öffnungszeiten
+              </h3>
+              <table class="hours">
+                <tr><th scope="row">Mo–Do</th><td>7:00–17:00&nbsp;Uhr</td></tr>
+                <tr><th scope="row">Fr</th><td>7:00–14:00&nbsp;Uhr</td></tr>
+                <tr><th scope="row">Notdienst</th><td>rund um die Uhr</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!--
+            Versand: data-endpoint mit Formular-Dienst füllen (z. B. https://formspree.io/f/XXXX).
+            Leer = Fallback auf mailto: an data-mailto. Ohne JS: native Validierung + mailto.
+          -->
+          <form class="contact-form" action="mailto:info@elektro-berger.example" method="post" enctype="text/plain"
+                data-contact-form data-endpoint="" data-mailto="info@elektro-berger.example">
+            <h3 class="contact-form__title">Anfrage senden</h3>
+            <p class="contact-form__hint">Pflichtfelder sind mit <span aria-hidden="true">*</span><span class="visually-hidden">Stern</span> markiert.</p>
+
+            <div class="field">
+              <label for="cf-name">Name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error">
+              <p class="field__error" id="cf-name-error" hidden></p>
+            </div>
+
+            <fieldset class="field-group" aria-describedby="cf-reach-hint cf-reach-error">
+              <legend>Wie erreichen wir Sie? <span class="field__req" aria-hidden="true">*</span></legend>
+              <p class="field__hint" id="cf-reach-hint">Telefon oder E-Mail – eins von beiden genügt.</p>
+              <div class="field-group__row">
+                <div class="field">
+                  <label for="cf-phone">Telefon</label>
+                  <input id="cf-phone" name="telefon" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="cf-phone-error">
+                  <p class="field__error" id="cf-phone-error" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="cf-email">E-Mail</label>
+                  <input id="cf-email" name="email" type="email" autocomplete="email" aria-describedby="cf-email-error">
+                  <p class="field__error" id="cf-email-error" hidden></p>
+                </div>
+              </div>
+              <p class="field__error" id="cf-reach-error" hidden></p>
+            </fieldset>
+
+            <div class="field-group__row">
+              <div class="field">
+                <label for="cf-topic">Anliegen</label>
+                <select id="cf-topic" name="anliegen">
+                  <option value="">Bitte wählen</option>
+                  <option>Elektroinstallation</option>
+                  <option>Altbausanierung</option>
+                  <option>Smart Home</option>
+                  <option>PV &amp; Wallbox</option>
+                  <option>E-Check</option>
+                  <option>Notdienst</option>
+                  <option>Sonstiges</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="cf-place">PLZ / Ort <span class="field__opt">(optional)</span></label>
+                <input id="cf-place" name="ort" type="text">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Nachricht <span class="field__req" aria-hidden="true">*</span></label>
+              <textarea id="cf-message" name="nachricht" rows="5" required minlength="10" aria-describedby="cf-message-error"></textarea>
+              <p class="field__error" id="cf-message-error" hidden></p>
+            </div>
+
+            <div class="field field--check">
+              <input id="cf-callback" name="rueckruf" type="checkbox" value="ja">
+              <label for="cf-callback">Bitte rufen Sie mich zurück</label>
+            </div>
+
+            <!-- Honeypot gegen Spam-Bots: für Menschen unsichtbar, muss leer bleiben -->
+            <div class="contact-form__hp" aria-hidden="true">
+              <label for="cf-website">Website</label>
+              <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <button class="btn btn--primary btn--lg contact-form__submit" type="submit">
+              <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
+              Anfrage senden
+            </button>
+            <p class="contact-form__note">Wir melden uns innerhalb eines Werktags. Ihre Angaben verwenden wir nur zur Bearbeitung Ihrer Anfrage. Mehr dazu in der <a href="#">Datenschutzerklärung</a>.</p>
+
+            <div class="form-status" data-form-status role="status" tabindex="-1"></div>
+          </form>
+        </div>
       </div>
     </section>
 

@@ -925,6 +925,273 @@
   color: var(--color-accent);
 }
 
+/* --- Kontakt ------------------------------------------------------------- */
+/* Mobil: Kontaktdaten zuerst (Anruf ist der wichtigste Weg), ab 60em zweispaltig */
+.contact {
+  display: grid;
+  gap: var(--space-7);
+}
+
+@media (min-width: 60em) {
+  .contact {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: start;
+  }
+}
+
+.contact__call {
+  width: 100%;
+}
+
+@media (min-width: 30em) {
+  .contact__call { width: auto; }
+}
+
+.contact__list {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.contact__list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+}
+
+.contact__list .icon,
+.contact__hours h3 .icon {
+  margin-top: 0.15em;
+  color: var(--color-primary-light);
+}
+
+.contact__list strong {
+  display: block;
+  color: var(--color-primary);
+}
+
+.contact__list address { font-style: normal; }
+
+.contact__list a { overflow-wrap: anywhere; }
+
+.contact__hours {
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.contact__hours h3 {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-lg);
+}
+
+.hours {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hours th,
+.hours td {
+  padding-block: var(--space-2);
+  text-align: left;
+  vertical-align: top;
+}
+
+.hours tr + tr :is(th, td) { border-top: 1px solid var(--color-border); }
+
+.hours th {
+  padding-right: var(--space-4);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* Formular */
+.contact-form {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+  position: relative; /* Bezug für Honeypot und leeren Status */
+}
+
+@media (min-width: 40em) {
+  .contact-form { padding: var(--space-6); }
+}
+
+.contact-form__title { font-size: var(--fs-xl); }
+
+.contact-form__hint {
+  margin-top: calc(-1 * var(--space-3));
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.field label,
+.field-group legend {
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.field__req { color: var(--color-error); }
+
+.field__opt,
+.field__hint {
+  font-weight: var(--fw-normal);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.field input:not([type="checkbox"]),
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-input-bg);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Einheitliche Höhe für Textfelder und Auswahl (native select ist sonst abweichend) */
+.field input:not([type="checkbox"]),
+.field select { height: var(--tap-min); }
+
+.field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.field :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.field :is(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--color-error);
+  border-width: 2px;
+}
+
+.field__error {
+  display: flex;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-error);
+}
+
+.field__error::before { content: "⚠"; } /* Fehler nicht nur über Farbe erkennbar */
+
+.field-group {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field-group legend {
+  padding: 0;
+  margin-bottom: var(--space-1);
+}
+
+.field-group__row {
+  display: grid;
+  gap: var(--space-5) var(--space-4);
+}
+
+@media (min-width: 40em) {
+  .field-group__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.field--check {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap-min);
+}
+
+.field--check input {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.field--check label { font-weight: var(--fw-normal); color: var(--color-text); }
+
+/* Honeypot: aus dem sichtbaren Bereich, aber nicht display:none (manche Bots ignorieren das) */
+.contact-form__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+
+.contact-form__submit { justify-self: start; }
+
+@media (max-width: 29.99em) {
+  .contact-form__submit { justify-self: stretch; }
+}
+
+.contact-form__note {
+  margin-top: calc(-1 * var(--space-2));
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.contact-form.is-sending .contact-form__submit {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* Leer: visuell weg, bleibt aber als Live-Region im Accessibility-Tree */
+.form-status:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.form-status {
+  padding: var(--space-4);
+  border-left: 4px solid currentColor;
+  border-radius: var(--radius-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.form-status:focus { outline: none; }
+.form-status:focus-visible { box-shadow: var(--focus-ring); }
+
+.form-status--success {
+  background: var(--color-success-tint);
+  color: var(--color-success);
+}
+
+.form-status--error {
+  background: var(--color-error-tint);
+  color: var(--color-error);
+}
+
 /* --- Lightbox ------------------------------------------------------------ */
 .lightbox {
   width: 100%;

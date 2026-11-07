@@ -29,6 +29,7 @@ Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderung
 | Web | www.elektro-berger.example |
 | Öffnungszeiten | Mo–Do 7:00–17:00, Fr 7:00–14:00 |
 | Einzugsgebiet | ca. 25 km um Musterstadt |
+| Antwortzeit | Rückmeldung auf Anfragen innerhalb eines Werktags |
 | Mitgliedschaften | Elektro-Innung (Platzhalter), eingetragen in der Handwerksrolle |
 | Bewertung | 4,9 von 5 Sternen (127 Google-Bewertungen, fiktiv) |
 
@@ -98,7 +99,7 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, gepusht |
 | 9 | Ablauf | ✅ erledigt, gepusht |
 | 10 | Karriere | ✅ erledigt, committet |
-| 11 | Kontakt (Formular, Validierung, Endpoint) | **nächster Schritt:** Plan vorstellen |
+| 11 | Kontakt (Formular, Validierung, Endpoint) | erste Fassung committet, **UX-Umbau mit Backend in Planung** |
 | 12 | Footer, Impressum/Datenschutz-Platzhalter | offen |
 | 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidung JSON-LD `JobPosting`) | offen |
 
@@ -203,6 +204,24 @@ Freigegebene Platzhalter (nicht aus den Firmendaten): Weiterbildung bis zur Meis
 6. Ansprache „Sie“ wie im Rest der Seite
 
 Technik: Abschluss-Box aus dem Ablauf zur allgemeinen `.cta-box` umbenannt (Variante `.cta-box--dark`), neue Tokens `--color-border-on-primary` und `--color-surface-on-primary`, `.section--dark .lead` in `base.css`.
+
+### Schritt 11 (Plan freigegeben, umgesetzt am 07.11.2026)
+
+**Layout:** Hintergrund weiß. Ab 960 px zweispaltig (links Kontaktdaten, rechts Formular), darunter einspaltig mit Kontaktdaten zuerst.
+**Kontaktdaten:** großer Anruf-Button, Notdienst, WhatsApp, E-Mail, Adresse mit Link „Route planen“ (OpenStreetMap, neues Fenster), Einzugsgebiet, Öffnungszeiten als Tabelle.
+**Formular:** Name*, Telefon oder E-Mail* (mindestens eins), Anliegen (6 Leistungen + Sonstiges), PLZ/Ort (optional), Nachricht* (mind. 10 Zeichen), Checkbox „Bitte rufen Sie mich zurück“, Honeypot gegen Spam. Hinweis „Wir melden uns innerhalb eines Werktags“ plus Datenschutz-Hinweis.
+**Validierung:** JS mit `novalidate`, Fehler am Feld (`aria-invalid`, `aria-describedby`, ⚠-Zeichen zusätzlich zur Farbe), Fokus auf das erste fehlerhafte Feld, nach dem ersten Absenden Live-Prüfung. Statusmeldung in einer `role="status"`-Region, die den Fokus bekommt. Ohne JS: native Validierung + `mailto`-Action.
+**Versand:** `data-endpoint` am `<form>` (z. B. Formspree-URL) → `fetch` mit JSON. Leer (Standard) → `mailto:` mit vorausgefülltem Betreff und Text.
+
+**Entscheidungen (freigegeben):**
+1. Keine eingebettete Karte, nur Link „Route planen“. Eine Zwei-Klick-Karte (Laden erst nach Einwilligung) gilt als DSGVO-tauglich, ist aber als Zusatz zurückgestellt.
+2. Keine Datenschutz-Checkbox, nur Hinweistext (Art. 6 Abs. 1 lit. b DSGVO)
+3. Felder wie oben, kein Datei-Upload
+4. Keine Vorauswahl des Anliegens über Links (wenig Nutzen ohne Tracking)
+5. Neue Zusage „Rückmeldung innerhalb eines Werktags“ (in die Firmendaten aufgenommen)
+
+Technik: neue Icons `i-pin` und `i-radius`, neue Tokens `--color-input-bg`, `--color-input-border` (≥ 3:1), `--color-success-tint`, `--color-error-tint`.
+Offen: echten Formspree-Endpoint eintragen und den Erfolgsfall testen. Der Fehlerfall ist getestet.
 
 ## 8. Getroffene Entscheidungen
 
