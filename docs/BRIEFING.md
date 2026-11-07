@@ -12,7 +12,7 @@ Stand: 06.11.2026
 
 ### Firmendaten (fiktiv)
 
-Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderungen hier und in `index.html` (sichtbarer Text und JSON-LD im `<head>`) anpassen.
+Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderungen hier und in `frontend/index.html` (sichtbarer Text und JSON-LD im `<head>`) anpassen.
 
 | Feld | Wert |
 |---|---|
@@ -24,7 +24,7 @@ Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderung
 | Adresse | Werkstraße 12, 12345 Musterstadt |
 | Telefon | 0123 456 789 0 (Link: `tel:+491234567890`) |
 | Notdienst | 0123 456 789 9, rund um die Uhr |
-| WhatsApp | +49 123 4567890 |
+| WhatsApp | +49 123 4567890 (wird seit 07.11.2026 nicht mehr auf der Website verwendet) |
 | E-Mail | info@elektro-berger.example |
 | Web | www.elektro-berger.example |
 | Öffnungszeiten | Mo–Do 7:00–17:00, Fr 7:00–14:00 |
@@ -76,9 +76,9 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 ## 6. Technik
 
 - **Reines HTML, CSS und Vanilla JavaScript**, kein Framework, kein Build-Schritt
-- Geplante Struktur: `index.html`, `css/`, `js/`, `img/`
+- Struktur: `frontend/` (öffentlich: `index.html`, `css/`, `js/`, `img/`), `backend/` (Node.js), `docs/`
 - **Mobile-first**, responsiv, barrierearm (semantisches HTML, Kontraste, Tastaturbedienung)
-- **Kontaktformular nur im Frontend:** Validierung in JS, Versand über einen austauschbaren Endpoint (z. B. Formspree) oder `mailto`, kein eigenes Backend
+- **Kontaktformular:** Validierung in JS, Versand an das eigene Node.js-Backend (`/api/kontakt`, Schritt 11b), keine externen Formular-Dienste. Ohne Backend Demo-Modus (ursprünglich „nur Frontend“, am 07.11.2026 geändert)
 - **SEO:** Meta-Tags, Open Graph, Schema.org-Daten (`Electrician` bzw. `LocalBusiness`)
 - **DSGVO:** keine externen CDNs oder Google Fonts, Schriften lokal oder System-Fonts, keine Tracker
 - **Bilder:** freie Unsplash-Fotos, von Claude gesucht, **lokal** in `img/` abgelegt (kein Hotlinking), Bildnachweise werden in `img/CREDITS.md` dokumentiert. Nur freie Fotos verwenden, keine Unsplash+-Bilder. Hero: Elektriker mit gelbem Helm (gespiegelt). Referenzen: 6 Projektfotos. Über uns: Pendelleuchte. Alle Links in `img/CREDITS.md`.
@@ -99,9 +99,12 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 8 | Über uns (Innung hier erwähnen) | ✅ erledigt, gepusht |
 | 9 | Ablauf | ✅ erledigt, gepusht |
 | 10 | Karriere | ✅ erledigt, committet |
-| 11 | Kontakt (Formular, Validierung, Endpoint) | erste Fassung committet, **UX-Umbau mit Backend in Planung** |
-| 12 | Footer, Impressum/Datenschutz-Platzhalter | offen |
-| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidung JSON-LD `JobPosting`) | offen |
+| 11a | Kontakt: Umstrukturierung `frontend/`/`backend/`, UX-Umbau, Erreichbarkeit mit Feiertagen, Demo-Modus | ✅ erledigt, committet |
+| 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | **nächster Schritt:** Plan vorstellen |
+| 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | offen |
+| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | offen |
+| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite) | offen |
+| 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -221,7 +224,25 @@ Technik: Abschluss-Box aus dem Ablauf zur allgemeinen `.cta-box` umbenannt (Vari
 5. Neue Zusage „Rückmeldung innerhalb eines Werktags“ (in die Firmendaten aufgenommen)
 
 Technik: neue Icons `i-pin` und `i-radius`, neue Tokens `--color-input-bg`, `--color-input-border` (≥ 3:1), `--color-success-tint`, `--color-error-tint`.
-Offen: echten Formspree-Endpoint eintragen und den Erfolgsfall testen. Der Fehlerfall ist getestet.
+Abgelöst durch Schritt 11a (siehe unten).
+
+### Schritt 11a (UX-Umbau, umgesetzt am 07.11.2026)
+
+Anlass: Die erste Fassung bot zu viele gleichrangige Wege und Umwege (`mailto`-Versand, Route-Link, 7 Formularfelder).
+
+**Umstrukturierung:** `frontend/` (einziger öffentlicher Ordner) und `backend/` (Node.js, ab 11b). Verschoben mit `git mv`.
+**Weg 1 – Anruf (links, mobil zuerst):** großer Anruf-Button, Live-Status „Jetzt erreichbar – bis 17:00 Uhr“ bzw. „Heute geschlossen (Fronleichnam) – wieder erreichbar ab morgen 7:00 Uhr“, Öffnungszeiten-Tabelle, E-Mail als kleine Alternative, Notdienst als abgesetzte navy Box, Satz „Wir kommen zu Ihnen – im Umkreis von ca. 25 km“ mit Adresse.
+**Weg 2 – Formular (rechts):** Chips „Worum geht es?“ (optional, Radio-Buttons, 2 Spalten mobil / 3 sonst), Name*, Telefon oder E-Mail* (ein Feld, JS erkennt die Art), Nachricht*. Honeypot. Nach dem Absenden ersetzt eine Bestätigung „Vielen Dank, {Name}!“ das Formular.
+**Versand:** `fetch` an `/api/kontakt`. Antwortet dort kein Backend (404/405/501, z. B. GitHub Pages oder `http.server`), läuft der Demo-Modus: gleiche Bestätigung mit Hinweis „Demo-Version: In dieser Vorschau wird keine Anfrage verschickt.“ Ohne JS: normales POST an `/api/kontakt`.
+**Erreichbarkeit:** `frontend/js/hours.js` (ES-Modul, reine Funktionen, in Node getestet): Zeitzone `Europe/Berlin`, Feiertage aller Bundesländer berechnet (Osterformel), konfiguriert auf Hessen, dazu Heiligabend und Silvester geschlossen.
+
+**Entscheidungen (freigegeben):**
+1. Eigenes Backend statt `mailto`/Formspree, Sprache Node.js (Schritt 11b)
+2. WhatsApp auf der ganzen Seite gestrichen (Kontakt, Ablauf-Box, Ablauf-Schritt 1, Karriere-Box). Die CTA-Boxen haben jetzt 2 Buttons: gestapelt → 2 gleich breit (ab 26rem Boxbreite) → Text links, Buttons rechts (ab 48rem)
+3. Live-Status mit Feiertagen (Hessen), Heiligabend/Silvester geschlossen
+4. Bestätigung mit Namen
+5. Keine eingebettete Karte, kein Route-Link (Kunde fährt nicht zur Werkstatt)
+6. Getrennte Ordner `frontend/` und `backend/`; `.env`, `backend/`, `docs/` nie per Browser erreichbar
 
 ## 8. Getroffene Entscheidungen
 
@@ -235,7 +256,10 @@ Offen: echten Formspree-Endpoint eintragen und den Erfolgsfall testen. Der Fehle
 | Struktur | One-Pager |
 | Stil | auf die Zielgruppe ausgerichtet (Blau + Gelb/Bernstein, hell, vertrauenswürdig) |
 | Technik | einfaches HTML/CSS/JS |
-| Formular | nur Frontend |
+| Formular | eigenes Node.js-Backend (`/api/kontakt`), ohne Backend Demo-Modus |
+| Ordner | `frontend/` (einzig öffentlich) und `backend/` getrennt |
+| Build-Schritt | vorerst keiner, Entscheidung in Schritt 13 |
+| Hosting | vorerst keins; Demo über GitHub Pages (Schritt 12b), echtes Hosting in Schritt 14 |
 | Bilder | Unsplash, automatisch von Claude gesucht, lokal gespeichert |
 
 ## 9. Offene Punkte

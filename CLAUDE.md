@@ -18,11 +18,12 @@ Der Karriere-Block („Wir suchen Verstärkung“) ist kompakt und hat keine eig
 
 ## Technische Leitplanken
 
-- Reines HTML, CSS und Vanilla JS, kein Framework, kein Build-Schritt. Struktur: `index.html`, `css/`, `js/`, `img/`.
+- Frontend: reines HTML, CSS und Vanilla JS, kein Framework, kein Build-Schritt (Entscheidung über einen Build-Schritt erst in Schritt 13). Struktur: `frontend/index.html`, `frontend/css/`, `frontend/js/`, `frontend/img/`.
+- Backend: Node.js in `backend/` (möglichst wenige Abhängigkeiten, Konfiguration über `.env`, nie ins Repo). Ausgeliefert wird ausschließlich `frontend/`; `.env`, `backend/`, `docs/` und Punkt-Dateien dürfen nie per Browser erreichbar sein.
 - Mobile-first, semantisches HTML, barrierearm.
 - Farben, Schriften und Abstände als CSS-Variablen in `:root` (Design-Tokens), damit die Vorlage für andere Gewerke umfärbbar bleibt. Hauptfarbe dunkles Blau, Akzent Gelb/Bernstein.
 - DSGVO: keine externen CDNs, keine Google Fonts per Link, keine Tracker. Alles wird lokal ausgeliefert.
-- Bilder: freie Unsplash-Fotos lokal in `img/` ablegen (kein Hotlinking), komprimiert, mit `width`/`height` und `alt`. Fotograf und Link in `img/CREDITS.md` eintragen.
-- Kontaktformular nur im Frontend: JS-Validierung, Versand über einen konfigurierbaren Endpoint (z. B. Formspree) oder `mailto`.
-- Firmendaten (fiktiv: Elektro Berger GmbH, Musterstadt) stehen ausschließlich in der Tabelle „Firmendaten“ in `docs/BRIEFING.md`. Werte von dort übernehmen, nichts Neues erfinden. Bei Änderungen sichtbaren Text und JSON-LD in `index.html` mitziehen.
-- CSS-Aufteilung: `css/tokens.css` (nur Variablen), `css/base.css` (Reset, Typografie, Layout-Helfer, Buttons), `css/sections.css` (abschnittsspezifische Styles). Neue Werte zuerst als Token anlegen, keine hartkodierten Farben in den Abschnitten.
+- Bilder: freie Unsplash-Fotos lokal in `frontend/img/` ablegen (kein Hotlinking), komprimiert, mit `width`/`height` und `alt`. Fotograf und Link in `frontend/img/CREDITS.md` eintragen.
+- Kontaktformular: JS-Validierung im Frontend, Versand an das eigene Backend (`/api/kontakt`), keine externen Formular-Dienste. Ohne Backend (z. B. GitHub-Pages-Demo) Demo-Modus.
+- Firmendaten (fiktiv: Elektro Berger GmbH, Musterstadt) stehen ausschließlich in der Tabelle „Firmendaten“ in `docs/BRIEFING.md`. Werte von dort übernehmen, nichts Neues erfinden. Bei Änderungen sichtbaren Text und JSON-LD in `frontend/index.html` mitziehen.
+- CSS-Aufteilung (in `frontend/`): `css/tokens.css` (nur Variablen), `css/base.css` (Reset, Typografie, Layout-Helfer, Buttons), `css/sections.css` (abschnittsspezifische Styles). Neue Werte zuerst als Token anlegen, keine hartkodierten Farben in den Abschnitten.

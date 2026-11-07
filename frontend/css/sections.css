@@ -713,9 +713,9 @@
   .step h3 { margin-top: 0; }
 }
 
-/* CTA-Box (Ablauf, Karriere): drei feste Zustände, nie 2 + 1 Buttons
-   1. schmal:  Text, darunter alle Buttons untereinander (volle Breite, nur auf kleinen Boxen)
-   2. mittel:  Text, darunter 3 gleich breite Buttons in einer Reihe
+/* CTA-Box (Ablauf, Karriere): drei feste Zustände für 2 Buttons
+   1. schmal:  Text, darunter die Buttons untereinander (volle Breite, nur auf kleinen Boxen)
+   2. mittel:  Text, darunter 2 gleich breite Buttons in einer Reihe
    3. breit:   Text links, Buttons rechts in einer Zeile
    Gesteuert per Container Query über die Breite der Box. */
 .cta-box {
@@ -749,18 +749,18 @@
   white-space: nowrap;
 }
 
-@container cta-box (min-width: 37rem) {
-  .cta-box__actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@container cta-box (min-width: 26rem) {
+  .cta-box__actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@container cta-box (min-width: 60rem) {
+@container cta-box (min-width: 48rem) {
   .cta-box__inner {
     grid-template-columns: auto auto;
     align-items: center;
     justify-content: space-between;
   }
 
-  .cta-box__actions { grid-template-columns: repeat(3, auto); }
+  .cta-box__actions { grid-template-columns: repeat(2, auto); }
 }
 
 /* Variante auf dunklem Hintergrund (Karriere) */
@@ -926,7 +926,7 @@
 }
 
 /* --- Kontakt ------------------------------------------------------------- */
-/* Mobil: Kontaktdaten zuerst (Anruf ist der wichtigste Weg), ab 60em zweispaltig */
+/* Zwei klar priorisierte Wege: links Anruf (mobil zuerst), rechts kurzes Formular */
 .contact {
   display: grid;
   gap: var(--space-7);
@@ -939,58 +939,45 @@
   }
 }
 
-.contact__call {
-  width: 100%;
+.contact__heading {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-xl);
 }
+
+.contact__call { width: 100%; }
 
 @media (min-width: 30em) {
   .contact__call { width: auto; }
 }
 
-.contact__list {
-  display: grid;
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-}
-
-.contact__list li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-3);
-}
-
-.contact__list .icon,
-.contact__hours h3 .icon {
-  margin-top: 0.15em;
-  color: var(--color-primary-light);
-}
-
-.contact__list strong {
-  display: block;
-  color: var(--color-primary);
-}
-
-.contact__list address { font-style: normal; }
-
-.contact__list a { overflow-wrap: anywhere; }
-
-.contact__hours {
-  margin-top: var(--space-6);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-}
-
-.contact__hours h3 {
+/* Live-Status „Jetzt erreichbar“ */
+.open-status {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
-  font-size: var(--fs-lg);
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+}
+
+.open-status__dot {
+  flex-shrink: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-muted);
+}
+
+.open-status.is-open { color: var(--color-success); }
+.open-status.is-open .open-status__dot {
+  background: var(--color-success);
+  box-shadow: 0 0 0 4px var(--color-success-tint);
 }
 
 .hours {
   width: 100%;
+  max-width: 20rem;
+  margin-top: var(--space-5);
   border-collapse: collapse;
 }
 
@@ -1004,14 +991,84 @@
 .hours tr + tr :is(th, td) { border-top: 1px solid var(--color-border); }
 
 .hours th {
-  padding-right: var(--space-4);
+  padding-right: var(--space-5);
   font-weight: var(--fw-semibold);
   color: var(--color-primary);
   white-space: nowrap;
 }
 
-/* Formular */
-.contact-form {
+.contact__small {
+  margin-top: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.contact__alt {
+  margin-top: var(--space-5);
+}
+
+.contact__alt a {
+  display: inline-block; /* Adresse als Ganzes umbrechen, nicht am Bindestrich */
+  overflow-wrap: anywhere;
+}
+
+/* Notdienst: abgesetzt wie die Notdienst-Karte in den Leistungen */
+.contact__emergency {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: var(--color-on-primary-muted);
+}
+
+.contact__emergency > .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-accent);
+}
+
+.contact__emergency strong {
+  display: block;
+  color: var(--color-on-primary);
+}
+
+.contact__emergency-btn {
+  grid-column: 1 / -1; /* volle Breite unter Icon und Text, damit die Nummer nicht umbricht */
+  justify-self: start;
+  margin-top: var(--space-1);
+  white-space: nowrap;
+}
+
+@media (max-width: 29.99em) {
+  .contact__emergency-btn { justify-self: stretch; }
+}
+
+.contact__area {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.contact__area .icon {
+  margin-top: 0.15em;
+  color: var(--color-primary-light);
+}
+
+.contact__address {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+/* Formular-Karte */
+.contact-form,
+.form-success {
+  position: relative; /* Bezug für Honeypot und leeren Status */
   display: grid;
   gap: var(--space-5);
   padding: var(--space-5);
@@ -1019,12 +1076,15 @@
   border-radius: var(--radius-lg);
   background: var(--color-bg);
   box-shadow: var(--shadow-md);
-  position: relative; /* Bezug für Honeypot und leeren Status */
 }
 
 @media (min-width: 40em) {
-  .contact-form { padding: var(--space-6); }
+  .contact-form,
+  .form-success { padding: var(--space-6); }
 }
+
+.contact-form[hidden],
+.form-success[hidden] { display: none; }
 
 .contact-form__title { font-size: var(--fs-xl); }
 
@@ -1034,14 +1094,80 @@
   color: var(--color-text-muted);
 }
 
+/* Anliegen als Chips (Radio-Buttons, Pfeiltasten funktionieren nativ) */
+.chips {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.chips legend {
+  margin-bottom: var(--space-3);
+  padding: 0;
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.chips__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* feste Spalten, keine 2-1-2-1-Reihen */
+  gap: var(--space-2);
+}
+
+@media (min-width: 30em) {
+  .chips__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-input-bg);
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+@media (max-width: 29.99em) {
+  .chip span { padding-inline: var(--space-2); }
+}
+
+.chip:hover span { border-color: var(--color-primary); }
+
+.chip input:checked + span {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.chip input:focus-visible + span { box-shadow: var(--focus-ring); }
+
+/* Felder */
 .field {
   display: grid;
   gap: var(--space-2);
   align-content: start;
 }
 
-.field label,
-.field-group legend {
+.field label {
   font-weight: var(--fw-semibold);
   color: var(--color-primary);
 }
@@ -1055,8 +1181,7 @@
   color: var(--color-text-muted);
 }
 
-.field input:not([type="checkbox"]),
-.field select,
+.field input,
 .field textarea {
   width: 100%;
   min-height: var(--tap-min);
@@ -1067,22 +1192,22 @@
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-/* Einheitliche Höhe für Textfelder und Auswahl (native select ist sonst abweichend) */
-.field input:not([type="checkbox"]),
-.field select { height: var(--tap-min); }
+.field input { height: var(--tap-min); }
 
 .field textarea {
-  min-height: 8rem;
+  min-height: 7rem;
   resize: vertical;
 }
 
-.field :is(input, select, textarea):focus-visible {
+.field :is(input, textarea)::placeholder { color: var(--color-text-muted); }
+
+.field :is(input, textarea):focus-visible {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: var(--focus-ring);
 }
 
-.field :is(input, select, textarea)[aria-invalid="true"] {
+.field :is(input, textarea)[aria-invalid="true"] {
   border-color: var(--color-error);
   border-width: 2px;
 }
@@ -1097,45 +1222,6 @@
 
 .field__error::before { content: "⚠"; } /* Fehler nicht nur über Farbe erkennbar */
 
-.field-group {
-  display: grid;
-  gap: var(--space-3);
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.field-group legend {
-  padding: 0;
-  margin-bottom: var(--space-1);
-}
-
-.field-group__row {
-  display: grid;
-  gap: var(--space-5) var(--space-4);
-}
-
-@media (min-width: 40em) {
-  .field-group__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-.field--check {
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: var(--space-3);
-  min-height: var(--tap-min);
-}
-
-.field--check input {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0;
-  accent-color: var(--color-primary);
-}
-
-.field--check label { font-weight: var(--fw-normal); color: var(--color-text); }
-
 /* Honeypot: aus dem sichtbaren Bereich, aber nicht display:none (manche Bots ignorieren das) */
 .contact-form__hp {
   position: absolute;
@@ -1144,7 +1230,6 @@
   height: 1px;
   overflow: hidden;
 }
-
 
 .contact-form__submit { justify-self: start; }
 
@@ -1176,20 +1261,40 @@
   padding: var(--space-4);
   border-left: 4px solid currentColor;
   border-radius: var(--radius-sm);
+  background: var(--color-error-tint);
+  color: var(--color-error);
   font-weight: var(--fw-semibold);
 }
 
 .form-status:focus { outline: none; }
 .form-status:focus-visible { box-shadow: var(--focus-ring); }
 
-.form-status--success {
+/* Bestätigung */
+.form-success {
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.form-success:focus { outline: none; }
+
+.form-success__icon {
+  width: 3rem;
+  height: 3rem;
+  padding: var(--space-3);
+  border-radius: var(--radius-pill);
   background: var(--color-success-tint);
   color: var(--color-success);
 }
 
-.form-status--error {
-  background: var(--color-error-tint);
-  color: var(--color-error);
+.form-success__title { font-size: var(--fs-xl); }
+
+.form-success__demo {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-tint);
+  color: var(--color-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
 }
 
 /* --- Lightbox ------------------------------------------------------------ */

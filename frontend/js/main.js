@@ -1,6 +1,9 @@
 // Elektro Berger – Haupt-Skript
 // Progressive Enhancement: Ohne JS bleibt alles bedienbar
 // (Navigation sichtbar, Anruf-Leiste dauerhaft eingeblendet).
+// Als ES-Modul geladen (type="module", automatisch deferred) – braucht einen lokalen Server, kein file://.
+
+import { openingStatus } from './hours.js';
 
 const desktopQuery = window.matchMedia('(min-width: 60em)');
 
@@ -153,107 +156,93 @@ function initLightbox() {
   dialog.addEventListener('close', () => links[index].focus());
 }
 
+/* --- Erreichbarkeit „Jetzt erreichbar“ ------------------------------------- */
+// Zeiten und Feiertage: js/hours.js. Ohne JS bleibt nur die Tabelle sichtbar.
+function initOpenStatus() {
+  const el = document.querySelector('[data-open-status]');
+  if (!el) return;
+  const text = el.querySelector('[data-open-status-text]');
+
+  const update = () => {
+    const status = openingStatus();
+    text.textContent = status.text;
+    el.classList.toggle('is-open', status.open);
+  };
+
+  update();
+  el.hidden = false;
+  setInterval(update, 60 * 1000);
+}
+
 /* --- Kontaktformular -------------------------------------------------------- */
-// Ohne JS: native Pflichtfeld-Prüfung und Versand per mailto (action des Formulars).
-// Mit JS: eigene Validierung mit Meldungen am Feld, Versand an data-endpoint (z. B. Formspree)
-// oder – wenn leer – mailto mit vorausgefülltem Text.
+// Mit JS: Validierung am Feld, Versand per fetch an data-endpoint, Bestätigung statt Formular.
+// Antwortet unter dem Endpoint kein Backend (statisches Hosting wie GitHub Pages), läuft der
+// Demo-Modus: gleiche Bestätigung, aber mit Hinweis, dass nichts verschickt wurde.
+// Ohne JS: native Pflichtfeld-Prüfung und normales POST an die action.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const isPhone = (value) => /^[+\d\s()/-]+$/.test(value) && value.replace(/\D/g, '').length >= 6;
+
+// Statuscodes, die ein statischer Server auf POST liefert → kein Backend vorhanden
+const NO_BACKEND = [404, 405, 501];
+
 function initContactForm() {
   const form = document.querySelector('[data-contact-form]');
-  if (!form) return;
+  const success = document.querySelector('[data-form-success]');
+  if (!form || !success) return;
 
   form.noValidate = true;
   const endpoint = form.dataset.endpoint.trim();
-  const mailto = form.dataset.mailto;
   const status = form.querySelector('[data-form-status]');
   const submitBtn = form.querySelector('[type="submit"]');
   const el = (name) => form.elements.namedItem(name);
-  const fields = {
-    name: el('name'),
-    telefon: el('telefon'),
-    email: el('email'),
-    nachricht: el('nachricht'),
-  };
+  const fields = { name: el('name'), kontakt: el('kontakt'), nachricht: el('nachricht') };
   let submitted = false;
 
-  const setError = (input, errorEl, message) => {
-    if (input) input.setAttribute('aria-invalid', String(Boolean(message)));
+  const setError = (input, message) => {
+    const errorEl = document.getElementById(`${input.id}-error`);
+    input.setAttribute('aria-invalid', String(Boolean(message)));
     errorEl.textContent = message;
     errorEl.hidden = !message;
   };
-  const errorOf = (input) => document.getElementById(`${input.id}-error`);
-  const reachError = document.getElementById('cf-reach-error');
 
-  const phoneOk = (value) => /^[+\d\s()/-]+$/.test(value) && value.replace(/\D/g, '').length >= 6;
-
-  // Gibt die Felder mit Fehler in Formular-Reihenfolge zurück
-  const validate = () => {
-    const invalid = [];
-    const name = fields.name.value.trim();
-    const phone = fields.telefon.value.trim();
-    const email = fields.email.value.trim();
-    const message = fields.nachricht.value.trim();
-
-    setError(fields.name, errorOf(fields.name), name ? '' : 'Bitte geben Sie Ihren Namen an.');
-    if (!name) invalid.push(fields.name);
-
-    // Telefon oder E-Mail: mindestens eins, ausgefüllte Felder müssen gültig sein
-    const phoneMsg = phone && !phoneOk(phone) ? 'Bitte prüfen Sie die Telefonnummer.' : '';
-    const emailMsg = email && fields.email.validity.typeMismatch ? 'Bitte prüfen Sie die E-Mail-Adresse (z. B. name@beispiel.de).' : '';
-    const noneMsg = !phone && !email ? 'Bitte geben Sie eine Telefonnummer oder E-Mail-Adresse an.' : '';
-    setError(fields.telefon, errorOf(fields.telefon), phoneMsg);
-    setError(fields.email, errorOf(fields.email), emailMsg);
-    setError(null, reachError, noneMsg);
-    if (noneMsg) {
-      fields.telefon.setAttribute('aria-invalid', 'true');
-      fields.email.setAttribute('aria-invalid', 'true');
-      invalid.push(fields.telefon);
-    }
-    if (phoneMsg) invalid.push(fields.telefon);
-    if (emailMsg) invalid.push(fields.email);
-
-    let messageMsg = '';
-    if (!message) messageMsg = 'Bitte beschreiben Sie kurz Ihr Anliegen.';
-    else if (message.length < 10) messageMsg = 'Bitte schreiben Sie ein paar Worte mehr (mindestens 10 Zeichen).';
-    setError(fields.nachricht, errorOf(fields.nachricht), messageMsg);
-    if (messageMsg) invalid.push(fields.nachricht);
-
-    return invalid;
+  const checks = {
+    name: (v) => (v ? '' : 'Bitte geben Sie Ihren Namen an.'),
+    kontakt: (v) => {
+      if (!v) return 'Bitte geben Sie eine Telefonnummer oder E-Mail-Adresse an.';
+      if (v.includes('@')) return EMAIL_RE.test(v) ? '' : 'Bitte prüfen Sie die E-Mail-Adresse (z. B. name@beispiel.de).';
+      return isPhone(v) ? '' : 'Bitte geben Sie eine Telefonnummer (mind. 6 Ziffern) oder eine E-Mail-Adresse an.';
+    },
+    nachricht: (v) => {
+      if (!v) return 'Bitte beschreiben Sie kurz Ihr Anliegen.';
+      return v.length < 10 ? 'Bitte schreiben Sie ein paar Worte mehr (mindestens 10 Zeichen).' : '';
+    },
   };
 
+  // Prüft alle Felder, gibt die fehlerhaften in Formular-Reihenfolge zurück
+  const validate = () => Object.entries(fields).filter(([key, input]) => {
+    const message = checks[key](input.value.trim());
+    setError(input, message);
+    return Boolean(message);
+  }).map(([, input]) => input);
+
   // Nach dem ersten Absenden live nachprüfen, damit Fehler verschwinden, sobald sie behoben sind
-  Object.values(fields).forEach((input) => {
-    input.addEventListener('blur', () => { if (submitted) validate(); });
-    input.addEventListener('input', () => {
-      if (submitted && input.getAttribute('aria-invalid') === 'true') validate();
-    });
+  Object.entries(fields).forEach(([key, input]) => {
+    const recheck = () => { if (submitted) setError(input, checks[key](input.value.trim())); };
+    input.addEventListener('blur', recheck);
+    input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') recheck(); });
   });
 
-  const showStatus = (type, message) => {
-    status.className = `form-status form-status--${type}`;
+  const showError = (message) => {
     status.textContent = message;
     status.focus();
   };
 
-  const collect = () => {
-    const data = Object.fromEntries(new FormData(form));
-    delete data.website; // Honeypot
-    data.rueckruf = data.rueckruf ? 'ja' : 'nein';
-    return data;
-  };
-
-  const labels = {
-    name: 'Name', telefon: 'Telefon', email: 'E-Mail', anliegen: 'Anliegen',
-    ort: 'PLZ / Ort', rueckruf: 'Rückruf gewünscht', nachricht: 'Nachricht',
-  };
-
-  const openMailto = (data) => {
-    const subject = `Anfrage über die Website${data.anliegen ? `: ${data.anliegen}` : ''}`;
-    const body = Object.entries(labels)
-      .filter(([key]) => data[key])
-      .map(([key, label]) => (key === 'nachricht' ? `\n${data[key]}` : `${label}: ${data[key]}`))
-      .join('\n');
-    window.location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    showStatus('success', 'Ihr E-Mail-Programm wurde mit Ihrer Anfrage geöffnet. Bitte senden Sie die E-Mail dort ab. Falls sich nichts geöffnet hat, rufen Sie uns gern an: 0123 456 789 0.');
+  const showSuccess = (name, demo) => {
+    success.querySelector('[data-form-success-title]').textContent = `Vielen Dank, ${name}!`;
+    success.querySelector('[data-form-demo]').hidden = !demo;
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
   };
 
   form.addEventListener('submit', async (event) => {
@@ -267,33 +256,44 @@ function initContactForm() {
       return;
     }
 
+    const data = Object.fromEntries(new FormData(form));
+    Object.keys(data).forEach((k) => { data[k] = String(data[k]).trim(); });
+    data.kontaktart = data.kontakt.includes('@') ? 'email' : 'telefon';
+    const name = data.name;
+
     // Honeypot ausgefüllt: vermutlich Bot – Erfolg vortäuschen, nichts senden
-    if (el('website').value) {
-      form.reset();
-      showStatus('success', 'Vielen Dank! Ihre Anfrage ist bei uns angekommen.');
+    if (data.website) {
+      showSuccess(name, false);
       return;
     }
 
-    const data = collect();
     if (!endpoint) {
-      openMailto(data);
+      showSuccess(name, true);
       return;
     }
 
     form.classList.add('is-sending');
     submitBtn.disabled = true;
+    let message = 'Das hat leider nicht geklappt.';
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      form.reset();
-      submitted = false;
-      showStatus('success', 'Vielen Dank! Ihre Anfrage ist bei uns angekommen. Wir melden uns innerhalb eines Werktags.');
+      if (NO_BACKEND.includes(response.status)) {
+        showSuccess(name, true);
+        return;
+      }
+      if (!response.ok) {
+        // Backend liefert bei Fehlern { error: "…" } (z. B. Validierung, Rate-Limit)
+        const result = await response.json().catch(() => ({}));
+        if (result.error) message = result.error;
+        throw new Error(`HTTP ${response.status}`);
+      }
+      showSuccess(name, false);
     } catch {
-      showStatus('error', 'Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder rufen Sie uns an: 0123 456 789 0.');
+      showError(`${message} Bitte versuchen Sie es erneut oder rufen Sie uns an: 0123 456 789 0.`);
     } finally {
       form.classList.remove('is-sending');
       submitBtn.disabled = false;
@@ -312,5 +312,6 @@ initNav();
 initHeaderShadow();
 initCallBar();
 initLightbox();
+initOpenStatus();
 initContactForm();
 initYear();
