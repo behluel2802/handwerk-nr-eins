@@ -261,6 +261,8 @@ Anlass: Die erste Fassung bot zu viele gleichrangige Wege und Umwege (`mailto`-V
 Getestet: 30 automatische Tests (u. a. `/.env`, `/.git/config`, `/../secret`, URL-kodierte Varianten, Symlink nach außen → 404), Browser-Durchlauf mit echtem Server (keine CSP-Verstöße, Versand im Entwicklungsmodus), Absenden ohne JS per `curl`. `npm audit`: 0 Schwachstellen.
 Hinweis für Schritt 14: HSTS-Header erst mit echtem HTTPS setzen; hinter einem Reverse Proxy `TRUST_PROXY=1`.
 
+**Nachbesserung Kontakt-Design (07.11.2026):** Anliegen-Chips per Container Query nach Breite der Formular-Karte: 1 Spalte (schmal) → 2 (ab 22rem) → 3 (ab 32rem), alle Reihen gleich hoch. Adresszeile: Trennpunkte verschwinden beim Umbruch (kein „·“ am Zeilenende/-anfang). Weitere Umbruch-Befunde (Notdienst-Button bei 320 px, Status-Zeile, „ca. 25 km“, Mittelbreiten-Layout) bewusst so belassen.
+
 ## 8. Getroffene Entscheidungen
 
 | Thema | Entscheidung |

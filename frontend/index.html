@@ -678,13 +678,14 @@
               <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
               <span>
                 Wir kommen zu Ihnen – im Umkreis von ca. 25&nbsp;km um Musterstadt.
-                <span class="contact__address">Elektro Berger GmbH · Werkstraße 12 · 12345 Musterstadt</span>
+                <!-- Trennpunkte per CSS: am Zeilenanfang werden sie abgeschnitten, beim Umbruch also ausgeblendet -->
+                <span class="contact__address"><span class="contact__address-list"><span>Elektro Berger GmbH</span> <span>Werkstraße 12</span> <span>12345 Musterstadt</span></span></span>
               </span>
             </p>
           </div>
 
           <!-- Weg 2: kurzes Formular, sendet direkt auf der Seite -->
-          <div class="contact__form">
+          <div class="contact__form"><!-- Container für die Chip-Spalten -->
             <!--
               Versand per fetch an data-endpoint (eigenes Backend, Schritt 11b).
               Ohne Backend (z. B. GitHub-Pages-Demo) → Demo-Modus: prüfen, Bestätigung zeigen, nichts senden.
@@ -700,7 +701,7 @@
                   <label class="chip"><input type="radio" name="anliegen" value="Elektroinstallation"><span>Installation</span></label>
                   <label class="chip"><input type="radio" name="anliegen" value="Altbausanierung"><span>Sanierung</span></label>
                   <label class="chip"><input type="radio" name="anliegen" value="Smart Home"><span>Smart Home</span></label>
-                  <label class="chip"><input type="radio" name="anliegen" value="PV &amp; Wallbox"><span>PV&nbsp;&amp;&nbsp;Wallbox</span></label>
+                  <label class="chip"><input type="radio" name="anliegen" value="PV &amp; Wallbox"><span>PV &amp; Wallbox</span></label>
                   <label class="chip"><input type="radio" name="anliegen" value="E-Check"><span>E&#8209;Check</span></label>
                   <label class="chip"><input type="radio" name="anliegen" value="Sonstiges"><span>Sonstiges</span></label>
                 </div>
