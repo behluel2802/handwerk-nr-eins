@@ -1297,6 +1297,14 @@
   font-weight: var(--fw-semibold);
 }
 
+/* Danke-Seite (Absenden ohne JS) */
+.thanks .form-success {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.thanks .btn { margin-top: var(--space-3); }
+
 /* --- Lightbox ------------------------------------------------------------ */
 .lightbox {
   width: 100%;

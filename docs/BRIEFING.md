@@ -100,10 +100,10 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 9 | Ablauf | ✅ erledigt, gepusht |
 | 10 | Karriere | ✅ erledigt, committet |
 | 11a | Kontakt: Umstrukturierung `frontend/`/`backend/`, UX-Umbau, Erreichbarkeit mit Feiertagen, Demo-Modus | ✅ erledigt, committet |
-| 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | **nächster Schritt:** Plan vorstellen |
-| 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | offen |
+| 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | ✅ erledigt, committet |
+| 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | **nächster Schritt:** Plan vorstellen |
 | 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | offen |
-| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite) | offen |
+| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite; Favicon fehlt noch) | offen |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
@@ -243,6 +243,23 @@ Anlass: Die erste Fassung bot zu viele gleichrangige Wege und Umwege (`mailto`-V
 4. Bestätigung mit Namen
 5. Keine eingebettete Karte, kein Route-Link (Kunde fährt nicht zur Werkstatt)
 6. Getrennte Ordner `frontend/` und `backend/`; `.env`, `backend/`, `docs/` nie per Browser erreichbar
+
+### Schritt 11b (Plan freigegeben, umgesetzt am 07.11.2026)
+
+**Aufbau:** `backend/server.js` (`node:http`, ohne Framework), `backend/contact.js`, `backend/test/` (`node:test`). Einzige Abhängigkeit: `nodemailer`. `.env` liest Node selbst (`--env-file-if-exists`). Start: `cd backend && npm run dev` → http://localhost:3000.
+**Auslieferung:** nur aus `frontend/`; Pfade werden aufgelöst und auf die Wurzel geprüft (auch Symlinks), Punkt-Dateien gesperrt, nur erlaubte Dateitypen (html, css, js, Bilder, woff2), keine Ordnerlisten. `Cache-Control: no-cache` + ETag (kein Strg+Shift+R mehr nötig). Sicherheits-Header inkl. CSP; der Hash für das Inline-Skript im `<head>` wird automatisch aus `index.html` berechnet.
+**`POST /api/kontakt`:** JSON (mit JS) und Formulardaten (ohne JS → 303 auf `danke.html`, Fehler als schlichte HTML-Seite). Max. 10 KB, Prüfung über `frontend/js/validate.js` (gleiche Regeln wie im Browser), Honeypot, Rate-Limit 5 Anfragen / 10 Min. / IP. Mail als Klartext an `MAIL_TO`, bei E-Mail-Kontakt `Reply-To` = Kunde. Keine Personendaten in den Logs.
+**Entwicklungsmodus:** ohne `SMTP_HOST` erscheint die Anfrage nur in der Konsole, nichts wird gespeichert.
+
+**Entscheidungen (freigegeben):**
+1. Gemeinsame Prüfregeln `frontend/js/validate.js` für Frontend und Backend
+2. Entwicklungsmodus nur Konsole (später ggf. Mailpit für echte Mails lokal)
+3. Ohne JS: Weiterleitung auf `frontend/danke.html`
+4. Keine Bestätigungsmail an den Kunden (Missbrauchsrisiko, DSGVO)
+5. CSP mit Hash für das Inline-Skript
+
+Getestet: 30 automatische Tests (u. a. `/.env`, `/.git/config`, `/../secret`, URL-kodierte Varianten, Symlink nach außen → 404), Browser-Durchlauf mit echtem Server (keine CSP-Verstöße, Versand im Entwicklungsmodus), Absenden ohne JS per `curl`. `npm audit`: 0 Schwachstellen.
+Hinweis für Schritt 14: HSTS-Header erst mit echtem HTTPS setzen; hinter einem Reverse Proxy `TRUST_PROXY=1`.
 
 ## 8. Getroffene Entscheidungen
 

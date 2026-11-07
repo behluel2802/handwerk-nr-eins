@@ -1,0 +1,18 @@
+{
+  "name": "elektro-berger-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kleiner Node-Server: liefert frontend/ aus und nimmt Kontaktanfragen an (/api/kontakt).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.9"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "nodemailer": "^10.3.1"
+  }
+}

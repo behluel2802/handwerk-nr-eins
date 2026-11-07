@@ -708,20 +708,20 @@
 
               <div class="field">
                 <label for="cf-name">Name <span class="field__req" aria-hidden="true">*</span></label>
-                <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error">
+                <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="100" aria-describedby="cf-name-error">
                 <p class="field__error" id="cf-name-error" hidden></p>
               </div>
 
               <div class="field">
                 <label for="cf-contact">Telefon oder E-Mail <span class="field__req" aria-hidden="true">*</span></label>
-                <input id="cf-contact" name="kontakt" type="text" required aria-describedby="cf-contact-hint cf-contact-error">
+                <input id="cf-contact" name="kontakt" type="text" required maxlength="200" aria-describedby="cf-contact-hint cf-contact-error">
                 <p class="field__hint" id="cf-contact-hint">Wir melden uns auf dem Weg, den Sie angeben.</p>
                 <p class="field__error" id="cf-contact-error" hidden></p>
               </div>
 
               <div class="field">
                 <label for="cf-message">Nachricht <span class="field__req" aria-hidden="true">*</span></label>
-                <textarea id="cf-message" name="nachricht" rows="4" required minlength="10" aria-describedby="cf-message-error"
+                <textarea id="cf-message" name="nachricht" rows="4" required minlength="10" maxlength="5000" aria-describedby="cf-message-error"
                           placeholder="z. B. Wir möchten eine Wallbox in der Garage installieren lassen."></textarea>
                 <p class="field__error" id="cf-message-error" hidden></p>
               </div>

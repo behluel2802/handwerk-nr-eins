@@ -4,6 +4,7 @@
 // Als ES-Modul geladen (type="module", automatisch deferred) – braucht einen lokalen Server, kein file://.
 
 import { openingStatus } from './hours.js';
+import { checks, contactKind } from './validate.js';
 
 const desktopQuery = window.matchMedia('(min-width: 60em)');
 
@@ -179,8 +180,6 @@ function initOpenStatus() {
 // Antwortet unter dem Endpoint kein Backend (statisches Hosting wie GitHub Pages), läuft der
 // Demo-Modus: gleiche Bestätigung, aber mit Hinweis, dass nichts verschickt wurde.
 // Ohne JS: native Pflichtfeld-Prüfung und normales POST an die action.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const isPhone = (value) => /^[+\d\s()/-]+$/.test(value) && value.replace(/\D/g, '').length >= 6;
 
 // Statuscodes, die ein statischer Server auf POST liefert → kein Backend vorhanden
 const NO_BACKEND = [404, 405, 501];
@@ -205,19 +204,7 @@ function initContactForm() {
     errorEl.hidden = !message;
   };
 
-  const checks = {
-    name: (v) => (v ? '' : 'Bitte geben Sie Ihren Namen an.'),
-    kontakt: (v) => {
-      if (!v) return 'Bitte geben Sie eine Telefonnummer oder E-Mail-Adresse an.';
-      if (v.includes('@')) return EMAIL_RE.test(v) ? '' : 'Bitte prüfen Sie die E-Mail-Adresse (z. B. name@beispiel.de).';
-      return isPhone(v) ? '' : 'Bitte geben Sie eine Telefonnummer (mind. 6 Ziffern) oder eine E-Mail-Adresse an.';
-    },
-    nachricht: (v) => {
-      if (!v) return 'Bitte beschreiben Sie kurz Ihr Anliegen.';
-      return v.length < 10 ? 'Bitte schreiben Sie ein paar Worte mehr (mindestens 10 Zeichen).' : '';
-    },
-  };
-
+  // Prüfregeln: js/validate.js (identisch im Backend)
   // Prüft alle Felder, gibt die fehlerhaften in Formular-Reihenfolge zurück
   const validate = () => Object.entries(fields).filter(([key, input]) => {
     const message = checks[key](input.value.trim());
@@ -258,7 +245,7 @@ function initContactForm() {
 
     const data = Object.fromEntries(new FormData(form));
     Object.keys(data).forEach((k) => { data[k] = String(data[k]).trim(); });
-    data.kontaktart = data.kontakt.includes('@') ? 'email' : 'telefon';
+    data.kontaktart = contactKind(data.kontakt);
     const name = data.name;
 
     // Honeypot ausgefüllt: vermutlich Bot – Erfolg vortäuschen, nichts senden
