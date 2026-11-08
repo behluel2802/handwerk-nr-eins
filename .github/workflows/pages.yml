@@ -48,7 +48,7 @@ jobs:
 
       # Fertige Bilder vom letzten Lauf wiederverwenden (AVIF-Erzeugung dauert ca. 1 Minute).
       # Das Skript prüft per Fingerabdruck selbst, was sich geändert hat.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             frontend/img
@@ -85,11 +85,11 @@ jobs:
             ! grep -q 'href="tel:+491234567' "$f" || { echo "fiktive tel:-Nummer in $f"; exit 1; }
           done
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
