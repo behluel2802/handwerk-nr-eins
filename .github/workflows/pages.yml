@@ -1,8 +1,11 @@
-# Demo-Vorschau auf GitHub Pages (Schritt 12b)
-# Baut die Seite mit Vite und veröffentlicht ausschließlich frontend/dist/ – backend/, docs/ und .env gelangen nie auf Pages.
-# In der veröffentlichten Kopie wird <meta name="robots" content="noindex"> ergänzt,
-# die Dateien im Repo bleiben unverändert (für späteres echtes Hosting, Schritt 14).
-# Einmalig nötig: Settings → Pages → Source „GitHub Actions“.
+# Demo-Vorschau auf GitHub Pages (Schritte 12b, 16)
+# Baut die Seite mit DEMO=1 und veröffentlicht ausschließlich frontend/dist/ – backend/, docs/ und .env gelangen nie auf Pages.
+# Demo-Build: Hinweisleiste, noindex auf allen Seiten, Formular sendet nichts, Anruf-Links wählen nicht,
+# Impressum/Datenschutz mit dem echten Betreiber. Ohne vollständige Betreiberdaten bricht der Build ab.
+# Einmalig nötig:
+#   - Settings → Pages → Source „GitHub Actions“
+#   - Settings → Secrets and variables → Actions → Variables: DEMO_OPERATOR_NAME, _STREET, _ZIP, _CITY,
+#     _EMAIL, _STATE (Bundesland-Kürzel, z. B. BE), optional _PHONE. Werte nie ins Repo schreiben.
 
 name: Demo auf GitHub Pages
 
@@ -55,8 +58,17 @@ jobs:
           key: images-${{ hashFiles('frontend/img-src/**', 'frontend/images.config.js', 'frontend/scripts/images.js') }}
           restore-keys: images-
 
-      # Erzeugt zuerst die Bilder (img-src/ → img/), dann dist/
+      # Erzeugt zuerst die Bilder (img-src/ → img/), dann dist/ als Demo-Build
       - run: npm run build
+        env:
+          DEMO: 1
+          DEMO_OPERATOR_NAME: ${{ vars.DEMO_OPERATOR_NAME }}
+          DEMO_OPERATOR_STREET: ${{ vars.DEMO_OPERATOR_STREET }}
+          DEMO_OPERATOR_ZIP: ${{ vars.DEMO_OPERATOR_ZIP }}
+          DEMO_OPERATOR_CITY: ${{ vars.DEMO_OPERATOR_CITY }}
+          DEMO_OPERATOR_EMAIL: ${{ vars.DEMO_OPERATOR_EMAIL }}
+          DEMO_OPERATOR_STATE: ${{ vars.DEMO_OPERATOR_STATE }}
+          DEMO_OPERATOR_PHONE: ${{ vars.DEMO_OPERATOR_PHONE }}
 
       # Vorkomprimierte .br/.gz nur für das eigene Backend – GitHub Pages komprimiert selbst
       - name: Nur die gebaute Seite kopieren
@@ -64,12 +76,13 @@ jobs:
           cp -r frontend/dist _site
           find _site \( -name '*.br' -o -name '*.gz' \) -delete
 
-      - name: noindex in die Demo-Kopie einfügen
+      # noindex und Hinweisleiste setzt der Demo-Build selbst; hier nur die Kontrolle vor dem Veröffentlichen
+      - name: Demo-Kennzeichnung prüfen
         run: |
           for f in _site/*.html; do
-            grep -q 'name="robots"' "$f" && continue
-            sed -i 's|<meta charset="utf-8">|&\n  <meta name="robots" content="noindex">|' "$f"
-            grep -q 'name="robots"' "$f" || { echo "noindex fehlt in $f"; exit 1; }
+            grep -q '<meta name="robots" content="noindex">' "$f" || { echo "noindex fehlt in $f"; exit 1; }
+            grep -q 'class="demo-banner"' "$f" || { echo "Hinweisleiste fehlt in $f"; exit 1; }
+            ! grep -q 'href="tel:+491234567' "$f" || { echo "fiktive tel:-Nummer in $f"; exit 1; }
           done
 
       - uses: actions/configure-pages@v5

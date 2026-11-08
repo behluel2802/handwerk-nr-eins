@@ -67,3 +67,25 @@ jobs:
             --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,best-practice \
             --chromedriver-path "$CHROMEWEBDRIVER/chromedriver" \
             --exit
+
+      # Demo-Build (Hinweisleiste, Demo-Rechtsseiten) ebenfalls prüfen. Fiktive Prüfdaten, kein echter Betreiber.
+      # Das Backend liest die neu gebauten Seiten selbst neu ein (CSP-Hashes inklusive).
+      - name: Demo-Build mit Prüfdaten
+        run: npm run build
+        env:
+          DEMO: 1
+          DEMO_OPERATOR_NAME: CI Prüfbetreiber
+          DEMO_OPERATOR_STREET: Prüfstraße 1
+          DEMO_OPERATOR_ZIP: '00000'
+          DEMO_OPERATOR_CITY: Prüfstadt
+          DEMO_OPERATOR_EMAIL: ci@demo.invalid
+          DEMO_OPERATOR_STATE: BE
+
+      - name: axe Demo-Build (WCAG 2.2 AA)
+        run: |
+          npx --yes @axe-core/cli@4.14.0 \
+            http://localhost:3000/ http://localhost:3000/impressum.html \
+            http://localhost:3000/datenschutz.html http://localhost:3000/danke.html \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,best-practice \
+            --chromedriver-path "$CHROMEWEBDRIVER/chromedriver" \
+            --exit

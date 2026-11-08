@@ -180,6 +180,7 @@ function initOpenStatus() {
 // Mit JS: Validierung am Feld, Versand per fetch an data-endpoint, Bestätigung statt Formular.
 // Antwortet unter dem Endpoint kein Backend (statisches Hosting wie GitHub Pages), läuft der
 // Demo-Modus: gleiche Bestätigung, aber mit Hinweis, dass nichts verschickt wurde.
+// Im Demo-Build (DEMO=1, __DEMO__) wird grundsätzlich nichts gesendet; der Statuscode-Fallback ist nur Sicherheitsnetz.
 // Ohne JS: native Pflichtfeld-Prüfung und normales POST an die action.
 
 // Statuscodes, die ein statischer Server auf POST liefert → kein Backend vorhanden
@@ -191,6 +192,13 @@ function initContactForm() {
   if (!form || !success) return;
 
   form.noValidate = true;
+  // Demo-Build: Absende-Button freischalten (ohne JS bleibt er versteckt und vom Typ "button")
+  if (__DEMO__) {
+    const demoBtn = form.querySelector('[data-demo-submit]');
+    demoBtn.type = 'submit';
+    demoBtn.hidden = false;
+    form.querySelector('[data-demo-form-note]').hidden = true;
+  }
   const endpoint = form.dataset.endpoint.trim();
   const status = form.querySelector('[data-form-status]');
   const submitBtn = form.querySelector('[type="submit"]');
@@ -255,7 +263,8 @@ function initContactForm() {
       return;
     }
 
-    if (!endpoint) {
+    // Demo-Build: nie senden, kein fetch
+    if (__DEMO__ || !endpoint) {
       showSuccess(name, true);
       return;
     }

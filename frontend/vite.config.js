@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
 import { loadSite, siteHelpers } from './scripts/site.js';
+import { loadDemo, demoHelpers } from './scripts/demo.js';
 
 const root = import.meta.dirname;
 
@@ -37,7 +38,14 @@ const warnOnce = (message) => {
   warned.add(message);
 };
 
+// Demo-Build (DEMO=1): Betreiberdaten aus der Umgebung, bricht ohne vollständige Angaben ab. Sonst null.
+const demo = loadDemo();
+if (demo) console.log(`[demo] Demo-Build für ${demo.operator.name}: Formular sendet nicht, Anruf-Links wählen nicht, noindex`);
+
 export default defineConfig({
+  // Für js/main.js: im normalen Build entfernt der Minifier alle Demo-Zweige
+  define: { __DEMO__: JSON.stringify(Boolean(demo)) },
+
   // Relative Pfade: dist/ funktioniert unter jeder Adresse, auch im Unterordner von GitHub Pages
   base: './',
 
@@ -51,11 +59,11 @@ export default defineConfig({
   plugins: [
     handlebars({
       partialDirectory: resolve(root, 'partials'),
-      helpers: { ...imageHelpers, ...siteHelpers },
-      // Kontext je Seite: Firmendaten, Anker-Präfix für Links zur Startseite und die aktuelle Seite
+      helpers: { ...imageHelpers, ...siteHelpers, ...demoHelpers },
+      // Kontext je Seite: Firmendaten, Demo (oder null), Anker-Präfix für Links zur Startseite und die aktuelle Seite
       context(pagePath) {
         const page = pagePath.replace(/^\//, '').replace(/\.html$/, '') || 'index';
-        return { site: loadSite({ warn: warnOnce }), home: page === 'index' ? '' : './', current: { [page]: true } };
+        return { site: loadSite({ warn: warnOnce }), demo, home: page === 'index' ? '' : './', current: { [page]: true } };
       },
     }),
   ],

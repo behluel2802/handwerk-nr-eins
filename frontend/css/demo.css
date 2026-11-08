@@ -1,0 +1,48 @@
+/* ==========================================================================
+   Nur im Demo-Build (DEMO=1) eingebunden, Farben aus tokens.css (--color-demo-*)
+   ========================================================================== */
+
+/* Hinweisleiste und Hinweis „fiktive Nummer“ */
+.demo-banner {
+  background: var(--color-demo-bg);
+  color: var(--color-demo-text);
+  border-bottom: 2px solid var(--color-demo-border);
+  font-size: var(--fs-sm);
+}
+
+.demo-banner__text {
+  padding-block: var(--space-2);
+  text-align: center;
+}
+
+.demo-banner a { color: inherit; font-weight: var(--fw-semibold); }
+
+/* Live-Region bleibt immer im DOM (sonst kündigen Screenreader nicht zuverlässig an), sichtbar nur mit Text */
+.demo-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--call-bar-height) + env(safe-area-inset-bottom) + var(--space-3));
+  z-index: 110;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--space-4));
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-demo-toast-bg);
+  color: var(--color-demo-toast-text);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.demo-toast.is-visible { opacity: 1; }
+
+body.page-legal .demo-toast { bottom: var(--space-4); }
+
+@media (min-width: 60em) {
+  .demo-toast { bottom: var(--space-5); }
+}

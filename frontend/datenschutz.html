@@ -11,22 +11,29 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/sections.css">
+  {{#if demo}}
+  <link rel="stylesheet" href="css/demo.css">
+  {{/if}}
 </head>
 <body class="page-legal">
   {{> sprite}}
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  {{> demo-banner}}
 
   {{> page-header}}
 
   <main id="main" class="section">
     <div class="container legal">
       <h1>Datenschutzerklärung</h1>
+      {{#if demo}}
+      {{> datenschutz-demo}}
+      {{else}}
       <p class="legal-notice" role="note"><strong>Platzhalter:</strong> Diese Seite gehört zu einem fiktiven Übungsprojekt und ist <strong>kein gültiger Rechtstext</strong>. Sie zeigt nur die Gliederung. Für einen echten Betrieb muss der Text vollständig und rechtlich geprüft erstellt werden.</p>
 
       <h2>1. Verantwortlicher</h2>
       <p>{{site.name}}, {{site.address.street}}, {{site.address.zip}} {{site.address.city}}<br>
-      Telefon: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a>, E-Mail: <a href="mailto:{{site.email}}">{{site.email}}</a><br>
+      Telefon: <a {{{callHref site.phone.tel}}}>{{site.phone.display}}</a>, E-Mail: <a href="mailto:{{site.email}}">{{site.email}}</a><br>
       Vertreten durch: <span class="placeholder">[Name Geschäftsführer/in]</span></p>
 
       <h2>2. Hosting und Server-Logfiles</h2>
@@ -70,6 +77,7 @@
 
       <h2>7. Stand</h2>
       <p><span class="placeholder">[Datum]</span></p>
+      {{/if}}
     </div>
   </main>
 

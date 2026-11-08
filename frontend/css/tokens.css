@@ -21,6 +21,13 @@
   --color-border-on-primary: rgb(255 255 255 / 0.16); /* Rahmen/Trenner auf Blau */
   --color-surface-on-primary: var(--color-primary-light); /* Karten auf Blau */
 
+  /* Demo-Build: Hinweisleiste oben und kurzer Hinweis „fiktive Nummer“ (Kontrast ≈ 13:1 bzw. 14:1) */
+  --color-demo-bg:        var(--color-accent-tint);
+  --color-demo-text:      var(--color-primary);
+  --color-demo-border:    var(--color-accent);
+  --color-demo-toast-bg:  var(--color-primary);
+  --color-demo-toast-text: var(--color-on-primary);
+
   /* Lightbox */
   --lightbox-backdrop:    rgb(10 29 51 / 0.97);
   --lightbox-btn-bg:      rgb(255 255 255 / 0.14);

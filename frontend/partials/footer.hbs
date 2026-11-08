@@ -22,8 +22,8 @@
       <div class="site-footer__col">
         <h2 class="site-footer__title">Kontakt</h2>
         <ul class="site-footer__list">
-          <li>Telefon <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a></li>
-          <li class="site-footer__emergency">24/7-Notdienst <a href="tel:{{site.emergency.tel}}">{{site.emergency.display}}</a></li>
+          <li>Telefon <a {{{callHref site.phone.tel}}}>{{site.phone.display}}</a></li>
+          <li class="site-footer__emergency">24/7-Notdienst <a {{{callHref site.emergency.tel}}}>{{site.emergency.display}}</a></li>
           <li><a href="mailto:{{site.email}}">{{site.email}}</a></li>
         </ul>
         <p class="site-footer__muted">{{#each site.hours.week}}{{#unless @first}}<br>{{/unless}}{{dayRange days}} {{time from}}–{{time to}} Uhr{{/each}}</p>

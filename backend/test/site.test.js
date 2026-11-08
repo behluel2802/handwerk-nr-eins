@@ -39,7 +39,8 @@ test('Gebaute Startseite: JSON-LD stimmt mit site.json überein, keine toten Lin
   if (!html) return; // ohne Build nichts zu prüfen
   const block = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1];
   assert.deepEqual(JSON.parse(block), jsonLd(site));
-  assert.ok(html.includes(`href="tel:${site.phone.tel}"`));
+  // Im Demo-Build (DEMO=1) gibt es bewusst keine tel:-Links (frontend/test/demo.test.js)
+  if (!html.includes('class="demo-banner"')) assert.ok(html.includes(`href="tel:${site.phone.tel}"`));
   assert.equal(html.includes('href="#"'), false);
   assert.equal(html.includes('{{'), false);
 });

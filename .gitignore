@@ -24,6 +24,8 @@ frontend/public/apple-touch-icon.png
 # Backend: Abhängigkeiten, Zugangsdaten, lokale Daten
 node_modules/
 .env
+# Betreiberdaten für den Demo-Build (DEMO=1), nie ins Repo
+.env*.local
 backend/data/
 
 # Lighthouse-CI-Berichte (lokal)

@@ -93,7 +93,8 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | ✅ erledigt, gepusht |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 | 15a | Firmendaten an einer Stelle: `frontend/site.json` als Handlebars-Kontext `site`, JSON-LD daraus erzeugt, Pflichtfeld-Prüfung im Build | ✅ erledigt, gepusht |
-| 15 | Leitfaden „Vorlage für neue Projekte“ (`docs/LEITFADEN.md`, eigenständig) und leere Briefing-Vorlage | ✅ erledigt, gepusht. Damit sind alle geplanten Schritte abgeschlossen; offen ist nur Schritt 14 (zurückgestellt) |
+| 15 | Leitfaden „Vorlage für neue Projekte“ (`docs/LEITFADEN.md`, eigenständig) und leere Briefing-Vorlage | ✅ erledigt, gepusht |
+| 16 | Öffentliche Demo rechtssicher: Build-Schalter `DEMO`, echter Betreiber im Impressum (aus Umgebungsvariablen), Formular sendet nichts, Anruf-Links wählen nicht, Hinweisleiste, `noindex`, Demo-Fassungen von Impressum/Datenschutz | ✅ umgesetzt, nicht committet. Offen: GitHub-Variablen anlegen, Pages danach wieder aktivieren (siehe Abschnitt 9) |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -283,7 +284,7 @@ Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden au
 **Entscheidungen (freigegeben):**
 1. `noindex` nur in der veröffentlichten Kopie, die Dateien im Repo bleiben unverändert
 2. Automatisches Deploy bei Push auf `main` mit Änderungen in `frontend/` oder am Workflow, zusätzlich manuell startbar
-3. Kein zusätzlicher Demo-Banner (Footer-Hinweis und Demo-Hinweis im Formular reichen)
+3. ~~Kein zusätzlicher Demo-Banner (Footer-Hinweis und Demo-Hinweis im Formular reichen)~~ – revidiert in Schritt 16: Hinweisleiste im Demo-Build
 4. Pages aktiviert der Entwickler selbst (Settings → Pages → Source „GitHub Actions“), kein `gh` in der Sitzung
 
 ### Schritt 13a (Plan freigegeben, umgesetzt am 08.11.2026)
@@ -359,6 +360,32 @@ Umgesetzt: Leitfaden mit 9 Abschnitten (zusätzlich „Aufbau im Überblick“),
 3. Unbekannte Werte als `null` mit Build-Warnung, im HTML Text ohne Link statt `href="#"`
 4. Kontextname `site` (Konvention Jekyll/Hugo/Eleventy)
 
+### Schritt 16 (Plan freigegeben, umgesetzt am 08.11.2026)
+
+**Anlass:** Die öffentliche Demo hatte nur ein fiktives Impressum (erfüllt § 5 DDG nicht, verantwortlich ist der tatsächliche Betreiber). Der Demo-Modus schickte die Formulardaten trotzdem per `fetch` an `/api/kontakt` (auf Pages an GitHub, Bestätigung erst nach 405), und die `tel:`-Links wählten fiktive Nummern, die echten Anschlüssen gehören könnten. Pages wurde bis zur Umsetzung deaktiviert.
+
+**Schalter:** Umgebungsvariable `DEMO=1`. Ohne baut alles wie die Vorlage für echte Betriebe. Vergleich mit dem Stand vorher: HTML und JS identisch (nur Asset-Hashes), CSS enthält 5 zusätzliche Tokens.
+- `frontend/scripts/demo.js` (`loadDemo`): liest `DEMO_OPERATOR_NAME`, `_STREET`, `_ZIP`, `_CITY`, `_EMAIL`, `_STATE` (Pflicht) und `_PHONE` (optional) aus der Umgebung, lokal ergänzend aus `frontend/.env.demo.local` (gitignored, Shell hat Vorrang). Fehlt ein Pflichtfeld, ist das Bundesland unbekannt oder die E-Mail ungültig, bricht der Build ab. Bundesland → Datenschutz-Aufsichtsbehörde (16 Länder, nicht-öffentlicher Bereich). Bildnachweise aus der Tabelle in `img-src/CREDITS.md`.
+- `vite.config.js`: Kontext `demo` (oder `null`) neben `site`, `define: { __DEMO__ }` für `js/main.js`.
+- `npm run dev:demo` / `npm run build:demo` (setzen `DEMO=1`, Linux/macOS).
+
+**Formular:** mit `__DEMO__` kein `fetch`, sofort die Bestätigung mit Demo-Hinweis (der Minifier entfernt den Versandcode im Demo-Bundle). Im HTML ohne `action`/`method`, Absende-Button `type="button" hidden` plus Hinweis „Demo-Version: Das Formular ist deaktiviert.“; JS schaltet den Button frei. Grund: Ohne `action` würde ein Absenden per GET an die eigene URL gehen, ein verstecktes Submit-Element könnte per Enter auslösen. Der Fallback bei 404/405/501 bleibt als Sicherheitsnetz.
+**Anruf-Links:** Helfer `{{{callHref site.phone.tel}}}` an allen 15 Stellen (Header, Hero, Vertrauensleiste, Notdienst-Karte, CTA-Boxen, Kontakt, Bestätigung, Anruf-Leiste, Footer, `danke.html`, Rechtsseiten). Normal `href="tel:…"`, in der Demo `href="#demo-hinweis" data-demo-call`: gleiches Element, gleiches Aussehen, ohne JS Sprung zur Hinweisleiste, mit JS (`js/demo.js`) kurz „Demo: fiktive Nummer – es wird nicht gewählt.“ in einer `role="status"`-Region.
+**Hinweisleiste:** `partials/demo-banner.hbs` auf allen Seiten direkt nach dem Skip-Link, `<aside aria-label="Demo-Hinweis">`, statisch, nicht wegklickbar. Text: „Demo-Projekt: Elektro Berger ist ein fiktiver Betrieb. Anfragen werden nicht versendet. Betreiber und Impressum“. Styles in `css/demo.css` (nur im Demo-Build eingebunden), Farben über Tokens `--color-demo-*`.
+**noindex:** im Demo-Build auf allen Seiten (Startseite per `{{#if demo}}`, die anderen hatten es schon). Der Pages-Workflow fügt nichts mehr ein, sondern prüft nur noch `noindex`, Hinweisleiste und dass keine fiktive `tel:`-Nummer enthalten ist.
+**Rechtsseiten:** `{{#if demo}}` → `partials/impressum-demo.hbs` (Betreiber, Kontakt, Satz zum fiktiven Betrieb, Bildnachweise, keine Register-/USt-/Kammerangaben, kein Platzhalter-Kasten) bzw. `partials/datenschutz-demo.hbs` (Verantwortlicher, Hosting GitHub Pages mit Logs/Art. 6 Abs. 1 lit. f/DPF, keine Cookies/Tracking/externen Inhalte, Formular überträgt nichts, E-Mail an den Betreiber, Rechte Art. 15–21, Beschwerderecht bei der Behörde des Bundeslands, Stand 8. November 2026). Am 08.11.2026 mit dem kostenlosen Datenschutz-Generator von Dr. Schwenke abgeglichen und in eigenen Worten ergänzt (daher kein Generator-Hinweis nötig): BDSG-Hinweis, CDN von GitHub, Logdaten vollständiger, Link zur DPF-Liste, Pflicht zur Bereitstellung und keine automatisierte Entscheidung (Art. 13 Abs. 2), Widerspruchsrecht hervorgehoben (Art. 21 Abs. 4), Beschwerde auch am Ort des Verstoßes, Abschnitt zu Änderungen. Nicht übernommen, weil für die Demo falsch: Beschäftigten-/Hinweisgeberdaten, Einwilligung/rechtliche Verpflichtung als Rechtsgrundlage, eigene Standardvertragsklauseln, 30 Tage Logfile-Speicherung, Kontaktformular. Sonst die bisherige Platzhalter-Gliederung.
+**Workflows:** Pages baut mit `DEMO: 1` und `DEMO_OPERATOR_*: ${{ vars.… }}`; fehlen die Variablen, bricht der Build ab. Der Qualitäts-Workflow baut zusätzlich einen Demo-Build mit fiktiven Prüfdaten und lässt axe darüber laufen.
+**Tests:** `frontend/test/demo.test.js` (10 Tests, insgesamt 41): `loadDemo` (fehlende Felder, Bundesland, E-Mail, lokale Datei vs. Shell), Bildnachweise, Helfer, und drei echte Builds in ein temporäres Verzeichnis (Demo ohne Daten bricht ab; Demo mit Daten: Leiste, `noindex`, Betreiber, kein `tel:`, kein `action`, kein POST im JS; ohne `DEMO`: keine Betreiberdaten, kein Demo-Markup).
+**Geprüft:** Lighthouse Barrierefreiheit 100 auf allen 4 Seiten im Demo-Build (SEO dort bewusst niedriger wegen `noindex`), axe 0 Befunde; im Browser beim Absenden kein Request, ohne JS kein Absende-Button und kein Request bei Enter, Hinweis beim Klick auf „Jetzt anrufen“.
+
+**Entscheidungen (freigegeben):**
+1. Demo-Flag im JS per Vite `define` (`__DEMO__`), nicht per `data-demo`-Attribut
+2. Anruf-Elemente in der Demo: geplant als `<button>`, umgesetzt als Link auf `#demo-hinweis`, weil viele Styles am Selektor `a` hängen und der Link ohne JS sinnvoll zur Erklärung springt (kein `href="#"`, fokussierbar)
+3. Komfort-Skripte `dev:demo`/`build:demo`
+4. Qualitäts-Workflow prüft zusätzlich den Demo-Build mit axe (Lighthouse nur auf dem normalen Build, weil `noindex` den SEO-Wert senkt)
+5. JSON-LD bleibt im Demo-Build unverändert (fiktive Daten, `noindex`)
+6. Revidiert Schritt 12b, Entscheidung 3: sichtbare Hinweisleiste statt nur Footer-Hinweis
+
 ## 8. Getroffene Entscheidungen
 
 | Thema | Entscheidung |
@@ -377,9 +404,12 @@ Umgesetzt: Leitfaden mit 9 Abschnitten (zusätzlich „Aufbau im Überblick“),
 | Aufteilung 13/14 | Feinschliff ohne Domain-Bezug jetzt (Schritt 13), alles Domain-Abhängige erst beim echten Onlinestellen (Schritt 14), Entscheidung vom 08.11.2026 |
 | Firmendaten | eine Quelle `frontend/site.json`, Templates/JS/Backend lesen daraus (Schritt 15a, 08.11.2026) |
 | Hosting | vorerst keins; Demo über GitHub Pages (Schritt 12b), echtes Hosting in Schritt 14 |
+| Öffentliche Demo | nur als Demo-Build (`DEMO=1`): echter Betreiber im Impressum aus Umgebungsvariablen (nie im Repo), Formular sendet nichts, Anruf-Links wählen nicht, Hinweisleiste, `noindex` (Schritt 16, 08.11.2026) |
 | Bilder | Unsplash, automatisch von Claude gesucht, lokal gespeichert |
 
 ## 9. Offene Punkte
 
 - Schritt 14 (Deployment) zurückgestellt, Checkliste in `docs/LEITFADEN.md` Abschnitt 8
+- Schritt 16, vor dem erneuten Veröffentlichen: (1) Pages ist deaktiviert (Settings → Pages); (2) unter Settings → Secrets and variables → Actions → Variables `DEMO_OPERATOR_NAME`, `_STREET`, `_ZIP`, `_CITY`, `_EMAIL`, `_STATE` (z. B. `BE`), optional `_PHONE` anlegen; ladungsfähige Anschrift, kein Postfach (c/o-Anschriften-Service zulässig), am besten eine eigene Alias-Adresse; (3) committen und pushen, Workflow-Lauf prüfen; (4) Pages wieder aktivieren (Source „GitHub Actions“).
+- `img-src/CREDITS.md`: Die Spalte „Datei(en)“ nennt noch alte Dateinamen (vor der Bild-Pipeline), inhaltlich (Motiv, Fotograf, Link) stimmt sie
 - Commit und Push nur auf ausdrückliche Anweisung

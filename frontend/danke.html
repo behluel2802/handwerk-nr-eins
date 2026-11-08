@@ -11,14 +11,18 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/sections.css">
+  {{#if demo}}
+  <link rel="stylesheet" href="css/demo.css">
+  {{/if}}
 </head>
 <body>
+  {{> demo-banner}}
   <main class="section thanks">
     <div class="container">
       <div class="form-success">
         <h1 class="form-success__title">Vielen Dank!</h1>
         <p>Ihre Anfrage ist bei uns angekommen. Wir melden uns {{site.responseTime}}.</p>
-        <p class="contact__small">Eilig? Rufen Sie uns an: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a></p>
+        <p class="contact__small">Eilig? Rufen Sie uns an: <a {{{callHref site.phone.tel}}}>{{site.phone.display}}</a></p>
         <a class="btn btn--primary" href="./">Zurück zur Startseite</a>
       </div>
     </div>

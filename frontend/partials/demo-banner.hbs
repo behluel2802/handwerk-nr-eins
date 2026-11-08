@@ -1,0 +1,9 @@
+{{!-- Nur im Demo-Build (DEMO=1): Hinweisleiste ganz oben, statisch und nicht wegklickbar (kein Speichern nötig, TDDDG).
+      Ziel der Demo-Anruf-Links (href="#demo-hinweis"). Darin die Live-Region für „Demo: fiktive Nummer“ (js/demo.js). --}}
+{{#if demo}}
+<aside class="demo-banner" id="demo-hinweis" aria-label="Demo-Hinweis">
+  <p class="container demo-banner__text">Demo-Projekt: {{site.brand.prefix}} {{site.brand.name}} ist ein fiktiver Betrieb. Anfragen werden nicht versendet. <a href="impressum.html">Betreiber und Impressum</a></p>
+  <p class="demo-toast" data-demo-toast role="status"></p>
+</aside>
+<script type="module" src="js/demo.js"></script>
+{{/if}}

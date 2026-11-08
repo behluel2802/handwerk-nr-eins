@@ -1,0 +1,18 @@
+{{!-- Impressum der öffentlichen Demo (DEMO=1). Verantwortlich ist der tatsächliche Betreiber, nicht der fiktive Betrieb.
+      Betreiberdaten aus Umgebungsvariablen (scripts/demo.js), nie im Repo. Bildnachweise aus img-src/CREDITS.md. --}}
+<p>{{site.name}} ist ein fiktiver Betrieb. Alle Firmendaten, Kundenstimmen und Bewertungen sind erfunden. Diese Website ist ein Übungs- und Demonstrationsprojekt.</p>
+
+<h2>Angaben gemäß § 5 DDG</h2>
+<p>{{demo.operator.name}}<br>{{demo.operator.street}}<br>{{demo.operator.zip}} {{demo.operator.city}}</p>
+
+<h2>Kontakt</h2>
+<p>{{#if demo.operator.phone}}Telefon: <a href="tel:{{demo.operator.tel}}">{{demo.operator.phone}}</a><br>
+{{/if}}E-Mail: <a href="mailto:{{demo.operator.email}}">{{demo.operator.email}}</a></p>
+
+<h2>Bildnachweise</h2>
+<p>Alle Fotos stammen von <a href="https://unsplash.com">Unsplash</a> und werden unter der <a href="https://unsplash.com/license">Unsplash-Lizenz</a> genutzt.</p>
+<ul>
+  {{#each demo.credits}}
+  <li>{{motif}}: Foto von <a href="{{authorUrl}}">{{author}}</a> (<a href="{{sourceUrl}}">auf Unsplash</a>)</li>
+  {{/each}}
+</ul>

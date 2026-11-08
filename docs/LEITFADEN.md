@@ -10,7 +10,7 @@ Wie man aus dieser Vorlage die Website für einen Handwerksbetrieb baut, egal we
 5. [Entscheidungen mit Begründung](#5-entscheidungen-mit-begründung)
 6. [Stolpersteine](#6-stolpersteine)
 7. [Checkliste: neues Gewerk](#7-checkliste-neues-gewerk)
-8. [Checkliste: Go-Live](#8-checkliste-go-live)
+8. [Checkliste: Go-Live](#8-checkliste-go-live) (inkl. öffentliche Demo und Rechtliches)
 9. [Arbeitsweise mit Claude](#9-arbeitsweise-mit-claude)
 
 ---
@@ -93,7 +93,7 @@ Für ein neues Projekt **von Grund auf**. Die Vorlage ist so entstanden, aber mi
 | 6 | **Abschnitte** in fester Reihenfolge (Vertrauensleiste → … → Kontakt-Frontend → Footer) | Jeder Abschnitt einzeln: Plan → Umsetzung → Sichtprüfung 320/390/768/1280 px. |
 | 7 | **Backend** (`/api/kontakt`, Auslieferung, Tests) | Erst wenn das Formular steht. |
 | 8 | **Rechtsseiten** als Gliederung mit sichtbaren Platzhaltern | Vor jeder öffentlichen Demo. |
-| 9 | **Demo-Deploy** (GitHub Pages, `noindex`) + **Qualitäts-Workflow** | Ab jetzt prüft jeder Push Barrierefreiheit. |
+| 9 | **Demo-Deploy** (GitHub Pages, Demo-Build mit `DEMO=1`) + **Qualitäts-Workflow** | Ab jetzt prüft jeder Push Barrierefreiheit. Vorher die Checkliste „Öffentliche Demo mit fiktivem Betrieb“ (Abschnitt 8). |
 | 10 | **Feinschliff**: Lighthouse, axe, Tastatur, 400 % Zoom, Hochkontrast, Favicon, SEO | Am Ende, wenn sich am Layout nichts mehr bewegt. |
 | 11 | **Go-Live** (nur bei echtem Betrieb) | Alles Domain-Abhängige erst hier. |
 
@@ -143,7 +143,7 @@ Für ein neues Projekt **von Grund auf**. Die Vorlage ist so entstanden, aber mi
 | **AVIF zusätzlich** zu WebP/JPG | deutlich kleinere Bilder | nur WebP |
 | **Kein Web-App-Manifest, kein kritisches CSS inline** | kein Nutzen für eine Visitenkarten-Seite; CSS ist klein genug | – |
 | **Qualitäts-Workflow** bei jedem Push: Build, Tests, Lighthouse (Barrierefreiheit 100), axe (WCAG 2.2 AA) | Rückschritte fallen sofort auf | nur manuell prüfen |
-| **Demo mit `noindex`**, nur in der veröffentlichten Kopie | Demo-Inhalte nicht in Suchmaschinen, Quellen bleiben sauber | `noindex` im Quellcode |
+| **Öffentliche Demo als eigener Build** (`DEMO=1`): Hinweisleiste, `noindex`, Formular sendet nichts, Anruf-Links wählen nicht, echter Betreiber im Impressum aus Umgebungsvariablen | Ein fiktives Impressum erfüllt § 5 DDG nicht; ohne Schalter landen Formulardaten beim Demo-Host und `tel:`-Links wählen womöglich echte Anschlüsse. Ohne `DEMO` bleibt der Build für echte Betriebe unverändert | `noindex` per `sed` in die veröffentlichte Kopie; Banner per JS; Betreiberdaten in `site.json` (dauerhaft in der Git-Historie) |
 
 ## 6. Stolpersteine
 
@@ -174,7 +174,9 @@ Jeweils **Symptom → Ursache → Lösung**.
 - **Bild-Pipeline erzeugt alles neu** → Prüfung nach Dateidatum → Fingerabdruck aus Original + Einstellungen; im CI Bilder zwischenspeichern (`actions/cache`).
 
 **Formular und Backend**
-- **Formular auf statischem Hosting tot** → kein Backend unter `/api/kontakt` → bei 404/405/501 Demo-Modus: gleiche Bestätigung mit Hinweis „Demo-Version“.
+- **Formular auf statischem Hosting tot** → kein Backend unter `/api/kontakt` → bei 404/405/501 Demo-Modus: gleiche Bestätigung mit Hinweis „Demo-Version“. Nur als Sicherheitsnetz: Die Daten sind dann schon beim Host angekommen. Für eine öffentliche Demo den Demo-Build nehmen (kein `fetch`).
+- **Demo-Formular ohne JS schickt trotzdem ab** → ohne `action` geht ein Absenden per GET an die eigene URL (Daten in den Server-Logs), ein versteckter Submit-Button löst bei Enter womöglich aus → im Demo-Build Button `type="button" hidden`, JS macht ihn zu `submit`.
+- **Block-Helfer verändert den Build** → Handlebars entfernt bei mehrzeiligen `{{#helfer}}…{{/helfer}}` Zeilenumbrüche („standalone“) → für Attribute einen einfachen Helfer nehmen (`<a class="btn" {{{callHref site.phone.tel}}}>`), Markup bleibt unverändert.
 - **Header-Injection im Betreff** → Zeilenumbrüche im Namen → beim Prüfen entfernen (Test vorhanden).
 - **IP-Adresse fürs Rate-Limit hinter Reverse Proxy immer gleich** → Proxy-IP statt Kunden-IP → `TRUST_PROXY=1` setzen (nur hinter einem Proxy!).
 - **HSTS lokal gesetzt** → Browser erzwingt danach HTTPS auf localhost → HSTS erst auf dem echten Server mit HTTPS.
@@ -228,7 +230,7 @@ Jeweils **Symptom → Ursache → Lösung**.
 - [ ] Node in der Version aus `.nvmrc`, `npm ci && npm run build`, `npm start` als Dienst (systemd, supervisord o. Ä.).
 - [ ] `backend/.env` auf dem Server anlegen (SMTP-Zugang, `MAIL_TO`, ggf. `TRUST_PROXY=1`), nie ins Repo.
 - [ ] Testanfrage über das Formular, Mail kommt an, Antworten an den Kunden funktionieren (`Reply-To`).
-- [ ] HTTPS, danach HSTS.
+- [ ] HTTPS ist Pflicht (Formulare übertragen personenbezogene Daten, DSGVO Art. 32; Browser warnen sonst „Nicht sicher“): Let's-Encrypt-Zertifikat mit automatischer Verlängerung, TLS 1.2/1.3, HTTP per 301 auf HTTPS. Node lauscht nur auf `localhost` hinter einem Reverse Proxy (Caddy/nginx bzw. beim Hoster), der TLS übernimmt, dazu `TRUST_PROXY=1`. HSTS erst, wenn HTTPS stabil läuft.
 - [ ] Prüfen, dass `/.env`, `/backend/`, `/docs/`, `/site.json`, `/.git/` mit 404 antworten.
 
 **Domainabhängiges**
@@ -243,6 +245,27 @@ Jeweils **Symptom → Ursache → Lösung**.
 - [ ] Bewertungszahl und Durchschnitt in `site.json` aktuell halten.
 - [ ] Impressum und Datenschutz final, Platzhalter-Kasten entfernen.
 - [ ] Lighthouse und axe gegen den echten Server.
+
+**Öffentliche Demo mit fiktivem Betrieb** (z. B. GitHub Pages)
+- [ ] Nur als Demo-Build veröffentlichen (`DEMO=1`), nie den normalen Build mit fiktiven Daten.
+- [ ] Echter Betreiber im Impressum (§ 5 DDG): Name, ladungsfähige Anschrift (kein Postfach, c/o-Anschriften-Service zulässig), E-Mail (eigene Alias-Adresse), Telefon optional. Werte als Umgebungsvariablen bzw. CI-Variablen, **nie ins Repo** (bleiben dauerhaft in der Git-Historie).
+- [ ] Datenschutzerklärung für den Demo-Host (Server-Logs, Rechtsgrundlage, ggf. Drittlandübermittlung), keine Cookies/Tracking/externen Inhalte, Beschwerderecht bei der Aufsichtsbehörde des Bundeslands. Mit einem anerkannten Generator abgleichen.
+- [ ] Formulare senden nichts (kein `fetch`, ohne JS kein Absenden), Anruf-Links wählen nicht (fiktive Nummern können echten Anschlüssen gehören). `mailto:` an `.example` ist unbedenklich.
+- [ ] Sichtbarer Hinweis auf jeder Seite (statisch, nicht wegklickbar – sonst bräuchte es Speicher und damit § 25 TDDDG) und `noindex` überall.
+- [ ] Im Netzwerk-Tab prüfen: beim Absenden kein Request. In `dist/` und `git log -p` keine Betreiberdaten außer im Demo-Build.
+
+**Rechtliches für echte Betriebe** (keine Rechtsberatung – im Zweifel prüfen lassen)
+- [ ] Impressum nach § 5 DDG und DL-InfoV: zuständige Handwerkskammer, Eintrag in der Handwerksrolle, gesetzliche Berufsbezeichnung und Staat der Verleihung, berufsrechtliche Regelungen, Berufshaftpflicht (falls vorhanden: Versicherer, Geltungsbereich).
+- [ ] Hinweis zur Verbraucherstreitbeilegung (§ 36 VSBG), wenn mehr als 10 Beschäftigte oder AGB verwendet werden.
+- [ ] Datenschutzerklärung vollständig (Hosting, E-Mail-Anbieter, Formular, Bewerbungen, Speicherdauern, Aufsichtsbehörde).
+- [ ] Verträge zur Auftragsverarbeitung (Art. 28 DSGVO) mit Hoster und Mail-Anbieter.
+- [ ] Verzeichnis der Verarbeitungstätigkeiten (Art. 30 DSGVO).
+- [ ] Löschkonzept: Anfragen nach Erledigung, Bewerbungen ca. 6 Monate nach Absage.
+- [ ] UWG: nur echte Bewertungen, dazu Angabe, ob und wie sie geprüft werden (§ 5b Abs. 3 UWG). Keine Stockfotos als eigene Referenzen oder als eigenes Team ausgeben.
+- [ ] „Meisterbetrieb“, „Innungsbetrieb“, „24/7“, „Festpreis“ nur, wenn es stimmt. Innungs- und Kammerlogos nur mit Erlaubnis.
+- [ ] Stellenanzeigen nach AGG (neutral formuliert, „(m/w/d)“, keine Altersgrenzen).
+- [ ] Kein Cookie-Banner nötig, solange nichts Nicht-Notwendiges gespeichert oder von Dritten geladen wird (§ 25 TDDDG). Kommt z. B. eine Karte oder Analyse dazu, neu bewerten.
+- [ ] Barrierefreiheitsstärkungsgesetz (BFSG): greift für reine Info- und Kontaktseiten in der Regel nicht (erst bei Verträgen im elektronischen Geschäftsverkehr, z. B. Online-Buchung oder Shop). Barrierefreiheit trotzdem halten.
 
 ## 9. Arbeitsweise mit Claude
 

@@ -11,7 +11,9 @@
   },
   "scripts": {
     "dev": "concurrently --names web,api --prefix-colors yellow,blue --kill-others-on-fail \"npm run dev -w frontend\" \"npm run dev -w backend\"",
+    "dev:demo": "DEMO=1 npm run dev",
     "build": "npm run build -w frontend",
+    "build:demo": "DEMO=1 npm run build",
     "start": "npm start -w backend",
     "test": "npm test --workspaces --if-present",
     "images": "npm run images -w frontend"
