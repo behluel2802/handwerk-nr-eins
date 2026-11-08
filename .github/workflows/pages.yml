@@ -1,0 +1,54 @@
+# Demo-Vorschau auf GitHub Pages (Schritt 12b)
+# Veröffentlicht ausschließlich frontend/ – backend/, docs/ und .env gelangen nie auf Pages.
+# In der veröffentlichten Kopie wird <meta name="robots" content="noindex"> ergänzt,
+# die Dateien im Repo bleiben unverändert (für späteres echtes Hosting, Schritt 14).
+# Einmalig nötig: Settings → Pages → Source „GitHub Actions“.
+
+name: Demo auf GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Nur ein Deploy gleichzeitig; ein laufender wird nicht abgebrochen
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Nur frontend/ kopieren
+        run: cp -r frontend _site
+
+      - name: noindex in die Demo-Kopie einfügen
+        run: |
+          for f in _site/*.html; do
+            grep -q 'name="robots"' "$f" && continue
+            sed -i 's|<meta charset="utf-8">|&\n  <meta name="robots" content="noindex">|' "$f"
+            grep -q 'name="robots"' "$f" || { echo "noindex fehlt in $f"; exit 1; }
+          done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

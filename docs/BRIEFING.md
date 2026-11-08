@@ -102,7 +102,7 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 11a | Kontakt: Umstrukturierung `frontend/`/`backend/`, UX-Umbau, Erreichbarkeit mit Feiertagen, Demo-Modus | ✅ erledigt, committet |
 | 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | ✅ erledigt, committet |
 | 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | ✅ erledigt, committet |
-| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | **nächster Schritt:** Plan vorstellen |
+| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | ✅ Workflow committet und gepusht, Pages aktiviert; **offen:** Demo online prüfen |
 | 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite; Favicon fehlt noch) | offen |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 
@@ -283,6 +283,17 @@ Untere Zeile mit Trennlinie: © Jahr · Impressum · Datenschutz · „Fiktiver 
 5. Eigene HTML-Seiten statt `<dialog>`
 
 Technik: neues Token `--font-mono`, Klassen `.brand--on-dark`, `.page-header`, `.legal`, `.legal-notice`, `.placeholder`, `body.page-legal` (keine Anruf-Leiste, kein Abstand unten). Datenschutz-Link im Kontaktformular zeigt jetzt auf `datenschutz.html`.
+
+### Schritt 12b (Plan freigegeben, Workflow angelegt am 08.11.2026)
+
+**Workflow** `.github/workflows/pages.yml`: kopiert nur `frontend/` nach `_site`, fügt dort in jede HTML-Datei ohne Robots-Angabe `<meta name="robots" content="noindex">` ein (bricht ab, falls das fehlschlägt), lädt `_site` hoch und veröffentlicht. Kein Build, kein `npm install`. Adresse: `https://behluel2802.github.io/handwerk-nr-eins/`.
+Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden auf eine GitHub-Fehlerseite (für die Demo akzeptiert).
+
+**Entscheidungen (freigegeben):**
+1. `noindex` nur in der veröffentlichten Kopie, die Dateien im Repo bleiben unverändert
+2. Automatisches Deploy bei Push auf `main` mit Änderungen in `frontend/` oder am Workflow, zusätzlich manuell startbar
+3. Kein zusätzlicher Demo-Banner (Footer-Hinweis und Demo-Hinweis im Formular reichen)
+4. Pages aktiviert der Entwickler selbst (Settings → Pages → Source „GitHub Actions“), kein `gh` in der Sitzung
 
 ## 8. Getroffene Entscheidungen
 
