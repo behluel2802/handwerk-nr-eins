@@ -92,8 +92,8 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 13a | Build-Schritt mit Vite: Bausteine (Partials) für Kopf/Footer, Ausgabe nach `dist/`, Backend und Pages-Workflow anpassen, CSP-Hash aus dem Build | ✅ erledigt, gepusht |
 | 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | ✅ erledigt, gepusht |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
-| 15a | Firmendaten an einer Stelle: `frontend/site.json` als Handlebars-Kontext `site`, JSON-LD daraus erzeugt, Pflichtfeld-Prüfung im Build | ✅ erledigt, committet |
-| 15 | Leitfaden „Vorlage für neue Projekte“ (`docs/LEITFADEN.md`, eigenständig) und leere Briefing-Vorlage | **nächster Schritt:** Leitfaden schreiben (Plan freigegeben, Schritt 14 bleibt zurückgestellt) |
+| 15a | Firmendaten an einer Stelle: `frontend/site.json` als Handlebars-Kontext `site`, JSON-LD daraus erzeugt, Pflichtfeld-Prüfung im Build | ✅ erledigt, gepusht |
+| 15 | Leitfaden „Vorlage für neue Projekte“ (`docs/LEITFADEN.md`, eigenständig) und leere Briefing-Vorlage | ✅ erledigt, gepusht. Damit sind alle geplanten Schritte abgeschlossen; offen ist nur Schritt 14 (zurückgestellt) |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -331,10 +331,11 @@ Hinweis für Schritt 14: `og:image` braucht dann eine feste Datei-URL (z. B. eig
 
 Für Schritt 14 vorgemerkt: `image`/`logo` im JSON-LD und `og:image` als absolute URL (feste Datei in `frontend/public/`).
 
-### Schritt 15 (Plan freigegeben am 08.11.2026)
+### Schritt 15 (Plan freigegeben, umgesetzt am 08.11.2026)
 
 **Leitfaden** `docs/LEITFADEN.md`, gedacht zum Mitnehmen in andere Projekte: Wann die Vorlage passt · Schnellstart · empfohlene Reihenfolge (idealisiert: Ordnerstruktur, Vite und Bild-Pipeline von Anfang an) · Entscheidungen mit Begründung inkl. verworfener Alternativen · Stolpersteine (Symptom → Ursache → Lösung) · Checkliste neues Gewerk · Checkliste Go-Live.
 **Briefing-Vorlage** `docs/BRIEFING-VORLAGE.md`: Gliederung, Firmendaten- und Statustabelle ohne Inhalte, dazu im Leitfaden ein Abschnitt „Arbeitsweise mit Claude“.
+Umgesetzt: Leitfaden mit 9 Abschnitten (zusätzlich „Aufbau im Überblick“), Entscheidungen in drei Tabellen (Struktur/Technik, Inhalt/UX, Qualität/Datenschutz), 24 Stolpersteine in vier Gruppen, Checklisten mit `schemaType`-Beispielen. README-Abschnitt „Für ein anderes Gewerk anpassen“ ist jetzt ein Verweis, `CLAUDE.md` nennt den Leitfaden (neue allgemeine Erkenntnisse dort ergänzen).
 
 **Entscheidungen (freigegeben):**
 1. Eigene Datei statt README-Ausbau
@@ -380,5 +381,5 @@ Für Schritt 14 vorgemerkt: `image`/`logo` im JSON-LD und `og:image` als absolut
 
 ## 9. Offene Punkte
 
-- Start der Umsetzung, sobald der Entwickler das Go gibt
+- Schritt 14 (Deployment) zurückgestellt, Checkliste in `docs/LEITFADEN.md` Abschnitt 8
 - Commit und Push nur auf ausdrückliche Anweisung

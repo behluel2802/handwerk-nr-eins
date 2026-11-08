@@ -57,15 +57,13 @@ backend/                   Node.js-Server (nie öffentlich ausgeliefert)
 .github/workflows/quality.yml  bei jedem Push: Build, Tests, Lighthouse, axe
 lighthouserc.json              Lighthouse-Schwellen (Barrierefreiheit 100 …)
 docs/BRIEFING.md           Projekt-Briefing und Entscheidungen
+docs/LEITFADEN.md          Leitfaden für neue Projekte (eigenständig, zum Mitnehmen)
+docs/BRIEFING-VORLAGE.md   leeres Briefing für ein neues Projekt
 ```
 
 ## Für ein anderes Gewerk anpassen
 
-1. Farben im Block „Marke“ in `frontend/css/tokens.css` ändern.
-2. Firmendaten, Öffnungszeiten und Bundesland (Feiertage) in `frontend/site.json` ersetzen, `schemaType` z. B. `Plumber`, `HousePainter`. Der Build bricht ab, wenn Pflichtfelder fehlen.
-3. Texte der Abschnitte in `frontend/index.html` anpassen (Leistungen, Referenzen, Stellen; Zahlwörter wie „acht Leute“ stehen im Fließtext).
-4. Fotos: Originale nach `frontend/img-src/`, Bildsätze in `frontend/images.config.js`, im HTML `{{> picture …}}`, Nachweise in `frontend/img-src/CREDITS.md`.
-5. Favicon: Farben/Symbol in `frontend/img-src/icon.svg` ändern.
+Schritt für Schritt in [docs/LEITFADEN.md](docs/LEITFADEN.md): Aufbau, empfohlene Reihenfolge, Entscheidungen mit Begründung, Stolpersteine, Checklisten für ein neues Gewerk und fürs Onlinegehen. Kurzfassung: Firmendaten in `frontend/site.json`, Farben in `frontend/css/tokens.css`, Texte in `frontend/index.html`, Fotos über `frontend/images.config.js`. Für ein neues Projekt `docs/BRIEFING-VORLAGE.md` nach `docs/BRIEFING.md` kopieren.
 
 ## Hinweise
 

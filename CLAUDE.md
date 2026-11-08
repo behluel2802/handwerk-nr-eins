@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-One-Pager-Website-Vorlage für einen **fiktiven Elektro-Meisterbetrieb** (Übungsprojekt). Das vollständige Briefing mit Zielen, Zielgruppe, Abschnitten und Entscheidungen steht in [docs/BRIEFING.md](docs/BRIEFING.md). Vor jeder Arbeit lesen und bei neuen Entscheidungen aktualisieren.
+One-Pager-Website-Vorlage für einen **fiktiven Elektro-Meisterbetrieb** (Übungsprojekt). Das vollständige Briefing mit Zielen, Zielgruppe, Abschnitten und Entscheidungen steht in [docs/BRIEFING.md](docs/BRIEFING.md). Vor jeder Arbeit lesen und bei neuen Entscheidungen aktualisieren. [docs/LEITFADEN.md](docs/LEITFADEN.md) ist die eigenständige Anleitung für neue Projekte: neue allgemeine Erkenntnisse (Entscheidungen, Stolpersteine) dort ergänzen, ohne auf das Briefing zu verweisen.
 
 **Aktueller Stand und nächster Schritt:** Abschnitt „7. Vorgehen und Stand“ in `docs/BRIEFING.md`. Zu Beginn einer neuen Sitzung dort nachsehen und den Entwickler kurz an den offenen Punkt erinnern. Nach jedem abgeschlossenen Schritt die Statustabelle aktualisieren.
 
