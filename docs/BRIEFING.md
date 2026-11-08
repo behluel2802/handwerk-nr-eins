@@ -101,8 +101,8 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 10 | Karriere | ✅ erledigt, committet |
 | 11a | Kontakt: Umstrukturierung `frontend/`/`backend/`, UX-Umbau, Erreichbarkeit mit Feiertagen, Demo-Modus | ✅ erledigt, committet |
 | 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | ✅ erledigt, committet |
-| 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | **nächster Schritt:** Plan vorstellen |
-| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | offen |
+| 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | ✅ erledigt, committet |
+| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | **nächster Schritt:** Plan vorstellen |
 | 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite; Favicon fehlt noch) | offen |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 
@@ -262,6 +262,27 @@ Getestet: 30 automatische Tests (u. a. `/.env`, `/.git/config`, `/../secret`, UR
 Hinweis für Schritt 14: HSTS-Header erst mit echtem HTTPS setzen; hinter einem Reverse Proxy `TRUST_PROXY=1`.
 
 **Nachbesserung Kontakt-Design (07.11.2026):** Anliegen-Chips per Container Query nach Breite der Formular-Karte: 1 Spalte (schmal) → 2 (ab 22rem) → 3 (ab 32rem), alle Reihen gleich hoch. Adresszeile: Trennpunkte verschwinden beim Umbruch (kein „·“ am Zeilenende/-anfang). Weitere Umbruch-Befunde (Notdienst-Button bei 320 px, Status-Zeile, „ca. 25 km“, Mittelbreiten-Layout) bewusst so belassen.
+
+### Schritt 12 (Plan freigegeben, umgesetzt am 08.11.2026)
+
+**Footer (navy dunkel):** ab 768 px drei Spalten, darunter einspaltig.
+1. Firma: Logo, Claim, Adresse (`<address>`), „Meisterbetrieb · seit 1998“
+2. Kontakt: Telefon, 24/7-Notdienst (gelb hervorgehoben), E-Mail, Öffnungszeiten
+3. Seite: Anker wie im Header + „Bewertungen auf Google“ (Link vorerst `#`)
+Untere Zeile mit Trennlinie: © Jahr · Impressum · Datenschutz · „Fiktiver Betrieb – Übungsprojekt“ (kursiv, ab 768 px rechtsbündig). Ohne Trennpunkte, nur Abstände.
+
+**Rechtsseiten:** `frontend/impressum.html` und `frontend/datenschutz.html`, `noindex`, schlanker Kopf (Logo + „Zur Startseite“), gleicher Footer (Anker als `./#…`), kein JS. Gelber Hinweiskasten „Platzhalter: kein gültiger Rechtstext“. Fehlende Angaben als sichtbare Platzhalter `[…]` (Klasse `.placeholder`).
+- Impressum: § 5 DDG, Vertretung, Kontakt, Register, USt-IdNr., Handwerksangaben (Kammer, Handwerksrolle, Berufsbezeichnung, HwO, Innung), Berufshaftpflicht, VSBG
+- Datenschutz (nur Gliederung): Verantwortlicher, Hosting/Logs, Kontaktformular (keine Speicherung, Mail-Versand, IP max. 10 Min. im Speicher fürs Rate-Limit), keine Cookies/Tracker/externen Dienste, Bewerbungen, Rechte, Stand
+
+**Entscheidungen (freigegeben):**
+1. Footer dreispaltig (nach Sichtprüfung bestätigt)
+2. Fehlende Pflichtangaben (Geschäftsführer, HRB, USt-IdNr., Kammer …) als sichtbare Platzhalter, nicht in die Firmendaten aufgenommen
+3. Datenschutz nur als Gliederung, keine ausformulierten Mustertexte
+4. Hinweis „Fiktiver Betrieb – Übungsprojekt“ nur im Footer
+5. Eigene HTML-Seiten statt `<dialog>`
+
+Technik: neues Token `--font-mono`, Klassen `.brand--on-dark`, `.page-header`, `.legal`, `.legal-notice`, `.placeholder`, `body.page-legal` (keine Anruf-Leiste, kein Abstand unten). Datenschutz-Link im Kontaktformular zeigt jetzt auf `datenschutz.html`.
 
 ## 8. Getroffene Entscheidungen
 
