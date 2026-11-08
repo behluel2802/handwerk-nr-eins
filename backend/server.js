@@ -1,4 +1,4 @@
-// Elektro Berger – Node-Server
+// Node-Server der Website
 // Liefert ausschließlich die gebaute Seite (frontend/dist/) aus und nimmt Kontaktanfragen unter POST /api/kontakt an.
 // Start: npm run build && npm start im Hauptordner (lädt .env, falls vorhanden; ohne SMTP_HOST Entwicklungsmodus)
 
@@ -9,6 +9,7 @@ import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRateLimiter, createSender, validateContact } from './contact.js';
+import site from '../frontend/site.json' with { type: 'json' };
 
 const DEFAULT_ROOT = fileURLToPath(new URL('../frontend/dist/', import.meta.url));
 const MAX_BODY = 10 * 1024; // 10 KB reichen für jede echte Anfrage
@@ -100,7 +101,7 @@ const htmlError = (res, status, message) => {
   res.end(`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>Anfrage nicht gesendet</title><link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/base.css">
 <main class="section"><div class="container stack"><h1>Anfrage nicht gesendet</h1><p>${escapeHtml(message)}</p>
-<p><a href="/#kontakt">Zurück zum Formular</a> oder rufen Sie uns an: <a href="tel:+491234567890">0123 456 789 0</a></p></div></main></html>`);
+<p><a href="/#kontakt">Zurück zum Formular</a> oder rufen Sie uns an: <a href="tel:${escapeHtml(site.phone.tel)}">${escapeHtml(site.phone.display)}</a></p></div></main></html>`);
 };
 
 /** Liest den Request-Body mit Größenlimit (zu große Bodies werden verworfen, nicht gepuffert) */
@@ -306,6 +307,6 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   }
   const server = http.createServer(app);
   server.listen(port, () => {
-    console.info(`Elektro Berger läuft auf http://localhost:${port} (Mailversand: ${sender.mode === 'smtp' ? 'SMTP' : 'Entwicklungsmodus, nur Konsole'})`);
+    console.info(`${site.name} läuft auf http://localhost:${port} (Mailversand: ${sender.mode === 'smtp' ? 'SMTP' : 'Entwicklungsmodus, nur Konsole'})`);
   });
 }

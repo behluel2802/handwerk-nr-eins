@@ -1,9 +1,10 @@
-// Elektro Berger – Haupt-Skript
+// Haupt-Skript der Website
 // Progressive Enhancement: Ohne JS bleibt alles bedienbar
 // (Navigation sichtbar, Anruf-Leiste dauerhaft eingeblendet).
 // Als ES-Modul geladen (type="module", automatisch deferred) – braucht einen lokalen Server, kein file://.
 
 import { openingStatus } from './hours.js';
+import site from '../site.json' with { type: 'json' };
 import { checks, contactKind } from './validate.js';
 
 const desktopQuery = window.matchMedia('(min-width: 60em)');
@@ -280,7 +281,7 @@ function initContactForm() {
       }
       showSuccess(name, false);
     } catch {
-      showError(`${message} Bitte versuchen Sie es erneut oder rufen Sie uns an: 0123 456 789 0.`);
+      showError(`${message} Bitte versuchen Sie es erneut oder rufen Sie uns an: ${site.phone.display}.`);
     } finally {
       form.classList.remove('is-sending');
       submitBtn.disabled = false;

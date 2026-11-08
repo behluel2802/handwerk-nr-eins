@@ -1,22 +1,18 @@
 // Öffnungszeiten und Feiertage – reine Funktionen ohne DOM, damit sie auch in Node testbar sind.
-// Für einen anderen Betrieb nur CONFIG anpassen (Zeiten auch in der Tabelle in index.html ändern).
+// Daten (Zeiten, Bundesland, Zusatz-Schließtage) kommen aus site.json → hours.
+
+import site from '../site.json' with { type: 'json' };
+
+// Wochentag (0 = So … 6 = Sa) → [von, bis]; fehlende Tage = geschlossen
+const byWeekday = (week) =>
+  Object.fromEntries(week.flatMap(({ days, from, to }) => days.map((d) => [d, [from, to]])));
 
 export const CONFIG = {
-  timeZone: 'Europe/Berlin',
-  state: 'HE', // Bundesland-Kürzel für landesspezifische Feiertage (z. B. BY, NW, HE)
-  // Wochentag (0 = So … 6 = Sa) → [von, bis]; fehlende Tage = geschlossen
-  hours: {
-    1: ['07:00', '17:00'],
-    2: ['07:00', '17:00'],
-    3: ['07:00', '17:00'],
-    4: ['07:00', '17:00'],
-    5: ['07:00', '14:00'],
-  },
+  timeZone: site.hours.timeZone,
+  state: site.hours.state, // Bundesland-Kürzel für landesspezifische Feiertage (z. B. BY, NW, HE)
+  hours: byWeekday(site.hours.week),
   // Zusätzlich geschlossen (keine gesetzlichen Feiertage), Format MM-DD
-  closedDays: {
-    '12-24': 'Heiligabend',
-    '12-31': 'Silvester',
-  },
+  closedDays: site.hours.closedDays,
 };
 
 const pad = (n) => String(n).padStart(2, '0');

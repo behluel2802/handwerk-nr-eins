@@ -1,0 +1,26 @@
+{
+  "name": "Elektro Berger GmbH",
+  "brand": { "prefix": "Elektro", "name": "Berger" },
+  "business": "Elektro-Meisterbetrieb",
+  "schemaType": "Electrician",
+  "owner": { "name": "Thomas Berger", "title": "Elektrotechnikermeister" },
+  "founded": 1998,
+  "team": { "total": 8, "apprentices": 2 },
+  "address": { "street": "Werkstraße 12", "zip": "12345", "city": "Musterstadt", "country": "DE" },
+  "phone": { "display": "0123 456 789 0", "tel": "+491234567890" },
+  "emergency": { "display": "0123 456 789 9", "tel": "+491234567899" },
+  "email": "info@elektro-berger.example",
+  "url": "https://www.elektro-berger.example",
+  "areaKm": 25,
+  "responseTime": "innerhalb eines Werktags",
+  "rating": { "value": 4.9, "count": 127, "profileUrl": null },
+  "hours": {
+    "timeZone": "Europe/Berlin",
+    "state": "HE",
+    "week": [
+      { "days": [1, 2, 3, 4], "from": "07:00", "to": "17:00" },
+      { "days": [5], "from": "07:00", "to": "14:00" }
+    ],
+    "closedDays": { "12-24": "Heiligabend", "12-31": "Silvester" }
+  }
+}

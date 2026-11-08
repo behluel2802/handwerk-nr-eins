@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Datenschutzerklärung – Elektro Berger GmbH</title>
+  <title>Datenschutzerklärung – {{site.name}}</title>
   <!-- Platzhalter-Seite: kein gültiger Rechtstext, nicht indexieren -->
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0f2a4a">
@@ -25,8 +25,8 @@
       <p class="legal-notice" role="note"><strong>Platzhalter:</strong> Diese Seite gehört zu einem fiktiven Übungsprojekt und ist <strong>kein gültiger Rechtstext</strong>. Sie zeigt nur die Gliederung. Für einen echten Betrieb muss der Text vollständig und rechtlich geprüft erstellt werden.</p>
 
       <h2>1. Verantwortlicher</h2>
-      <p>Elektro Berger GmbH, Werkstraße 12, 12345 Musterstadt<br>
-      Telefon: <a href="tel:+491234567890">0123 456 789 0</a>, E-Mail: <a href="mailto:info@elektro-berger.example">info@elektro-berger.example</a><br>
+      <p>{{site.name}}, {{site.address.street}}, {{site.address.zip}} {{site.address.city}}<br>
+      Telefon: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a>, E-Mail: <a href="mailto:{{site.email}}">{{site.email}}</a><br>
       Vertreten durch: <span class="placeholder">[Name Geschäftsführer/in]</span></p>
 
       <h2>2. Hosting und Server-Logfiles</h2>

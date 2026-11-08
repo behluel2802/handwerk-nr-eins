@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Impressum – Elektro Berger GmbH</title>
+  <title>Impressum – {{site.name}}</title>
   <!-- Platzhalter-Seite: kein gültiger Rechtstext, nicht indexieren -->
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0f2a4a">
@@ -25,14 +25,14 @@
       <p class="legal-notice" role="note"><strong>Platzhalter:</strong> Diese Seite gehört zu einem fiktiven Übungsprojekt und ist <strong>kein gültiger Rechtstext</strong>. Sie zeigt nur die Gliederung. Für einen echten Betrieb muss der Text vollständig und rechtlich geprüft erstellt werden.</p>
 
       <h2>Angaben gemäß § 5 DDG</h2>
-      <p>Elektro Berger GmbH<br>Werkstraße 12<br>12345 Musterstadt</p>
+      <p>{{site.name}}<br>{{site.address.street}}<br>{{site.address.zip}} {{site.address.city}}</p>
 
       <h2>Vertreten durch</h2>
       <p>Geschäftsführer/in: <span class="placeholder">[Name Geschäftsführer/in]</span></p>
 
       <h2>Kontakt</h2>
-      <p>Telefon: <a href="tel:+491234567890">0123 456 789 0</a><br>
-      E-Mail: <a href="mailto:info@elektro-berger.example">info@elektro-berger.example</a></p>
+      <p>Telefon: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a><br>
+      E-Mail: <a href="mailto:{{site.email}}">{{site.email}}</a></p>
 
       <h2>Registereintrag</h2>
       <p>Registergericht: <span class="placeholder">[Amtsgericht …]</span><br>
@@ -45,7 +45,7 @@
       <ul>
         <li>Eingetragen in der Handwerksrolle der <span class="placeholder">[zuständige Handwerkskammer, Anschrift]</span></li>
         <li>Betriebsnummer der Handwerksrolle: <span class="placeholder">[Nummer]</span></li>
-        <li>Gesetzliche Berufsbezeichnung: Elektrotechnikermeister, verliehen in <span class="placeholder">[Staat]</span></li>
+        <li>Gesetzliche Berufsbezeichnung: {{site.owner.title}}, verliehen in <span class="placeholder">[Staat]</span></li>
         <li>Berufsrechtliche Regelungen: <span class="placeholder">[z. B. Handwerksordnung (HwO), mit Link]</span></li>
         <li>Mitglied der Elektro-Innung <span class="placeholder">[Name der Innung]</span></li>
       </ul>

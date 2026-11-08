@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
+import { loadSite, siteHelpers } from './scripts/site.js';
 
 const root = import.meta.dirname;
 
@@ -28,6 +29,14 @@ const imageHelpers = {
   fallbackFormat: () => manifest().formats.at(-1),
 };
 
+// Firmendaten (site.json) bei jedem Rendern neu lesen: Änderungen zeigt der Dev-Server nach dem Neuladen der Seite.
+// Warnungen (z. B. fehlender Google-Link) nur einmal ausgeben.
+const warned = new Set();
+const warnOnce = (message) => {
+  if (!warned.has(message)) console.warn(message);
+  warned.add(message);
+};
+
 export default defineConfig({
   // Relative Pfade: dist/ funktioniert unter jeder Adresse, auch im Unterordner von GitHub Pages
   base: './',
@@ -42,11 +51,11 @@ export default defineConfig({
   plugins: [
     handlebars({
       partialDirectory: resolve(root, 'partials'),
-      helpers: imageHelpers,
-      // Kontext je Seite: Anker-Präfix für Links zur Startseite und die aktuelle Seite
+      helpers: { ...imageHelpers, ...siteHelpers },
+      // Kontext je Seite: Firmendaten, Anker-Präfix für Links zur Startseite und die aktuelle Seite
       context(pagePath) {
         const page = pagePath.replace(/^\//, '').replace(/\.html$/, '') || 'index';
-        return { home: page === 'index' ? '' : './', current: { [page]: true } };
+        return { site: loadSite({ warn: warnOnce }), home: page === 'index' ? '' : './', current: { [page]: true } };
       },
     }),
   ],

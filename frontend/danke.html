@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vielen Dank – Elektro Berger GmbH</title>
+  <title>Vielen Dank – {{site.name}}</title>
   <!-- Bestätigungsseite nach dem Absenden ohne JavaScript (Weiterleitung vom Backend) -->
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0f2a4a">
@@ -17,8 +17,8 @@
     <div class="container">
       <div class="form-success">
         <h1 class="form-success__title">Vielen Dank!</h1>
-        <p>Ihre Anfrage ist bei uns angekommen. Wir melden uns innerhalb eines Werktags.</p>
-        <p class="contact__small">Eilig? Rufen Sie uns an: <a href="tel:+491234567890">0123 456 789 0</a></p>
+        <p>Ihre Anfrage ist bei uns angekommen. Wir melden uns {{site.responseTime}}.</p>
+        <p class="contact__small">Eilig? Rufen Sie uns an: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a></p>
         <a class="btn btn--primary" href="./">Zurück zur Startseite</a>
       </div>
     </div>

@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt</title>
-  <meta name="description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst. Ihr Elektro-Meisterbetrieb in Musterstadt seit 1998.">
+  <title>{{site.name}} – {{site.business}} in {{site.address.city}}</title>
+  <meta name="description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst. Ihr {{site.business}} in {{site.address.city}} seit {{site.founded}}.">
   <meta name="theme-color" content="#0f2a4a">
   {{> head-icons}}
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt">
+  <meta property="og:title" content="{{site.name}} – {{site.business}} in {{site.address.city}}">
   <meta property="og:description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst.">
   <meta property="og:locale" content="de_DE">
   <!-- TODO: og:image braucht eine absolute URL – bei echter Domain ersetzen, dazu og:url ergänzen -->
-  <meta property="og:image" content="https://www.elektro-berger.example/img/hero-1280.jpg">
+  <meta property="og:image" content="{{site.url}}/img/hero-1280.jpg">
   <meta property="og:image:width" content="1280">
   <meta property="og:image:height" content="855">
 
@@ -26,33 +26,11 @@
   <link rel="stylesheet" href="css/sections.css">
   <script type="module" src="js/main.js"></script>
 
-  <!-- Strukturierte Daten (fiktiver Betrieb, Quelle: docs/BRIEFING.md).
+  <!-- Strukturierte Daten, erzeugt aus site.json (scripts/site.js → jsonLd).
        Keine aggregateRating: Eigene Bewertungen im LocalBusiness-Markup wertet Google nicht aus (Richtlinie „self-serving reviews“).
        Schritt 14: image/logo als absolute URL ergänzen. -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Electrician",
-    "name": "Elektro Berger GmbH",
-    "description": "Elektro-Meisterbetrieb in Musterstadt seit 1998",
-    "foundingDate": "1998",
-    "telephone": "+491234567890",
-    "email": "info@elektro-berger.example",
-    "url": "https://www.elektro-berger.example",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Werkstraße 12",
-      "postalCode": "12345",
-      "addressLocality": "Musterstadt",
-      "addressCountry": "DE"
-    },
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "07:00", "closes": "17:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "14:00" }
-    ],
-    "areaServed": "Musterstadt und Umgebung (ca. 25 km)",
-    "founder": { "@type": "Person", "name": "Thomas Berger", "jobTitle": "Elektrotechnikermeister" }
-  }
+{{{jsonLd site}}}
   </script>
 </head>
 <body>
@@ -67,11 +45,11 @@
        Am Sticky-Header würde der Browser nur um die Header-Höhe zurückscrollen. -->
   <header class="site-header" data-header>
     <div class="container site-header__inner">
-      <a class="brand" href="#top" aria-label="Elektro Berger GmbH – zum Seitenanfang">
+      <a class="brand" href="#top" aria-label="{{site.name}} – zum Seitenanfang">
         <span class="brand__mark" aria-hidden="true">
           <svg class="icon"><use href="#i-bolt"/></svg>
         </span>
-        <span class="brand__text">Elektro <strong>Berger</strong></span>
+        <span class="brand__text">{{site.brand.prefix}} <strong>{{site.brand.name}}</strong></span>
       </a>
 
       <!-- Menü-Button direkt vor der Navigation: Tab führt nach dem Öffnen in die Menüpunkte. Sichtbar steht er rechts (CSS order). -->
@@ -92,9 +70,9 @@
       </nav>
 
       <div class="site-header__actions">
-        <a class="btn btn--accent header-call" href="tel:+491234567890">
+        <a class="btn btn--accent header-call" href="tel:{{site.phone.tel}}">
           <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
-          <span class="header-call__label">0123 456 789 0</span>
+          <span class="header-call__label">{{site.phone.display}}</span>
           <span class="visually-hidden header-call__sr">Anrufen</span>
         </a>
       </div>
@@ -112,12 +90,12 @@
       <div class="container hero__inner">
         <p class="hero__eyebrow">
           <svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg>
-          <span><span class="nowrap">Meisterbetrieb seit 1998</span> · <span class="nowrap">Musterstadt + 25 km</span></span>
+          <span><span class="nowrap">Meisterbetrieb seit {{site.founded}}</span> · <span class="nowrap">{{site.address.city}} + {{site.areaKm}} km</span></span>
         </p>
-        <h1 id="hero-title">Ihr Elektro-Meisterbetrieb in&nbsp;Musterstadt</h1>
+        <h1 id="hero-title">Ihr {{site.business}} in&nbsp;{{site.address.city}}</h1>
         <p class="hero__lead">Elektroinstallation, Sanierung, Smart Home und PV – zuverlässig, sauber und termintreu.</p>
         <div class="cluster hero__actions">
-          <a class="btn btn--accent btn--lg" href="tel:+491234567890">
+          <a class="btn btn--accent btn--lg" href="tel:{{site.phone.tel}}">
             <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
             Jetzt anrufen
           </a>
@@ -135,7 +113,7 @@
     </section>
 
     <!-- 2. Vertrauensleiste -->
-    <section class="trust" id="vertrauen" aria-label="Warum Elektro Berger">
+    <section class="trust" id="vertrauen" aria-label="Warum {{site.brand.prefix}} {{site.brand.name}}">
       <div class="container">
         <ul class="trust__list">
           <li class="trust__item">
@@ -144,16 +122,16 @@
           </li>
           <li class="trust__item">
             <svg class="icon trust__icon" aria-hidden="true"><use href="#i-calendar"/></svg>
-            <p><strong>Seit 1998</strong> <span>über 25&nbsp;Jahre Erfahrung</span></p>
+            <p><strong>Seit {{site.founded}}</strong> <span>über 25&nbsp;Jahre Erfahrung</span></p>
           </li>
           <li class="trust__item">
             <svg class="icon trust__icon trust__icon--star" aria-hidden="true"><use href="#i-star"/></svg>
-            <!-- TODO: Link zum Google-Unternehmensprofil eintragen -->
-            <p><strong>4,9 von 5</strong> <a href="#">127 Google-Bewertungen</a></p>
+            <!-- Link zum Google-Profil: site.json rating.profileUrl (leer → Text ohne Link) -->
+            <p><strong>{{decimal site.rating.value}} von 5</strong> {{#if site.rating.profileUrl}}<a href="{{site.rating.profileUrl}}">{{site.rating.count}} Google-Bewertungen</a>{{else}}<span>{{site.rating.count}} Google-Bewertungen</span>{{/if}}</p>
           </li>
           <li class="trust__item">
             <svg class="icon trust__icon" aria-hidden="true"><use href="#i-clock"/></svg>
-            <p><strong>24/7-Notdienst</strong> <a href="tel:+491234567899">0123 456 789 9</a></p>
+            <p><strong>24/7-Notdienst</strong> <a href="tel:{{site.emergency.tel}}">{{site.emergency.display}}</a></p>
           </li>
         </ul>
       </div>
@@ -194,9 +172,9 @@
             <span class="service__icon" aria-hidden="true"><svg class="icon"><use href="#i-alert"/></svg></span>
             <h3>Notdienst</h3>
             <p>Stromausfall oder Kurzschluss? Wir sind rund um die Uhr erreichbar.</p>
-            <a class="btn btn--accent service__cta" href="tel:+491234567899">
+            <a class="btn btn--accent service__cta" href="tel:{{site.emergency.tel}}">
               <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
-              0123 456 789 9
+              {{site.emergency.display}}
             </a>
           </li>
         </ul>
@@ -207,7 +185,7 @@
     <section class="section section--alt" id="referenzen" aria-labelledby="referenzen-title">
       <div class="container">
         <h2 id="referenzen-title">Referenzen</h2>
-        <p class="lead section__intro">Ein Auszug aus unseren Projekten in Musterstadt und Umgebung.</p>
+        <p class="lead section__intro">Ein Auszug aus unseren Projekten in {{site.address.city}} und Umgebung.</p>
 
         <!-- Fiktive Projekte: Fotos von Unsplash (siehe img-src/CREDITS.md), Objekte und Ortsteile ausgedacht -->
         <ul class="gallery" data-gallery>
@@ -216,42 +194,42 @@
               {{> picture name="ref-pv-anlage" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Einfamilienhaus mit Solarmodulen auf dem Dach" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>PV-Anlage</strong> <span>Einfamilienhaus, Musterstadt-Nord</span></p>
+            <p class="gallery__caption"><strong>PV-Anlage</strong> <span>Einfamilienhaus, {{site.address.city}}-Nord</span></p>
           </li>
           <li class="gallery__item">
             <a class="gallery__link" href="{{src "ref-kueche" "full" "jpg"}}" data-full="{{src "ref-kueche" "full" "webp"}}" data-width="{{dim "ref-kueche" "full" "width"}}" data-height="{{dim "ref-kueche" "full" "height"}}">
               {{> picture name="ref-kueche" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Helle Küche mit Kochinsel und drei Pendelleuchten" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>Küchen&shy;beleuchtung</strong> <span>Altbausanierung, Musterstadt-Ost</span></p>
+            <p class="gallery__caption"><strong>Küchen&shy;beleuchtung</strong> <span>Altbausanierung, {{site.address.city}}-Ost</span></p>
           </li>
           <li class="gallery__item">
             <a class="gallery__link" href="{{src "ref-unterverteilung" "full" "jpg"}}" data-full="{{src "ref-unterverteilung" "full" "webp"}}" data-width="{{dim "ref-unterverteilung" "full" "width"}}" data-height="{{dim "ref-unterverteilung" "full" "height"}}">
               {{> picture name="ref-unterverteilung" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Geöffnete Unterverteilung mit Leitungsschutzschaltern und sauber verlegten Adern" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>Unter&shy;verteilung</strong> <span>Mehrfamilienhaus, Musterstadt-Mitte</span></p>
+            <p class="gallery__caption"><strong>Unter&shy;verteilung</strong> <span>Mehrfamilienhaus, {{site.address.city}}-Mitte</span></p>
           </li>
           <li class="gallery__item">
             <a class="gallery__link" href="{{src "ref-wallbox" "full" "jpg"}}" data-full="{{src "ref-wallbox" "full" "webp"}}" data-width="{{dim "ref-wallbox" "full" "width"}}" data-height="{{dim "ref-wallbox" "full" "height"}}">
               {{> picture name="ref-wallbox" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Elektroauto lädt an einer Wallbox an der Garagenwand" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>Wallbox</strong> <span>Doppelgarage, Musterstadt-Süd</span></p>
+            <p class="gallery__caption"><strong>Wallbox</strong> <span>Doppelgarage, {{site.address.city}}-Süd</span></p>
           </li>
           <li class="gallery__item">
             <a class="gallery__link" href="{{src "ref-bad" "full" "jpg"}}" data-full="{{src "ref-bad" "full" "webp"}}" data-width="{{dim "ref-bad" "full" "width"}}" data-height="{{dim "ref-bad" "full" "height"}}">
               {{> picture name="ref-bad" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Modernes Bad mit beleuchtetem Spiegel" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>Bad mit LED-Spiegel</strong> <span>Wohnungssanierung, Musterstadt-Mitte</span></p>
+            <p class="gallery__caption"><strong>Bad mit LED-Spiegel</strong> <span>Wohnungssanierung, {{site.address.city}}-Mitte</span></p>
           </li>
           <li class="gallery__item">
             <a class="gallery__link" href="{{src "ref-smarthome" "full" "jpg"}}" data-full="{{src "ref-smarthome" "full" "webp"}}" data-width="{{dim "ref-smarthome" "full" "width"}}" data-height="{{dim "ref-smarthome" "full" "height"}}">
               {{> picture name="ref-smarthome" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Smart-Home-Taster neben einer Zimmertür" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
-            <p class="gallery__caption"><strong>Smart Home</strong> <span>Neubau, Musterstadt-West</span></p>
+            <p class="gallery__caption"><strong>Smart Home</strong> <span>Neubau, {{site.address.city}}-West</span></p>
           </li>
         </ul>
 
@@ -261,7 +239,7 @@
             <h3>Das sagen unsere Kunden</h3>
             <p class="reviews__score">
               <span class="review__stars" aria-hidden="true"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></span>
-              <span><strong>4,9 von 5</strong> aus 127 Google-Bewertungen</span>
+              <span><strong>{{decimal site.rating.value}} von 5</strong> aus {{site.rating.count}} Google-Bewertungen</span>
             </p>
           </div>
           <ul class="reviews__list">
@@ -269,29 +247,31 @@
               <figure>
                 <p class="review__stars" role="img" aria-label="5 von 5 Sternen"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></p>
                 <blockquote><p>„Wallbox und neuer Zählerschrank an einem Tag – pünktlich, sauber und alles verständlich erklärt. Klare Empfehlung!“</p></blockquote>
-                <figcaption><strong>Familie K.</strong>, Musterstadt · Wallbox</figcaption>
+                <figcaption><strong>Familie K.</strong>, {{site.address.city}} · Wallbox</figcaption>
               </figure>
             </li>
             <li class="review">
               <figure>
                 <p class="review__stars" role="img" aria-label="5 von 5 Sternen"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></p>
                 <blockquote><p>„Kurzschluss am Sonntagabend, und nach kurzer Zeit stand jemand vor der Tür. Freundlich, schnell und fair abgerechnet.“</p></blockquote>
-                <figcaption><strong>Sabine M.</strong>, Musterstadt · Notdienst</figcaption>
+                <figcaption><strong>Sabine M.</strong>, {{site.address.city}} · Notdienst</figcaption>
               </figure>
             </li>
             <li class="review">
               <figure>
                 <p class="review__stars" role="img" aria-label="5 von 5 Sternen"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></p>
                 <blockquote><p>„Wir lassen unsere Mietobjekte jedes Jahr prüfen. Der E-Check läuft reibungslos, Termine werden immer eingehalten.“</p></blockquote>
-                <figcaption><strong>Hausverwaltung R.</strong>, Musterstadt · E-Check</figcaption>
+                <figcaption><strong>Hausverwaltung R.</strong>, {{site.address.city}} · E-Check</figcaption>
               </figure>
             </li>
           </ul>
-          <!-- TODO: Link zum Google-Unternehmensprofil eintragen -->
-          <a class="btn btn--outline reviews__cta" href="#">
+          <!-- Nur mit Link zum Google-Profil (site.json rating.profileUrl) -->
+          {{#if site.rating.profileUrl}}
+          <a class="btn btn--outline reviews__cta" href="{{site.rating.profileUrl}}">
             <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>
             Alle Bewertungen auf Google
           </a>
+          {{/if}}
         </div>
       </div>
     </section>
@@ -315,11 +295,11 @@
 
           <div class="about__body">
             <h2 id="ueber-uns-title">Über uns</h2>
-            <p>1998 hat Elektrotechnikermeister Thomas Berger den Betrieb in Musterstadt gegründet. Heute sind wir ein Team aus acht Leuten, darunter zwei Auszubildende, und kümmern uns um Privathaushalte, Vermieter und Gewerbe im Umkreis von rund 25&nbsp;Kilometern.</p>
+            <p>{{site.founded}} hat {{site.owner.title}} {{site.owner.name}} den Betrieb in {{site.address.city}} gegründet. Heute sind wir ein Team aus acht Leuten, darunter zwei Auszubildende, und kümmern uns um Privathaushalte, Vermieter und Gewerbe im Umkreis von rund {{site.areaKm}}&nbsp;Kilometern.</p>
             <p>Als eingetragener Meisterbetrieb arbeiten wir nach den aktuellen Normen und Vorschriften – und bilden selbst aus, damit gutes Handwerk in der Region bleibt.</p>
             <ul class="about__badges">
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Eingetragen in der Handwerksrolle</li>
-              <!-- Innung ist ein Platzhalter (siehe Firmendaten in docs/BRIEFING.md) -->
+              <!-- Innung ist ein Platzhalter (fiktiver Betrieb) -->
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Mitglied der Elektro-Innung</li>
             </ul>
             <!-- Fiktives Zitat (Übungsprojekt) -->
@@ -327,16 +307,16 @@
               <blockquote>
                 <p>„Bei uns bekommen Sie einen festen Ansprechpartner, ein ehrliches Angebot und eine Baustelle, die wir sauber hinterlassen.“</p>
               </blockquote>
-              <figcaption><strong>Thomas Berger</strong> Elektrotechnikermeister und Inhaber</figcaption>
+              <figcaption><strong>{{site.owner.name}}</strong> {{site.owner.title}} und Inhaber</figcaption>
             </figure>
           </div>
         </div>
 
-        <ul class="facts" aria-label="Elektro Berger in Zahlen">
-          <li class="facts__item"><strong class="facts__value">1998</strong> <span>gegründet</span></li>
-          <li class="facts__item"><strong class="facts__value">8</strong> <span>Mitarbeitende</span></li>
-          <li class="facts__item"><strong class="facts__value">2</strong> <span>Auszubildende</span></li>
-          <li class="facts__item"><strong class="facts__value"><small>ca.</small> 25&nbsp;km</strong> <span>Einzugsgebiet</span></li>
+        <ul class="facts" aria-label="{{site.brand.prefix}} {{site.brand.name}} in Zahlen">
+          <li class="facts__item"><strong class="facts__value">{{site.founded}}</strong> <span>gegründet</span></li>
+          <li class="facts__item"><strong class="facts__value">{{site.team.total}}</strong> <span>Mitarbeitende</span></li>
+          <li class="facts__item"><strong class="facts__value">{{site.team.apprentices}}</strong> <span>Auszubildende</span></li>
+          <li class="facts__item"><strong class="facts__value"><small>ca.</small> {{site.areaKm}}&nbsp;km</strong> <span>Einzugsgebiet</span></li>
         </ul>
       </div>
     </section>
@@ -382,7 +362,7 @@
           <div class="cta-box__inner">
             <p class="cta-box__text">Bereit für Schritt&nbsp;1?</p>
             <div class="cta-box__actions">
-              <a class="btn btn--accent" href="tel:+491234567890">
+              <a class="btn btn--accent" href="tel:{{site.phone.tel}}">
                 <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
                 Jetzt anrufen
               </a>
@@ -402,7 +382,7 @@
         <h2 id="karriere-title">Wir suchen Verstärkung</h2>
         <p class="lead section__intro">Wir sind ein Team aus acht Leuten – und suchen Verstärkung, die Lust auf saubere Arbeit und abwechslungsreiche Aufgaben hat.</p>
 
-        <!-- Stelleninhalte und Vorteile teils fiktiv (Platzhalter, siehe docs/BRIEFING.md) -->
+        <!-- Stelleninhalte und Vorteile teils fiktiv (Platzhalter). „Freitags um 14 Uhr“ an die Öffnungszeiten anpassen -->
         <div class="career">
           <div class="career__jobs">
             <h3 class="visually-hidden">Offene Stellen</h3>
@@ -434,7 +414,7 @@
                     <li>Führerschein Klasse B</li>
                     <li>Zuverlässigkeit und freundlicher Umgang mit Kunden</li>
                   </ul>
-                  <a class="job__apply" href="mailto:info@elektro-berger.example?subject=Bewerbung%20als%20Elektroniker%2Fin">
+                  <a class="job__apply" href="mailto:{{site.email}}?subject=Bewerbung%20als%20Elektroniker%2Fin">
                     <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
                     Per E-Mail bewerben
                   </a>
@@ -468,7 +448,7 @@
                     <li>Interesse an Technik, Mathe und Physik</li>
                     <li>Handwerkliches Geschick und Teamgeist</li>
                   </ul>
-                  <a class="job__apply" href="mailto:info@elektro-berger.example?subject=Bewerbung%20um%20einen%20Ausbildungsplatz">
+                  <a class="job__apply" href="mailto:{{site.email}}?subject=Bewerbung%20um%20einen%20Ausbildungsplatz">
                     <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
                     Per E-Mail bewerben
                   </a>
@@ -481,9 +461,9 @@
             <h3>Was Sie bei uns erwartet</h3>
             <ul class="perks">
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Freitags um 14&nbsp;Uhr Feierabend</li>
-              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Kurze Wege: Einsätze im Umkreis von ca. 25&nbsp;km, keine Montage</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Kurze Wege: Einsätze im Umkreis von ca. {{site.areaKm}}&nbsp;km, keine Montage</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Kleines Team mit direktem Draht zum Chef</li>
-              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sicherer Arbeitsplatz im Meisterbetrieb seit 1998</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sicherer Arbeitsplatz im Meisterbetrieb seit {{site.founded}}</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Weiterbildung, z.&nbsp;B. bis zur Meisterprüfung</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Modernes Werkzeug und Messtechnik</li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Eigenes Firmenfahrzeug</li>
@@ -496,14 +476,14 @@
           <div class="cta-box__inner">
             <div>
               <p class="cta-box__text">Bewerben in 2&nbsp;Minuten</p>
-              <p class="cta-box__sub">Kein Anschreiben nötig: Ein kurzer Anruf oder Ihr Lebenslauf per E&#8209;Mail genügt. Ansprechpartner ist Thomas Berger.</p>
+              <p class="cta-box__sub">Kein Anschreiben nötig: Ein kurzer Anruf oder Ihr Lebenslauf per E&#8209;Mail genügt. Ansprechpartner ist {{site.owner.name}}.</p>
             </div>
             <div class="cta-box__actions">
-              <a class="btn btn--accent" href="tel:+491234567890">
+              <a class="btn btn--accent" href="tel:{{site.phone.tel}}">
                 <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
                 Anrufen
               </a>
-              <a class="btn btn--outline-light" href="mailto:info@elektro-berger.example?subject=Bewerbung">
+              <a class="btn btn--outline-light" href="mailto:{{site.email}}?subject=Bewerbung">
                 <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
                 E-Mail
               </a>
@@ -517,50 +497,51 @@
     <section class="section" id="kontakt" aria-labelledby="kontakt-title">
       <div class="container">
         <h2 id="kontakt-title">Kontakt</h2>
-        <p class="lead section__intro">Am schnellsten geht es per Telefon. Oder Sie schreiben uns kurz – wir melden uns innerhalb eines Werktags.</p>
+        <p class="lead section__intro">Am schnellsten geht es per Telefon. Oder Sie schreiben uns kurz – wir melden uns {{site.responseTime}}.</p>
 
         <div class="contact">
           <!-- Weg 1: Anruf (mobil zuerst) -->
           <div class="contact__info">
             <h3 class="contact__heading">Am schnellsten: anrufen</h3>
-            <a class="btn btn--accent btn--lg contact__call" href="tel:+491234567890">
+            <a class="btn btn--accent btn--lg contact__call" href="tel:{{site.phone.tel}}">
               <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
-              0123 456 789 0
+              {{site.phone.display}}
             </a>
-            <!-- Wird per JS aus js/hours.js befüllt (Öffnungszeiten + hessische Feiertage) -->
+            <!-- Wird per JS aus js/hours.js befüllt (Öffnungszeiten und Feiertage des Bundeslands aus site.json) -->
             <p class="open-status" data-open-status hidden>
               <span class="open-status__dot" aria-hidden="true"></span>
               <span data-open-status-text></span>
             </p>
 
-            <!-- Zeiten auch in js/hours.js (CONFIG.hours) pflegen -->
+            <!-- Zeiten aus site.json (hours.week) -->
             <table class="hours">
               <caption class="visually-hidden">Telefonische Erreichbarkeit</caption>
-              <tr><th scope="row">Mo–Do</th><td>7:00–17:00&nbsp;Uhr</td></tr>
-              <tr><th scope="row">Fr</th><td>7:00–14:00&nbsp;Uhr</td></tr>
+              {{#each site.hours.week}}
+              <tr><th scope="row">{{dayRange days}}</th><td>{{time from}}–{{time to}}&nbsp;Uhr</td></tr>
+              {{/each}}
             </table>
-            <p class="contact__small">An Feiertagen sowie an Heiligabend und Silvester geschlossen.</p>
+            <p class="contact__small">An Feiertagen{{#if site.hours.closedDays}} sowie an {{joinAnd site.hours.closedDays}}{{/if}} geschlossen.</p>
 
             <p class="contact__alt">
               Lieber per E-Mail?
-              <a href="mailto:info@elektro-berger.example">info@elektro-berger.example</a>
+              <a href="mailto:{{site.email}}">{{site.email}}</a>
             </p>
 
             <div class="contact__emergency">
               <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
               <p><strong>Stromausfall oder Kurzschluss?</strong> Unser Notdienst ist rund um die Uhr erreichbar.</p>
-              <a class="btn btn--accent contact__emergency-btn" href="tel:+491234567899">
+              <a class="btn btn--accent contact__emergency-btn" href="tel:{{site.emergency.tel}}">
                 <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
-                Notdienst 0123 456 789 9
+                Notdienst {{site.emergency.display}}
               </a>
             </div>
 
             <p class="contact__area">
               <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
               <span>
-                Wir kommen zu Ihnen – im Umkreis von ca. 25&nbsp;km um Musterstadt.
+                Wir kommen zu Ihnen – im Umkreis von ca. {{site.areaKm}}&nbsp;km um {{site.address.city}}.
                 <!-- Trennpunkte per CSS: am Zeilenanfang werden sie abgeschnitten, beim Umbruch also ausgeblendet -->
-                <span class="contact__address"><span class="contact__address-list"><span>Elektro Berger GmbH</span> <span>Werkstraße 12</span> <span>12345 Musterstadt</span></span></span>
+                <span class="contact__address"><span class="contact__address-list"><span>{{site.name}}</span> <span>{{site.address.street}}</span> <span>{{site.address.zip}} {{site.address.city}}</span></span></span>
               </span>
             </p>
           </div>
@@ -627,9 +608,9 @@
             <div class="form-success" data-form-success tabindex="-1" hidden>
               <svg class="icon form-success__icon" aria-hidden="true"><use href="#i-check"/></svg>
               <h3 class="form-success__title" data-form-success-title>Vielen Dank!</h3>
-              <p>Ihre Anfrage ist bei uns angekommen. Wir melden uns innerhalb eines Werktags.</p>
+              <p>Ihre Anfrage ist bei uns angekommen. Wir melden uns {{site.responseTime}}.</p>
               <p class="form-success__demo" data-form-demo hidden>Demo-Version: In dieser Vorschau wird keine Anfrage verschickt.</p>
-              <p class="contact__small">Eilig? Rufen Sie uns an: <a href="tel:+491234567890">0123 456 789 0</a></p>
+              <p class="contact__small">Eilig? Rufen Sie uns an: <a href="tel:{{site.phone.tel}}">{{site.phone.display}}</a></p>
             </div>
           </div>
         </div>
@@ -666,7 +647,7 @@
 
   <!-- Feste Anruf-Leiste (nur mobil). Ohne JS immer sichtbar, mit JS erst nach dem Hero. -->
   <div class="call-bar" data-call-bar>
-    <a class="call-bar__item call-bar__item--call" href="tel:+491234567890">
+    <a class="call-bar__item call-bar__item--call" href="tel:{{site.phone.tel}}">
       <svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>
       Anrufen
     </a>

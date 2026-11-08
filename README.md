@@ -31,6 +31,7 @@ Ohne `backend/.env` bzw. ohne `SMTP_HOST` läuft der Mailversand im **Entwicklun
 package.json               npm-Workspaces (frontend, backend) und gemeinsame Befehle
 frontend/                  Quellen der Website
   index.html, impressum.html, datenschutz.html, danke.html
+  site.json                Firmendaten (einzige Quelle: Name, Adresse, Telefon, Öffnungszeiten …)
   partials/                Bausteine (Handlebars): Icon-Sprite, Footer, Kopf der Unterseiten
   css/tokens.css           Design-Tokens (Farben, Schrift, Abstände)
   css/base.css             Reset, Typografie, Layout-Helfer, Buttons
@@ -42,6 +43,7 @@ frontend/                  Quellen der Website
   img-src/                 Original-Fotos, icon.svg (Favicon-Quelle), CREDITS.md
   images.config.js         Bildsätze: Größen, Formate, Ausschnitte
   scripts/images.js        Bild-Pipeline (sharp): img-src/ → img/ (+ manifest.json) und Icons → public/
+  scripts/site.js          prüft site.json, Template-Helfer und JSON-LD
   scripts/compress.js      legt nach dem Build .br/.gz an (vom Backend ausgeliefert)
   img/, public/*.ico …     erzeugt, nicht im Repo
   vite.config.js           Build-Konfiguration
@@ -54,14 +56,14 @@ backend/                   Node.js-Server (nie öffentlich ausgeliefert)
 .github/workflows/pages.yml    Demo-Deploy auf GitHub Pages (baut und veröffentlicht dist/, mit noindex)
 .github/workflows/quality.yml  bei jedem Push: Build, Tests, Lighthouse, axe
 lighthouserc.json              Lighthouse-Schwellen (Barrierefreiheit 100 …)
-docs/BRIEFING.md           Projekt-Briefing, Entscheidungen und fiktive Firmendaten
+docs/BRIEFING.md           Projekt-Briefing und Entscheidungen
 ```
 
 ## Für ein anderes Gewerk anpassen
 
 1. Farben im Block „Marke“ in `frontend/css/tokens.css` ändern.
-2. Firmendaten in `docs/BRIEFING.md` und in den Seiten (Text und JSON-LD in `index.html`, `@type` z. B. `Plumber`, `HousePainter`, dazu `partials/footer.hbs`) ersetzen.
-3. Öffnungszeiten und Bundesland (Feiertage) in `frontend/js/hours.js` anpassen.
+2. Firmendaten, Öffnungszeiten und Bundesland (Feiertage) in `frontend/site.json` ersetzen, `schemaType` z. B. `Plumber`, `HousePainter`. Der Build bricht ab, wenn Pflichtfelder fehlen.
+3. Texte der Abschnitte in `frontend/index.html` anpassen (Leistungen, Referenzen, Stellen; Zahlwörter wie „acht Leute“ stehen im Fließtext).
 4. Fotos: Originale nach `frontend/img-src/`, Bildsätze in `frontend/images.config.js`, im HTML `{{> picture …}}`, Nachweise in `frontend/img-src/CREDITS.md`.
 5. Favicon: Farben/Symbol in `frontend/img-src/icon.svg` ändern.
 

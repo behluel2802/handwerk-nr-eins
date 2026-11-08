@@ -12,26 +12,12 @@ Stand: 06.11.2026
 
 ### Firmendaten (fiktiv)
 
-Diese Daten sind die einzige Quelle für alle Angaben zum Betrieb. Bei Änderungen hier und in `frontend/index.html` (sichtbarer Text und JSON-LD im `<head>`) anpassen.
+Einzige Quelle seit Schritt 15a: **`frontend/site.json`** (Name, Marke, Inhaber, Gründung, Team, Adresse, Telefon, Notdienst, E-Mail, Web, Einzugsgebiet, Antwortzeit, Bewertung, Öffnungszeiten mit Bundesland und Zusatz-Schließtagen). Seiten, Partials, JSON-LD, `js/hours.js`, `js/main.js` und das Backend lesen von dort. Werte nur dort ändern, nichts Neues erfinden.
 
-| Feld | Wert |
-|---|---|
-| Name | Elektro Berger GmbH |
-| Claim | Ihr Elektro-Meisterbetrieb in Musterstadt |
-| Inhaber | Thomas Berger, Elektrotechnikermeister |
-| Gegründet | 1998 |
-| Mitarbeiter | 8 (davon 2 Azubis) |
-| Adresse | Werkstraße 12, 12345 Musterstadt |
-| Telefon | 0123 456 789 0 (Link: `tel:+491234567890`) |
-| Notdienst | 0123 456 789 9, rund um die Uhr |
-| WhatsApp | +49 123 4567890 (wird seit 07.11.2026 nicht mehr auf der Website verwendet) |
-| E-Mail | info@elektro-berger.example |
-| Web | www.elektro-berger.example |
-| Öffnungszeiten | Mo–Do 7:00–17:00, Fr 7:00–14:00 |
-| Einzugsgebiet | ca. 25 km um Musterstadt |
-| Antwortzeit | Rückmeldung auf Anfragen innerhalb eines Werktags |
-| Mitgliedschaften | Elektro-Innung (Platzhalter), eingetragen in der Handwerksrolle |
-| Bewertung | 4,9 von 5 Sternen (127 Google-Bewertungen, fiktiv) |
+Nicht in `site.json` (Inhalt, nicht Stammdaten):
+- Mitgliedschaften: Elektro-Innung (Platzhalter), eingetragen in der Handwerksrolle – als Text in „Über uns“ und im Impressum
+- Zahlwörter im Fließtext („Team aus acht Leuten“, „zwei Auszubildende“) und „Freitags um 14 Uhr Feierabend“ bei Änderungen von Hand anpassen
+- WhatsApp +49 123 4567890 wird seit 07.11.2026 nicht mehr verwendet
 
 `Musterstadt`, `12345` und die Domain `.example` sind absichtlich als Platzhalter erkennbar.
 
@@ -106,7 +92,8 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 13a | Build-Schritt mit Vite: Bausteine (Partials) für Kopf/Footer, Ausgabe nach `dist/`, Backend und Pages-Workflow anpassen, CSP-Hash aus dem Build | ✅ erledigt, gepusht |
 | 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | ✅ erledigt, gepusht |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
-| 15 | Leitfaden „Vorlage für neue Projekte“: Aufbau, Reihenfolge der Schritte, Entscheidungen mit Begründung, Stolpersteine, Checkliste für ein neues Gewerk (ganz am Ende, wenn sich nichts Grundlegendes mehr ändert) | **nächster Schritt:** Plan vorstellen (Schritt 14 bleibt zurückgestellt) |
+| 15a | Firmendaten an einer Stelle: `frontend/site.json` als Handlebars-Kontext `site`, JSON-LD daraus erzeugt, Pflichtfeld-Prüfung im Build | ✅ erledigt, committet |
+| 15 | Leitfaden „Vorlage für neue Projekte“ (`docs/LEITFADEN.md`, eigenständig) und leere Briefing-Vorlage | **nächster Schritt:** Leitfaden schreiben (Plan freigegeben, Schritt 14 bleibt zurückgestellt) |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -344,6 +331,33 @@ Hinweis für Schritt 14: `og:image` braucht dann eine feste Datei-URL (z. B. eig
 
 Für Schritt 14 vorgemerkt: `image`/`logo` im JSON-LD und `og:image` als absolute URL (feste Datei in `frontend/public/`).
 
+### Schritt 15 (Plan freigegeben am 08.11.2026)
+
+**Leitfaden** `docs/LEITFADEN.md`, gedacht zum Mitnehmen in andere Projekte: Wann die Vorlage passt · Schnellstart · empfohlene Reihenfolge (idealisiert: Ordnerstruktur, Vite und Bild-Pipeline von Anfang an) · Entscheidungen mit Begründung inkl. verworfener Alternativen · Stolpersteine (Symptom → Ursache → Lösung) · Checkliste neues Gewerk · Checkliste Go-Live.
+**Briefing-Vorlage** `docs/BRIEFING-VORLAGE.md`: Gliederung, Firmendaten- und Statustabelle ohne Inhalte, dazu im Leitfaden ein Abschnitt „Arbeitsweise mit Claude“.
+
+**Entscheidungen (freigegeben):**
+1. Eigene Datei statt README-Ausbau
+2. Idealisierte Reihenfolge, nicht die tatsächliche
+3. Leitfaden in sich vollständig, **ohne Verweise auf dieses Briefing** (soll in andere Projekte wandern). README und `CLAUDE.md` verweisen auf den Leitfaden, nicht umgekehrt; README-Abschnitt „Für ein anderes Gewerk anpassen“ wird zum Verweis.
+4. Leere Briefing-Vorlage + Abschnitt „Arbeitsweise mit Claude“
+5. Vorher Schritt 15a (Firmendaten zentral)
+
+### Schritt 15a (Plan freigegeben, umgesetzt am 08.11.2026)
+
+**`frontend/site.json`** ist die einzige Quelle für die Stammdaten (Felder siehe Abschnitt 1). Liegt bei den Quellen, wird nicht ausgeliefert (`/site.json` → 404).
+- **Templates:** Kontext `site` in allen Seiten und Partials (`{{site.phone.display}}` …). Helfer in `frontend/scripts/site.js`: `dayRange` ([1,2,3,4] → „Mo–Do“), `time`, `decimal` (4.9 → „4,9“), `joinAnd`, `jsonLd` (JSON-LD komplett aus den Daten, `<` maskiert).
+- **Prüfung:** `checkSite` bricht den Build bei fehlenden Pflichtfeldern ab, fehlender Google-Link (`rating.profileUrl: null`) gibt nur eine Warnung.
+- **Fehlende Links:** `null` statt `href="#"`. Vertrauensleiste zeigt „127 Google-Bewertungen“ als Text, Button „Alle Bewertungen auf Google“ und Footer-Link entfallen, bis die URL eingetragen ist.
+- **JS/Backend:** `hours.js` (Zeiten, Bundesland, Schließtage), `main.js` (Telefonnummer in der Fehlermeldung) und `backend/server.js` (Fehlerseite, Startmeldung) importieren `site.json` (`with { type: 'json' }`).
+- **Ergebnis:** gebautes HTML bis auf JSON-LD-Formatierung, Kommentare und die Google-Links identisch (Diff geprüft). 41 Tests (neu: Pflichtfelder, Helfer, JSON-LD = `site.json`, keine `href="#"`, Öffnungszeiten inkl. Fronleichnam/Heiligabend). Lighthouse Startseite 99–100 / 100 / 100 / 100, axe 0 Befunde auf allen Seiten.
+
+**Entscheidungen (freigegeben, nach Best Practices):**
+1. JSON statt JS-Konfiguration (reine Daten, ohne Zusatzpaket in Vite, Node und Tests lesbar; Konvention wie Eleventy `_data/site.json`), Pflichtfeld-Prüfung im Build
+2. Nur Stammdaten (vor allem NAP: Name, Adresse, Telefon) in `site.json`, Fließtext bleibt Inhalt; Zahlwörter bleiben im Text
+3. Unbekannte Werte als `null` mit Build-Warnung, im HTML Text ohne Link statt `href="#"`
+4. Kontextname `site` (Konvention Jekyll/Hugo/Eleventy)
+
 ## 8. Getroffene Entscheidungen
 
 | Thema | Entscheidung |
@@ -360,6 +374,7 @@ Für Schritt 14 vorgemerkt: `image`/`logo` im JSON-LD und `og:image` als absolut
 | Ordner | `frontend/` (Quellen; öffentlich nur `frontend/dist/`) und `backend/` getrennt, npm-Workspaces |
 | Build-Schritt | Vite (Schritt 13a). Begründung: Projekt dient als Vorlage und Lernbasis für größere Projekte; Kopf/Footer sind bereits mehrfach dupliziert; Lighthouse soll das gebaute Ergebnis messen. Entscheidung vom 08.11.2026 |
 | Aufteilung 13/14 | Feinschliff ohne Domain-Bezug jetzt (Schritt 13), alles Domain-Abhängige erst beim echten Onlinestellen (Schritt 14), Entscheidung vom 08.11.2026 |
+| Firmendaten | eine Quelle `frontend/site.json`, Templates/JS/Backend lesen daraus (Schritt 15a, 08.11.2026) |
 | Hosting | vorerst keins; Demo über GitHub Pages (Schritt 12b), echtes Hosting in Schritt 14 |
 | Bilder | Unsplash, automatisch von Claude gesucht, lokal gespeichert |
 
