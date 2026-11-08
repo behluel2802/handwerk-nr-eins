@@ -75,8 +75,8 @@ Querschnittsthema: **Google-Bewertungen bzw. Google-Unternehmensprofil** gut sic
 
 ## 6. Technik
 
-- **Reines HTML, CSS und Vanilla JavaScript**, kein Framework, kein Build-Schritt
-- Struktur: `frontend/` (öffentlich: `index.html`, `css/`, `js/`, `img/`), `backend/` (Node.js), `docs/`
+- **HTML, CSS und Vanilla JavaScript**, kein Framework; Build mit Vite (seit Schritt 13a, siehe dort)
+- Struktur: npm-Workspaces `frontend/` (Quellen, Vite baut nach `frontend/dist/`, nur das wird ausgeliefert) und `backend/` (Node.js), dazu `docs/`
 - **Mobile-first**, responsiv, barrierearm (semantisches HTML, Kontraste, Tastaturbedienung)
 - **Kontaktformular:** Validierung in JS, Versand an das eigene Node.js-Backend (`/api/kontakt`, Schritt 11b), keine externen Formular-Dienste. Ohne Backend Demo-Modus (ursprünglich „nur Frontend“, am 07.11.2026 geändert)
 - **SEO:** Meta-Tags, Open Graph, Schema.org-Daten (`Electrician` bzw. `LocalBusiness`)
@@ -103,8 +103,10 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | ✅ erledigt, committet |
 | 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | ✅ erledigt, committet |
 | 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | ✅ erledigt, gepusht, Demo online geprüft |
-| 13 | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen), Entscheidung Build-Schritt (Empfehlung: keiner) | **nächster Schritt:** Plan vorstellen |
+| 13a | Build-Schritt mit Vite: Bausteine (Partials) für Kopf/Footer, Ausgabe nach `dist/`, Backend und Pages-Workflow anpassen, CSP-Hash aus dem Build | ✅ erledigt, gepusht |
+| 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | **nächster Schritt:** Plan vorstellen |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
+| 15 | Leitfaden „Vorlage für neue Projekte“: Aufbau, Reihenfolge der Schritte, Entscheidungen mit Begründung, Stolpersteine, Checkliste für ein neues Gewerk (ganz am Ende, wenn sich nichts Grundlegendes mehr ändert) | offen |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -297,6 +299,23 @@ Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden au
 3. Kein zusätzlicher Demo-Banner (Footer-Hinweis und Demo-Hinweis im Formular reichen)
 4. Pages aktiviert der Entwickler selbst (Settings → Pages → Source „GitHub Actions“), kein `gh` in der Sitzung
 
+### Schritt 13a (Plan freigegeben, umgesetzt am 08.11.2026)
+
+**Aufbau:** npm-Workspaces im Hauptordner (`frontend`, `backend`), eine `package-lock.json`, Node-Version in `.nvmrc` (24). Befehle: `npm run dev` (Vite :5173 + Backend :3000 über `concurrently`, Vite reicht `/api` weiter), `npm run build`, `npm start` (Backend liefert `frontend/dist/` aus), `npm test`, `npm run images`.
+**Vite** (`frontend/vite.config.js`): `base: './'` (relative Pfade, läuft auch im Pages-Unterordner), vier Seiten als Einstiege, CSS/JS verkleinert und mit Hash im Namen, CSS der drei Dateien zu einer zusammengefasst, keine `data:`-URIs (`assetsInlineLimit: 0`). Die Lightbox-Links (`<a href>` und `data-full`) werden über `html.additionalAssetSources` ebenfalls verarbeitet, die Lightbox selbst blieb unverändert.
+**Partials** (`vite-plugin-handlebars`, `frontend/partials/`): `sprite.hbs` (Icon-Sprite), `footer.hbs` (Kontext `home` = Anker-Präfix, `current.<seite>` für `aria-current`), `page-header.hbs` (Unterseiten).
+**Bild-Pipeline:** Originale in `frontend/img-src/` (jetzt im Repo, 6,3 MB), Konfiguration `frontend/images.config.js` (Breiten, Seitenverhältnis, Fokus des Ausschnitts, Spiegelung), Skript `frontend/scripts/images.js` mit `sharp`, läuft automatisch vor dev/build, überspringt unveränderte Bilder, räumt verwaiste auf. Ausgabe `frontend/img/` (nicht mehr im Repo). Die Ausschnitte wurden aus den bisherigen Bildern zurückgerechnet: gleiche Maße und Motive, insgesamt ca. 3 % kleiner.
+**Backend:** liefert `frontend/dist/` aus (ohne Build klare Fehlermeldung), CSP-Hashes aus allen gebauten Seiten, `/assets/*` mit Hash im Namen `Cache-Control: public, max-age=31536000, immutable`, HTML weiter `no-cache` + ETag. 3 neue Tests (33 gesamt).
+**Pages-Workflow:** `setup-node` (Version aus `.nvmrc`, npm-Cache), `npm ci`, `npm run build`, veröffentlicht `frontend/dist/` (mit `noindex` in der Kopie).
+
+**Entscheidungen (freigegeben):**
+1. Vite als Build-Werkzeug (Begründung siehe Abschnitt 8)
+2. Partials mit `vite-plugin-handlebars` statt eigenem Plugin (etabliert, Parameter möglich)
+3. Bildgrößen werden beim Build erzeugt, nur Originale im Repo. Geplant war `vite-imagetools`; im Test verarbeitet es nur JS-Imports, nicht Bild-URLs im HTML. Deshalb eigenes Skript mit `sharp` (dieselbe Bibliothek, die imagetools intern nutzt) plus Konfigurationsdatei.
+4. npm-Workspaces mit einem gemeinsamen Startbefehl
+
+Hinweis für Schritt 14: `og:image` braucht dann eine feste Datei-URL (z. B. eigenes Vorschaubild in `frontend/public/`), da die Bilder im Build einen Hash bekommen.
+
 ## 8. Getroffene Entscheidungen
 
 | Thema | Entscheidung |
@@ -310,8 +329,8 @@ Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden au
 | Stil | auf die Zielgruppe ausgerichtet (Blau + Gelb/Bernstein, hell, vertrauenswürdig) |
 | Technik | einfaches HTML/CSS/JS |
 | Formular | eigenes Node.js-Backend (`/api/kontakt`), ohne Backend Demo-Modus |
-| Ordner | `frontend/` (einzig öffentlich) und `backend/` getrennt |
-| Build-Schritt | vorerst keiner, Entscheidung in Schritt 13 |
+| Ordner | `frontend/` (Quellen; öffentlich nur `frontend/dist/`) und `backend/` getrennt, npm-Workspaces |
+| Build-Schritt | Vite (Schritt 13a). Begründung: Projekt dient als Vorlage und Lernbasis für größere Projekte; Kopf/Footer sind bereits mehrfach dupliziert; Lighthouse soll das gebaute Ergebnis messen. Entscheidung vom 08.11.2026 |
 | Aufteilung 13/14 | Feinschliff ohne Domain-Bezug jetzt (Schritt 13), alles Domain-Abhängige erst beim echten Onlinestellen (Schritt 14), Entscheidung vom 08.11.2026 |
 | Hosting | vorerst keins; Demo über GitHub Pages (Schritt 12b), echtes Hosting in Schritt 14 |
 | Bilder | Unsplash, automatisch von Claude gesucht, lokal gespeichert |

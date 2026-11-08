@@ -1,16 +1,16 @@
 // Elektro Berger – Node-Server
-// Liefert ausschließlich frontend/ aus und nimmt Kontaktanfragen unter POST /api/kontakt an.
-// Start: npm run dev (lädt .env, falls vorhanden; ohne SMTP_HOST Entwicklungsmodus)
+// Liefert ausschließlich die gebaute Seite (frontend/dist/) aus und nimmt Kontaktanfragen unter POST /api/kontakt an.
+// Start: npm run build && npm start im Hauptordner (lädt .env, falls vorhanden; ohne SMTP_HOST Entwicklungsmodus)
 
 import http from 'node:http';
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { readFile, realpath, stat } from 'node:fs/promises';
+import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRateLimiter, createSender, validateContact } from './contact.js';
 
-const DEFAULT_ROOT = fileURLToPath(new URL('../frontend/', import.meta.url));
+const DEFAULT_ROOT = fileURLToPath(new URL('../frontend/dist/', import.meta.url));
 const MAX_BODY = 10 * 1024; // 10 KB reichen für jede echte Anfrage
 
 // Nur diese Dateitypen werden ausgeliefert – alles andere ist 404
@@ -27,11 +27,24 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
-// Hashes aller Inline-Skripte in index.html für die CSP (JSON-LD wird nicht ausgeführt, braucht keinen)
+// Gebaute Dateien mit Hash im Namen (assets/name-AbC123.js) ändern sich nie → dauerhaft cachen
+const IMMUTABLE = /^\/assets\/[^/]+-[\w-]{8}\.\w+$/;
+
+// HTML-Seiten im Wurzelordner der Website
+async function htmlPages(root) {
+  return (await readdir(root).catch(() => [])).filter((f) => f.endsWith('.html')).sort();
+}
+
+// Hashes aller Inline-Skripte aller Seiten für die CSP (JSON-LD wird nicht ausgeführt, braucht keinen)
 async function inlineScriptHashes(root) {
-  const html = await readFile(path.join(root, 'index.html'), 'utf8').catch(() => '');
-  return [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]
-    .map(([, code]) => `'sha256-${createHash('sha256').update(code).digest('base64')}'`);
+  const hashes = new Set();
+  for (const page of await htmlPages(root)) {
+    const html = await readFile(path.join(root, page), 'utf8').catch(() => '');
+    for (const [, code] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+      hashes.add(`'sha256-${createHash('sha256').update(code).digest('base64')}'`);
+    }
+  }
+  return [...hashes];
 }
 
 function securityHeaders(scriptHashes) {
@@ -110,17 +123,21 @@ export async function createApp({
   limiter = createRateLimiter(),
   trustProxy = process.env.TRUST_PROXY === '1',
 } = {}) {
-  const rootReal = await realpath(root);
+  const rootReal = await realpath(root).catch(() => {
+    throw new Error(`Gebaute Website fehlt (${root}). Bitte zuerst im Hauptordner „npm run build“ ausführen.`);
+  });
 
-  // Sicherheits-Header; CSP-Hashes neu berechnen, sobald sich index.html ändert
-  let cached = { mtime: -1, headers: null };
+  // Sicherheits-Header; CSP-Hashes neu berechnen, sobald sich eine Seite ändert (z. B. nach neuem Build)
+  let cached = { key: '', headers: null };
   async function currentHeaders() {
-    const mtime = await stat(path.join(rootReal, 'index.html')).then((s) => s.mtimeMs, () => 0);
-    if (mtime !== cached.mtime) cached = { mtime, headers: securityHeaders(await inlineScriptHashes(rootReal)) };
+    const pages = await htmlPages(rootReal);
+    const times = await Promise.all(pages.map((p) => stat(path.join(rootReal, p)).then((s) => s.mtimeMs, () => 0)));
+    const key = pages.map((p, i) => `${p}:${times[i]}`).join('|');
+    if (key !== cached.key) cached = { key, headers: securityHeaders(await inlineScriptHashes(rootReal)) };
     return cached.headers;
   }
 
-  // Liefert eine Datei aus frontend/ – oder null, wenn sie nicht ausgeliefert werden darf
+  // Liefert eine Datei aus der Website-Wurzel – oder null, wenn sie nicht ausgeliefert werden darf
   async function resolveFile(urlPath) {
     let pathname;
     try {
@@ -157,11 +174,12 @@ export async function createApp({
     const found = await resolveFile(url.pathname);
     if (!found) return notFound(res);
 
-    // ETag + no-cache: Browser fragt jedes Mal nach und bekommt 304, solange sich nichts geändert hat
+    // Gehashte Assets: ein Jahr, unveränderlich. Alles andere (HTML): ETag + no-cache,
+    // der Browser fragt jedes Mal nach und bekommt 304, solange sich nichts geändert hat.
     const etag = `W/"${found.info.size.toString(16)}-${Math.floor(found.info.mtimeMs).toString(16)}"`;
     const fileHeaders = {
       'Content-Type': MIME[path.extname(found.file).toLowerCase()],
-      'Cache-Control': 'no-cache',
+      'Cache-Control': IMMUTABLE.test(url.pathname) ? 'public, max-age=31536000, immutable' : 'no-cache',
       ETag: etag,
     };
     if (req.headers['if-none-match'] === etag) {
@@ -257,7 +275,14 @@ export async function createApp({
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT || 3000);
   const sender = createSender();
-  const server = http.createServer(await createApp({ sender }));
+  let app;
+  try {
+    app = await createApp({ sender });
+  } catch (error) {
+    console.error(`[server] ${error.message}`);
+    process.exit(1);
+  }
+  const server = http.createServer(app);
   server.listen(port, () => {
     console.info(`Elektro Berger läuft auf http://localhost:${port} (Mailversand: ${sender.mode === 'smtp' ? 'SMTP' : 'Entwicklungsmodus, nur Konsole'})`);
   });

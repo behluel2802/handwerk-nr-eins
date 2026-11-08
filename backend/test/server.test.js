@@ -15,6 +15,9 @@ before(async () => {
   dir = await mkdtemp(path.join(tmpdir(), 'eb-test-'));
   root = path.join(dir, 'frontend');
   await mkdir(path.join(root, 'css'), { recursive: true });
+  await mkdir(path.join(root, 'assets'));
+  await writeFile(path.join(root, 'assets', 'index-AbCd12_-.js'), 'console.log(1)');
+  await writeFile(path.join(root, 'unterseite.html'), '<!doctype html><script>window.x = 1;</script>');
   await mkdir(path.join(root, '.git'));
   await writeFile(path.join(root, 'index.html'), "<!doctype html><script>document.documentElement.classList.add('js');</script>");
   await writeFile(path.join(root, 'css', 'a.css'), 'body{}');
@@ -72,6 +75,22 @@ test('Startseite und CSS werden ausgeliefert, mit Sicherheits-Headern', () => wi
   assert.equal(res.headers['cache-control'], 'no-cache');
   assert.equal((await raw(port, { path: '/css/a.css' })).status, 200);
 }));
+
+test('Gehashte Assets werden dauerhaft gecacht, andere Dateien nicht', () => withServer({}, async ({ port }) => {
+  const asset = await raw(port, { path: '/assets/index-AbCd12_-.js' });
+  assert.equal(asset.status, 200);
+  assert.equal(asset.headers['cache-control'], 'public, max-age=31536000, immutable');
+  assert.equal((await raw(port, { path: '/css/a.css' })).headers['cache-control'], 'no-cache');
+}));
+
+test('CSP enthält die Inline-Skripte aller Seiten', () => withServer({}, async ({ port }) => {
+  const csp = (await raw(port, { path: '/' })).headers['content-security-policy'];
+  assert.equal(csp.match(/'sha256-/g).length, 2);
+}));
+
+test('Fehlender Build-Ordner → verständliche Fehlermeldung', async () => {
+  await assert.rejects(createApp({ root: path.join(dir, 'gibt-es-nicht') }), /npm run build/);
+});
 
 test('ETag: unveränderte Datei → 304', () => withServer({}, async ({ port }) => {
   const first = await raw(port, { path: '/css/a.css' });

@@ -1,0 +1,19 @@
+{
+  "name": "elektro-berger-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Statische Seite: Quellen in HTML/CSS/JS, Vite baut nach dist/.",
+  "type": "module",
+  "scripts": {
+    "images": "node scripts/images.js",
+    "predev": "npm run images",
+    "dev": "vite",
+    "prebuild": "npm run images",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5",
+    "vite": "^8.3.6",
+    "vite-plugin-handlebars": "^2.0.3"
+  }
+}

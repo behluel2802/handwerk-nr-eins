@@ -12,25 +12,11 @@
   <link rel="stylesheet" href="css/sections.css">
 </head>
 <body class="page-legal">
-  <svg xmlns="http://www.w3.org/2000/svg" hidden>
-    <symbol id="i-bolt" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M13.5 2 4 13.5h7L10 22l10-12.5h-7.2L13.5 2z"/>
-    </symbol>
-  </svg>
+  {{> sprite}}
 
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <header class="page-header">
-    <div class="container page-header__inner">
-      <a class="brand" href="./" aria-label="Elektro Berger GmbH – zur Startseite">
-        <span class="brand__mark" aria-hidden="true">
-          <svg class="icon"><use href="#i-bolt"/></svg>
-        </span>
-        <span class="brand__text">Elektro <strong>Berger</strong></span>
-      </a>
-      <a href="./">Zur Startseite</a>
-    </div>
-  </header>
+  {{> page-header}}
 
   <main id="main" class="section">
     <div class="container legal">
@@ -71,59 +57,6 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="site-footer__grid">
-        <section class="site-footer__col" aria-labelledby="footer-firma">
-          <h2 class="visually-hidden" id="footer-firma">Unternehmen</h2>
-          <p class="brand brand--on-dark">
-            <span class="brand__mark" aria-hidden="true">
-              <svg class="icon"><use href="#i-bolt"/></svg>
-            </span>
-            <span class="brand__text">Elektro <strong>Berger</strong></span>
-          </p>
-          <p class="site-footer__claim">Ihr Elektro-Meisterbetrieb in Musterstadt</p>
-          <address class="site-footer__address">
-            Elektro Berger GmbH<br>
-            Werkstraße 12<br>
-            12345 Musterstadt
-          </address>
-          <p class="site-footer__muted">Meisterbetrieb · seit 1998</p>
-        </section>
-
-        <section class="site-footer__col" aria-labelledby="footer-kontakt">
-          <h2 class="site-footer__title" id="footer-kontakt">Kontakt</h2>
-          <ul class="site-footer__list">
-            <li>Telefon <a href="tel:+491234567890">0123 456 789 0</a></li>
-            <li class="site-footer__emergency">24/7-Notdienst <a href="tel:+491234567899">0123 456 789 9</a></li>
-            <li><a href="mailto:info@elektro-berger.example">info@elektro-berger.example</a></li>
-          </ul>
-          <p class="site-footer__muted">Mo–Do 7:00–17:00 Uhr<br>Fr 7:00–14:00 Uhr</p>
-        </section>
-
-        <nav class="site-footer__col" aria-labelledby="footer-seite">
-          <h2 class="site-footer__title" id="footer-seite">Seite</h2>
-          <ul class="site-footer__list">
-            <li><a href="./#leistungen">Leistungen</a></li>
-            <li><a href="./#referenzen">Referenzen</a></li>
-            <li><a href="./#ueber-uns">Über uns</a></li>
-            <li><a href="./#karriere">Karriere</a></li>
-            <li><a href="./#kontakt">Kontakt</a></li>
-            <!-- TODO: Link zum Google-Unternehmensprofil eintragen -->
-            <li><a href="#">Bewertungen auf Google</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <div class="site-footer__bottom">
-        <p>&copy; 2026 Elektro Berger GmbH</p>
-        <ul class="site-footer__legal">
-          <li><a href="impressum.html" aria-current="page">Impressum</a></li>
-          <li><a href="datenschutz.html">Datenschutz</a></li>
-        </ul>
-        <p class="site-footer__note">Fiktiver Betrieb – Übungsprojekt</p>
-      </div>
-    </div>
-  </footer>
+  {{> footer}}
 </body>
 </html>

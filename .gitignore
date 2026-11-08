@@ -13,8 +13,10 @@ desktop.ini
 *.local.*
 tmp/
 
-# Original-Fotos vor der Optimierung (nur optimierte Bilder ins Repo)
-frontend/img/_originals/
+# Build-Ergebnisse (werden aus den Quellen erzeugt)
+frontend/dist/
+# erzeugt von „npm run images“ aus frontend/img-src/
+frontend/img/
 
 # Backend: Abhängigkeiten, Zugangsdaten, lokale Daten
 node_modules/

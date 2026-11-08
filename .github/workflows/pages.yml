@@ -1,5 +1,5 @@
 # Demo-Vorschau auf GitHub Pages (Schritt 12b)
-# Veröffentlicht ausschließlich frontend/ – backend/, docs/ und .env gelangen nie auf Pages.
+# Baut die Seite mit Vite und veröffentlicht ausschließlich frontend/dist/ – backend/, docs/ und .env gelangen nie auf Pages.
 # In der veröffentlichten Kopie wird <meta name="robots" content="noindex"> ergänzt,
 # die Dateien im Repo bleiben unverändert (für späteres echtes Hosting, Schritt 14).
 # Einmalig nötig: Settings → Pages → Source „GitHub Actions“.
@@ -11,6 +11,8 @@ on:
     branches: [main]
     paths:
       - 'frontend/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -33,8 +35,19 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Nur frontend/ kopieren
-        run: cp -r frontend _site
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # Exakt die Versionen aus package-lock.json
+      - run: npm ci
+
+      # Erzeugt zuerst die Bilder (img-src/ → img/), dann dist/
+      - run: npm run build
+
+      - name: Nur die gebaute Seite kopieren
+        run: cp -r frontend/dist _site
 
       - name: noindex in die Demo-Kopie einfügen
         run: |

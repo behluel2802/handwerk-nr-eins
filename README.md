@@ -1,57 +1,66 @@
 # Handwerk Nr. 1 – Website-Vorlage für Handwerksbetriebe
 
-One-Pager für einen **fiktiven** Elektro-Meisterbetrieb („Elektro Berger GmbH“, Musterstadt). Frontend aus reinem HTML, CSS und Vanilla JS, ohne Framework und ohne Build-Schritt. Ein kleines Node.js-Backend liefert die Seite aus und nimmt die Kontaktanfragen an.
+One-Pager für einen **fiktiven** Elektro-Meisterbetrieb („Elektro Berger GmbH“, Musterstadt). Frontend aus HTML, CSS und Vanilla JS ohne Framework, gebaut mit **Vite** (Partials, Bild-Pipeline, Dateinamen mit Hash). Ein kleines Node.js-Backend liefert die gebaute Seite aus und nimmt die Kontaktanfragen an.
 
-## Lokal ansehen
+Demo (ohne Backend, Formular im Demo-Modus): https://behluel2802.github.io/handwerk-nr-eins/
 
-**Mit Backend (empfohlen):**
+## Voraussetzungen
+
+Node.js 24 (siehe `.nvmrc`, mindestens 22.9). Einmalig im Hauptordner:
 
 ```bash
-cd backend
-npm install      # einmalig
-npm run dev      # → http://localhost:3000, startet bei Änderungen am Backend neu
+npm install
 ```
+
+## Befehle (im Hauptordner)
+
+| Befehl | Was passiert |
+|---|---|
+| `npm run dev` | Entwicklung: Vite auf **http://localhost:5173** (lädt bei Änderungen sofort neu) + Backend auf :3000. Anfragen an `/api` reicht Vite an das Backend weiter. |
+| `npm run build` | Erzeugt die Bilder und baut die Seite nach `frontend/dist/` |
+| `npm start` | Backend liefert `frontend/dist/` aus → **http://localhost:3000** (wie im Betrieb, vorher `npm run build`) |
+| `npm test` | Tests (Prüfregeln, Kontakt-API, gesperrte Pfade wie `/.env`, Caching, CSP) |
+| `npm run images` | Nur die Bilder neu erzeugen (`-- --force` erzeugt alle neu) |
 
 Ohne `backend/.env` bzw. ohne `SMTP_HOST` läuft der Mailversand im **Entwicklungsmodus**: Anfragen erscheinen nur in der Konsole. Für echten Versand `backend/.env.example` nach `backend/.env` kopieren und die SMTP-Daten eintragen.
-
-**Nur Frontend** (z. B. für einen schnellen Blick, Formular dann im Demo-Modus):
-
-```bash
-python3 -m http.server 8000 -d frontend
-```
-
-**Tests:** `cd backend && npm test` (Prüfregeln, Kontakt-API, gesperrte Pfade wie `/.env`).
 
 ## Struktur
 
 ```
-frontend/                  wird ausgeliefert (einziger öffentlicher Ordner)
-  index.html               Seite (alle Abschnitte + JSON-LD)
+package.json               npm-Workspaces (frontend, backend) und gemeinsame Befehle
+frontend/                  Quellen der Website
+  index.html, impressum.html, datenschutz.html, danke.html
+  partials/                Bausteine (Handlebars): Icon-Sprite, Footer, Kopf der Unterseiten
   css/tokens.css           Design-Tokens (Farben, Schrift, Abstände)
   css/base.css             Reset, Typografie, Layout-Helfer, Buttons
   css/sections.css         Styles der einzelnen Abschnitte
   js/main.js               Interaktion (Menü, Galerie, Formular, Erreichbarkeit)
   js/hours.js              Öffnungszeiten und Feiertage (konfigurierbar)
   js/validate.js           Prüfregeln fürs Formular (auch vom Backend genutzt)
-  danke.html               Bestätigung nach Absenden ohne JavaScript
-  img/                     optimierte Bilder + CREDITS.md
+  img-src/                 Original-Fotos + CREDITS.md
+  images.config.js         Welche Größen/Formate/Ausschnitte erzeugt werden
+  scripts/images.js        Bild-Pipeline (sharp): img-src/ → img/
+  img/                     erzeugt, nicht im Repo
+  vite.config.js           Build-Konfiguration
+  dist/                    gebaute Seite, nicht im Repo – nur dieser Ordner wird ausgeliefert
 backend/                   Node.js-Server (nie öffentlich ausgeliefert)
-  server.js                Auslieferung von frontend/ + POST /api/kontakt
+  server.js                Auslieferung von frontend/dist/ + POST /api/kontakt
   contact.js               Rate-Limit, Mailtext, Versand (nodemailer)
   test/                    Tests (node:test)
   .env.example             Vorlage für die Konfiguration
-docs/BRIEFING.md           Projekt-Briefing und fiktive Firmendaten
+.github/workflows/pages.yml  Demo-Deploy auf GitHub Pages (baut und veröffentlicht dist/, mit noindex)
+docs/BRIEFING.md           Projekt-Briefing, Entscheidungen und fiktive Firmendaten
 ```
 
 ## Für ein anderes Gewerk anpassen
 
-1. Farben im Block „Marke“ in `css/tokens.css` ändern.
-2. Firmendaten in `docs/BRIEFING.md` und `frontend/index.html` (Text und JSON-LD, `@type` z. B. `Plumber`, `HousePainter`) ersetzen.
+1. Farben im Block „Marke“ in `frontend/css/tokens.css` ändern.
+2. Firmendaten in `docs/BRIEFING.md` und in den Seiten (Text und JSON-LD in `index.html`, `@type` z. B. `Plumber`, `HousePainter`, dazu `partials/footer.hbs`) ersetzen.
 3. Öffnungszeiten und Bundesland (Feiertage) in `frontend/js/hours.js` anpassen.
-4. Bilder in `frontend/img/` austauschen.
+4. Fotos: Originale nach `frontend/img-src/`, Größen und Ausschnitte in `frontend/images.config.js`, Nachweise in `frontend/img-src/CREDITS.md`.
 
 ## Hinweise
 
 - Alle Firmendaten sind erfunden.
-- Keine externen Ressourcen (Fonts, CDNs, Tracker) – DSGVO-freundlich.
-- Bilder: Unsplash-Lizenz, Nachweise in `frontend/img/CREDITS.md`.
+- Keine externen Ressourcen (Fonts, CDNs, Tracker) – DSGVO-freundlich. Vite und sharp laufen nur beim Bauen, nichts davon landet im Browser.
+- Bilder: Unsplash-Lizenz, Nachweise in `frontend/img-src/CREDITS.md`.
