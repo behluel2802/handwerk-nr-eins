@@ -102,9 +102,9 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 11a | Kontakt: Umstrukturierung `frontend/`/`backend/`, UX-Umbau, Erreichbarkeit mit Feiertagen, Demo-Modus | ✅ erledigt, committet |
 | 11b | Node-Backend `/api/kontakt` (gesichertes Ausliefern nur aus `frontend/`, SMTP, Rate-Limit, Dev-Modus ohne SMTP) | ✅ erledigt, committet |
 | 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | ✅ erledigt, committet |
-| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | ✅ Workflow committet und gepusht, Pages aktiviert; **offen:** Demo online prüfen |
-| 13 | Feinschliff: Lighthouse, SEO, Barrierefreiheit (inkl. Entscheidungen JSON-LD `JobPosting` und Build-Schritt, z. B. Vite; Favicon fehlt noch) | offen |
-| 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
+| 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | ✅ erledigt, gepusht, Demo online geprüft |
+| 13 | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen), Entscheidung Build-Schritt (Empfehlung: keiner) | **nächster Schritt:** Plan vorstellen |
+| 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -286,6 +286,8 @@ Technik: neues Token `--font-mono`, Klassen `.brand--on-dark`, `.page-header`, `
 
 ### Schritt 12b (Plan freigegeben, Workflow angelegt am 08.11.2026)
 
+**Online:** https://behluel2802.github.io/handwerk-nr-eins/ (erster Deploy nach ca. 30 s, geprüft: alle Seiten 200, `noindex` drin, `backend/`, `docs/`, `.github/` → 404, `POST /api/kontakt` → 405 = Demo-Modus).
+
 **Workflow** `.github/workflows/pages.yml`: kopiert nur `frontend/` nach `_site`, fügt dort in jede HTML-Datei ohne Robots-Angabe `<meta name="robots" content="noindex">` ein (bricht ab, falls das fehlschlägt), lädt `_site` hoch und veröffentlicht. Kein Build, kein `npm install`. Adresse: `https://behluel2802.github.io/handwerk-nr-eins/`.
 Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden auf eine GitHub-Fehlerseite (für die Demo akzeptiert).
 
@@ -310,6 +312,7 @@ Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden au
 | Formular | eigenes Node.js-Backend (`/api/kontakt`), ohne Backend Demo-Modus |
 | Ordner | `frontend/` (einzig öffentlich) und `backend/` getrennt |
 | Build-Schritt | vorerst keiner, Entscheidung in Schritt 13 |
+| Aufteilung 13/14 | Feinschliff ohne Domain-Bezug jetzt (Schritt 13), alles Domain-Abhängige erst beim echten Onlinestellen (Schritt 14), Entscheidung vom 08.11.2026 |
 | Hosting | vorerst keins; Demo über GitHub Pages (Schritt 12b), echtes Hosting in Schritt 14 |
 | Bilder | Unsplash, automatisch von Claude gesucht, lokal gespeichert |
 
