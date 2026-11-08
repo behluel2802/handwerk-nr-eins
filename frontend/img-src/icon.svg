@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Quelle für Favicon und App-Icon. Farben wie color-primary und color-accent in css/tokens.css -->
+  <rect width="32" height="32" rx="7" fill="#0f2a4a"/>
+  <path fill="#f5b301" transform="translate(16 16) scale(1.05) translate(-12 -12)" d="M13.5 2 4 13.5h7L10 22l10-12.5h-7.2L13.5 2z"/>
+</svg>

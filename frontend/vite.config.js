@@ -1,5 +1,6 @@
 // Vite: baut die Quellen in frontend/ nach frontend/dist/.
 // Entwicklung: npm run dev (http://localhost:5173, /api wird an das Backend auf :3000 weitergereicht)
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
@@ -8,6 +9,24 @@ const root = import.meta.dirname;
 
 // Alle Seiten der Website (jede wird ein eigener Einstieg im Build)
 const pages = ['index', 'impressum', 'datenschutz', 'danke'];
+
+// Bild-Helfer für die Templates. Datenquelle: img/manifest.json (erzeugt von scripts/images.js)
+const manifest = () => JSON.parse(readFileSync(resolve(root, 'img/manifest.json'), 'utf8'));
+function variants(name, set) {
+  const found = manifest().images[name]?.[set];
+  if (!found) throw new Error(`Bild "${name}" / Satz "${set}" fehlt in images.config.js`);
+  return found;
+}
+const imageHelpers = {
+  // "img/ref-bad-tile-400.avif 400w, img/ref-bad-tile-600.avif 600w, …"
+  srcset: (name, set, format) => variants(name, set).map((v) => `img/${v.file}.${format} ${v.width}w`).join(', '),
+  // kleinste Variante (bzw. einzige, z. B. Lightbox-Bild)
+  src: (name, set, format) => `img/${variants(name, set)[0].file}.${format}`,
+  // Maße der kleinsten Variante für width/height (Seitenverhältnis, verhindert Layout-Sprünge)
+  dim: (name, set, key) => variants(name, set)[0][key],
+  sourceFormats: () => manifest().formats.slice(0, -1),
+  fallbackFormat: () => manifest().formats.at(-1),
+};
 
 export default defineConfig({
   // Relative Pfade: dist/ funktioniert unter jeder Adresse, auch im Unterordner von GitHub Pages
@@ -23,6 +42,7 @@ export default defineConfig({
   plugins: [
     handlebars({
       partialDirectory: resolve(root, 'partials'),
+      helpers: imageHelpers,
       // Kontext je Seite: Anker-Präfix für Links zur Startseite und die aktuelle Seite
       context(pagePath) {
         const page = pagePath.replace(/^\//, '').replace(/\.html$/, '') || 'index';

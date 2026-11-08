@@ -14,10 +14,11 @@ const DEFAULT_ROOT = fileURLToPath(new URL('../frontend/dist/', import.meta.url)
 const MAX_BODY = 10 * 1024; // 10 KB reichen für jede echte Anfrage
 
 // Nur diese Dateitypen werden ausgeliefert – alles andere ist 404
-const MIME = {
+export const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
+  '.avif': 'image/avif',
   '.webp': 'image/webp',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -29,6 +30,20 @@ const MIME = {
 
 // Gebaute Dateien mit Hash im Namen (assets/name-AbC123.js) ändern sich nie → dauerhaft cachen
 const IMMUTABLE = /^\/assets\/[^/]+-[\w-]{8}\.\w+$/;
+
+// Vorkomprimierte Varianten (erzeugt von frontend/scripts/compress.js), bevorzugt Brotli
+const ENCODINGS = { br: '.br', gzip: '.gz' };
+const COMPRESSIBLE = new Set(['.html', '.css', '.js', '.svg', '.json']);
+
+/** Wählt br/gzip, wenn der Browser es annimmt und die Datei vorkomprimiert vorliegt */
+async function pickEncoding(file, acceptEncoding = '') {
+  if (!COMPRESSIBLE.has(path.extname(file).toLowerCase())) return null;
+  const accepted = new Set(acceptEncoding.split(',').map((e) => e.split(';')[0].trim().toLowerCase()));
+  for (const [encoding, suffix] of Object.entries(ENCODINGS)) {
+    if (accepted.has(encoding) && (await stat(file + suffix).then((s) => s.isFile(), () => false))) return encoding;
+  }
+  return null;
+}
 
 // HTML-Seiten im Wurzelordner der Website
 async function htmlPages(root) {
@@ -174,25 +189,32 @@ export async function createApp({
     const found = await resolveFile(url.pathname);
     if (!found) return notFound(res);
 
+    // Vorkomprimierte Variante (.br/.gz aus dem Build), falls der Browser sie annimmt
+    const encoding = await pickEncoding(found.file, req.headers['accept-encoding']);
+    const file = encoding ? `${found.file}${ENCODINGS[encoding]}` : found.file;
+    const info = encoding ? await stat(file) : found.info;
+
     // Gehashte Assets: ein Jahr, unveränderlich. Alles andere (HTML): ETag + no-cache,
     // der Browser fragt jedes Mal nach und bekommt 304, solange sich nichts geändert hat.
-    const etag = `W/"${found.info.size.toString(16)}-${Math.floor(found.info.mtimeMs).toString(16)}"`;
+    const etag = `W/"${info.size.toString(16)}-${Math.floor(info.mtimeMs).toString(16)}${encoding ? `-${encoding}` : ''}"`;
     const fileHeaders = {
       'Content-Type': MIME[path.extname(found.file).toLowerCase()],
       'Cache-Control': IMMUTABLE.test(url.pathname) ? 'public, max-age=31536000, immutable' : 'no-cache',
       ETag: etag,
+      ...(COMPRESSIBLE.has(path.extname(found.file).toLowerCase()) && { Vary: 'Accept-Encoding' }),
+      ...(encoding && { 'Content-Encoding': encoding }),
     };
     if (req.headers['if-none-match'] === etag) {
       res.writeHead(304, fileHeaders);
       res.end();
       return;
     }
-    res.writeHead(200, { ...fileHeaders, 'Content-Length': found.info.size });
+    res.writeHead(200, { ...fileHeaders, 'Content-Length': info.size });
     if (req.method === 'HEAD') {
       res.end();
       return;
     }
-    createReadStream(found.file).pipe(res);
+    createReadStream(file).pipe(res);
   }
 
   async function handleContact(req, res) {

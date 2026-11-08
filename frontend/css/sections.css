@@ -32,9 +32,13 @@
   flex-wrap: wrap;    /* ohne JS bricht die Navigation mobil in eine zweite Zeile */
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-2);
   min-height: var(--header-height);
 }
+
+/* Mobil sichtbar: Logo | Anruf-Button, Menü-Button. Im HTML steht der Menü-Button vor der Navigation (Tab-Reihenfolge). */
+.site-header__actions { order: 1; margin-left: auto; }
+.nav-toggle { order: 2; }
 
 /* Logo */
 .brand {
@@ -158,12 +162,17 @@
 
 /* Desktop */
 @media (min-width: 60em) {
-  .site-header__inner { flex-wrap: nowrap; }
+  .site-header__inner {
+    flex-wrap: nowrap;
+    gap: var(--space-4);
+  }
 
   .nav {
     order: 0;
     width: auto;
   }
+
+  .site-header__actions { margin-left: 0; }
 
   .nav__list {
     overflow: visible;
@@ -1565,9 +1574,12 @@ body.page-legal { padding-bottom: 0; }
 
 .call-bar__item {
   display: flex;
+  flex-wrap: wrap; /* bei großem Text/Textabstand umbrechen statt überlaufen */
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  min-width: 0;
+  text-align: center;
   min-height: var(--call-bar-height);
   color: var(--color-on-primary);
   font-weight: var(--fw-semibold);

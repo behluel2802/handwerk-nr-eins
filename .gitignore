@@ -17,8 +17,14 @@ tmp/
 frontend/dist/
 # erzeugt von „npm run images“ aus frontend/img-src/
 frontend/img/
+frontend/public/favicon.ico
+frontend/public/icon.svg
+frontend/public/apple-touch-icon.png
 
 # Backend: Abhängigkeiten, Zugangsdaten, lokale Daten
 node_modules/
 .env
 backend/data/
+
+# Lighthouse-CI-Berichte (lokal)
+.lighthouseci/

@@ -9,7 +9,8 @@
     "predev": "npm run images",
     "dev": "vite",
     "prebuild": "npm run images",
-    "build": "vite build"
+    "build": "vite build",
+    "postbuild": "node scripts/compress.js"
   },
   "devDependencies": {
     "sharp": "^0.35.5",

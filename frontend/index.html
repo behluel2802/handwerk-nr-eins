@@ -6,6 +6,7 @@
   <title>Elektro Berger GmbH – Elektro-Meisterbetrieb in Musterstadt</title>
   <meta name="description" content="Elektroinstallation, Sanierung, Smart Home, PV &amp; Wallbox und 24/7-Notdienst. Ihr Elektro-Meisterbetrieb in Musterstadt seit 1998.">
   <meta name="theme-color" content="#0f2a4a">
+  {{> head-icons}}
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -25,7 +26,9 @@
   <link rel="stylesheet" href="css/sections.css">
   <script type="module" src="js/main.js"></script>
 
-  <!-- Strukturierte Daten (fiktiver Betrieb, Quelle: docs/BRIEFING.md) -->
+  <!-- Strukturierte Daten (fiktiver Betrieb, Quelle: docs/BRIEFING.md).
+       Keine aggregateRating: Eigene Bewertungen im LocalBusiness-Markup wertet Google nicht aus (Richtlinie „self-serving reviews“).
+       Schritt 14: image/logo als absolute URL ergänzen. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,7 +51,7 @@
       { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "07:00", "closes": "14:00" }
     ],
     "areaServed": "Musterstadt und Umgebung (ca. 25 km)",
-    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "127" }
+    "founder": { "@type": "Person", "name": "Thomas Berger", "jobTitle": "Elektrotechnikermeister" }
   }
   </script>
 </head>
@@ -71,6 +74,13 @@
         <span class="brand__text">Elektro <strong>Berger</strong></span>
       </a>
 
+      <!-- Menü-Button direkt vor der Navigation: Tab führt nach dem Öffnen in die Menüpunkte. Sichtbar steht er rechts (CSS order). -->
+      <button class="nav-toggle" type="button" aria-controls="hauptnav" aria-expanded="false" data-nav-toggle>
+        <svg class="icon nav-toggle__open" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon nav-toggle__close" aria-hidden="true"><use href="#i-close"/></svg>
+        <span class="visually-hidden">Menü</span>
+      </button>
+
       <nav class="nav" id="hauptnav" aria-label="Hauptnavigation" data-nav>
         <ul class="nav__list">
           <li><a class="nav__link" href="#leistungen">Leistungen</a></li>
@@ -87,11 +97,6 @@
           <span class="header-call__label">0123 456 789 0</span>
           <span class="visually-hidden header-call__sr">Anrufen</span>
         </a>
-        <button class="nav-toggle" type="button" aria-controls="hauptnav" aria-expanded="false" data-nav-toggle>
-          <svg class="icon nav-toggle__open" aria-hidden="true"><use href="#i-menu"/></svg>
-          <svg class="icon nav-toggle__close" aria-hidden="true"><use href="#i-close"/></svg>
-          <span class="visually-hidden">Menü</span>
-        </button>
       </div>
     </div>
   </header>
@@ -102,11 +107,7 @@
     <section class="hero" id="hero" aria-labelledby="hero-title" data-hero>
       <div class="hero__media" aria-hidden="true">
         <!-- Foto: Emmanuel Ikwuegbu / Unsplash (gespiegelt), siehe img-src/CREDITS.md -->
-        <picture>
-          <source type="image/webp" srcset="img/hero-1280.webp 1280w, img/hero-2400.webp 2400w" sizes="100vw">
-          <img src="img/hero-1280.jpg" srcset="img/hero-1280.jpg 1280w, img/hero-2400.jpg 2400w" sizes="100vw"
-               width="1280" height="855" alt="" fetchpriority="high">
-        </picture>
+        {{> picture name="hero" set="main" sizes="100vw" alt="" priority=true}}
       </div>
       <div class="container hero__inner">
         <p class="hero__eyebrow">
@@ -211,67 +212,43 @@
         <!-- Fiktive Projekte: Fotos von Unsplash (siehe img-src/CREDITS.md), Objekte und Ortsteile ausgedacht -->
         <ul class="gallery" data-gallery>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-pv-anlage-1600.jpg" data-full="img/ref-pv-anlage-1600.webp" data-width="1600" data-height="901">
-              <picture>
-                <source type="image/webp" srcset="img/ref-pv-anlage-480.webp 480w, img/ref-pv-anlage-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-pv-anlage-480.jpg" srcset="img/ref-pv-anlage-480.jpg 480w, img/ref-pv-anlage-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Einfamilienhaus mit Solarmodulen auf dem Dach" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-pv-anlage" "full" "jpg"}}" data-full="{{src "ref-pv-anlage" "full" "webp"}}" data-width="{{dim "ref-pv-anlage" "full" "width"}}" data-height="{{dim "ref-pv-anlage" "full" "height"}}">
+              {{> picture name="ref-pv-anlage" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Einfamilienhaus mit Solarmodulen auf dem Dach" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>PV-Anlage</strong> <span>Einfamilienhaus, Musterstadt-Nord</span></p>
           </li>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-kueche-1600.jpg" data-full="img/ref-kueche-1600.webp" data-width="1600" data-height="1067">
-              <picture>
-                <source type="image/webp" srcset="img/ref-kueche-480.webp 480w, img/ref-kueche-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-kueche-480.jpg" srcset="img/ref-kueche-480.jpg 480w, img/ref-kueche-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Helle Küche mit Kochinsel und drei Pendelleuchten" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-kueche" "full" "jpg"}}" data-full="{{src "ref-kueche" "full" "webp"}}" data-width="{{dim "ref-kueche" "full" "width"}}" data-height="{{dim "ref-kueche" "full" "height"}}">
+              {{> picture name="ref-kueche" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Helle Küche mit Kochinsel und drei Pendelleuchten" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>Küchen&shy;beleuchtung</strong> <span>Altbausanierung, Musterstadt-Ost</span></p>
           </li>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-unterverteilung-1600.jpg" data-full="img/ref-unterverteilung-1600.webp" data-width="1067" data-height="1600">
-              <picture>
-                <source type="image/webp" srcset="img/ref-unterverteilung-480.webp 480w, img/ref-unterverteilung-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-unterverteilung-480.jpg" srcset="img/ref-unterverteilung-480.jpg 480w, img/ref-unterverteilung-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Geöffnete Unterverteilung mit Leitungsschutzschaltern und sauber verlegten Adern" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-unterverteilung" "full" "jpg"}}" data-full="{{src "ref-unterverteilung" "full" "webp"}}" data-width="{{dim "ref-unterverteilung" "full" "width"}}" data-height="{{dim "ref-unterverteilung" "full" "height"}}">
+              {{> picture name="ref-unterverteilung" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Geöffnete Unterverteilung mit Leitungsschutzschaltern und sauber verlegten Adern" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>Unter&shy;verteilung</strong> <span>Mehrfamilienhaus, Musterstadt-Mitte</span></p>
           </li>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-wallbox-1600.jpg" data-full="img/ref-wallbox-1600.webp" data-width="1600" data-height="1067">
-              <picture>
-                <source type="image/webp" srcset="img/ref-wallbox-480.webp 480w, img/ref-wallbox-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-wallbox-480.jpg" srcset="img/ref-wallbox-480.jpg 480w, img/ref-wallbox-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Elektroauto lädt an einer Wallbox an der Garagenwand" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-wallbox" "full" "jpg"}}" data-full="{{src "ref-wallbox" "full" "webp"}}" data-width="{{dim "ref-wallbox" "full" "width"}}" data-height="{{dim "ref-wallbox" "full" "height"}}">
+              {{> picture name="ref-wallbox" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Elektroauto lädt an einer Wallbox an der Garagenwand" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>Wallbox</strong> <span>Doppelgarage, Musterstadt-Süd</span></p>
           </li>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-bad-1600.jpg" data-full="img/ref-bad-1600.webp" data-width="1200" data-height="1600">
-              <picture>
-                <source type="image/webp" srcset="img/ref-bad-480.webp 480w, img/ref-bad-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-bad-480.jpg" srcset="img/ref-bad-480.jpg 480w, img/ref-bad-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Modernes Bad mit beleuchtetem Spiegel" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-bad" "full" "jpg"}}" data-full="{{src "ref-bad" "full" "webp"}}" data-width="{{dim "ref-bad" "full" "width"}}" data-height="{{dim "ref-bad" "full" "height"}}">
+              {{> picture name="ref-bad" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Modernes Bad mit beleuchtetem Spiegel" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>Bad mit LED-Spiegel</strong> <span>Wohnungssanierung, Musterstadt-Mitte</span></p>
           </li>
           <li class="gallery__item">
-            <a class="gallery__link" href="img/ref-smarthome-1600.jpg" data-full="img/ref-smarthome-1600.webp" data-width="1600" data-height="1067">
-              <picture>
-                <source type="image/webp" srcset="img/ref-smarthome-480.webp 480w, img/ref-smarthome-800.webp 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw">
-                <img src="img/ref-smarthome-480.jpg" srcset="img/ref-smarthome-480.jpg 480w, img/ref-smarthome-800.jpg 800w" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw"
-                     width="480" height="360" alt="Smart-Home-Taster neben einer Zimmertür" loading="lazy" decoding="async">
-              </picture>
+            <a class="gallery__link" href="{{src "ref-smarthome" "full" "jpg"}}" data-full="{{src "ref-smarthome" "full" "webp"}}" data-width="{{dim "ref-smarthome" "full" "width"}}" data-height="{{dim "ref-smarthome" "full" "height"}}">
+              {{> picture name="ref-smarthome" set="tile" sizes="(min-width: 72em) 352px, (min-width: 60em) 30vw, (min-width: 30em) 46vw, 92vw" alt="Smart-Home-Taster neben einer Zimmertür" lazy=true}}
               <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-zoom"/></svg></span>
             </a>
             <p class="gallery__caption"><strong>Smart Home</strong> <span>Neubau, Musterstadt-West</span></p>
@@ -326,11 +303,13 @@
           <div class="about__media">
             <!-- Foto: Ewan Buck / Unsplash, siehe img-src/CREDITS.md. Desktop Hochformat, darunter 4:3-Ausschnitt -->
             <picture>
-              <source media="(min-width: 48em)" type="image/webp" srcset="img/about-600.webp 600w, img/about-1000.webp 1000w" sizes="(min-width: 72em) 440px, 40vw" width="600" height="750">
-              <source media="(min-width: 48em)" srcset="img/about-600.jpg 600w, img/about-1000.jpg 1000w" sizes="(min-width: 72em) 440px, 40vw" width="600" height="750">
-              <source type="image/webp" srcset="img/about-wide-800.webp 800w, img/about-wide-1200.webp 1200w" sizes="92vw">
-              <img src="img/about-wide-800.jpg" srcset="img/about-wide-800.jpg 800w, img/about-wide-1200.jpg 1200w" sizes="92vw"
-                   width="800" height="600" alt="Elektriker montiert eine Pendelleuchte in einem Raum mit Holzlamellen-Wand" loading="lazy" decoding="async">
+              <source media="(min-width: 48em)" type="image/avif" srcset="{{srcset "about" "portrait" "avif"}}" sizes="(min-width: 72em) 440px, 40vw" width="{{dim "about" "portrait" "width"}}" height="{{dim "about" "portrait" "height"}}">
+              <source media="(min-width: 48em)" type="image/webp" srcset="{{srcset "about" "portrait" "webp"}}" sizes="(min-width: 72em) 440px, 40vw" width="{{dim "about" "portrait" "width"}}" height="{{dim "about" "portrait" "height"}}">
+              <source media="(min-width: 48em)" srcset="{{srcset "about" "portrait" "jpg"}}" sizes="(min-width: 72em) 440px, 40vw" width="{{dim "about" "portrait" "width"}}" height="{{dim "about" "portrait" "height"}}">
+              <source type="image/avif" srcset="{{srcset "about" "wide" "avif"}}" sizes="92vw">
+              <source type="image/webp" srcset="{{srcset "about" "wide" "webp"}}" sizes="92vw">
+              <img src="{{src "about" "wide" "jpg"}}" srcset="{{srcset "about" "wide" "jpg"}}" sizes="92vw"
+                   width="{{dim "about" "wide" "width"}}" height="{{dim "about" "wide" "height"}}" alt="Elektriker montiert eine Pendelleuchte in einem Raum mit Holzlamellen-Wand" loading="lazy" decoding="async">
             </picture>
           </div>
 

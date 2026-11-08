@@ -1,0 +1,11 @@
+{{!--
+  Responsives Bild aus der Bild-Pipeline (images.config.js): AVIF, WebP, JPG als Fallback.
+  Parameter: name, set, sizes, alt (leer = dekorativ), lazy (true = erst beim Scrollen laden), priority (true = LCP-Bild)
+--}}
+<picture>
+{{#each (sourceFormats)}}
+  <source type="image/{{this}}" srcset="{{srcset ../name ../set this}}" sizes="{{../sizes}}">
+{{/each}}
+  <img src="{{src name set (fallbackFormat)}}" srcset="{{srcset name set (fallbackFormat)}}" sizes="{{sizes}}"
+       width="{{dim name set "width"}}" height="{{dim name set "height"}}" alt="{{alt}}"{{#if lazy}} loading="lazy" decoding="async"{{/if}}{{#if priority}} fetchpriority="high"{{/if}}>
+</picture>

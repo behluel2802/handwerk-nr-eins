@@ -43,11 +43,26 @@ jobs:
       # Exakt die Versionen aus package-lock.json
       - run: npm ci
 
+      # Fertige Bilder vom letzten Lauf wiederverwenden (AVIF-Erzeugung dauert ca. 1 Minute).
+      # Das Skript prüft per Fingerabdruck selbst, was sich geändert hat.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            frontend/img
+            frontend/public/favicon.ico
+            frontend/public/icon.svg
+            frontend/public/apple-touch-icon.png
+          key: images-${{ hashFiles('frontend/img-src/**', 'frontend/images.config.js', 'frontend/scripts/images.js') }}
+          restore-keys: images-
+
       # Erzeugt zuerst die Bilder (img-src/ → img/), dann dist/
       - run: npm run build
 
+      # Vorkomprimierte .br/.gz nur für das eigene Backend – GitHub Pages komprimiert selbst
       - name: Nur die gebaute Seite kopieren
-        run: cp -r frontend/dist _site
+        run: |
+          cp -r frontend/dist _site
+          find _site \( -name '*.br' -o -name '*.gz' \) -delete
 
       - name: noindex in die Demo-Kopie einfügen
         run: |

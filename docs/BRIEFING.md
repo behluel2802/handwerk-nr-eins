@@ -104,9 +104,9 @@ Arbeitsweise: Vor jedem Schritt stellt Claude den Plan vor (mit nummerierten Ent
 | 12 | Footer (inkl. Hinweis „Fiktiver Betrieb – Übungsprojekt“), Impressum/Datenschutz-Platzhalter | ✅ erledigt, committet |
 | 12b | Demo über GitHub Pages: Actions-Workflow nur für `frontend/`, `noindex`, Pages in den Repo-Einstellungen aktivieren | ✅ erledigt, gepusht, Demo online geprüft |
 | 13a | Build-Schritt mit Vite: Bausteine (Partials) für Kopf/Footer, Ausgabe nach `dist/`, Backend und Pages-Workflow anpassen, CSP-Hash aus dem Build | ✅ erledigt, gepusht |
-| 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | **nächster Schritt:** Plan vorstellen |
+| 13b | Feinschliff (unabhängig vom Hosting): Barrierefreiheit, Lighthouse/Performance, Favicon und App-Icons, On-Page-SEO (Überschriften, Meta-Beschreibung, Alt-Texte, JSON-LD prüfen) | ✅ erledigt, gepusht |
 | 14 | Deployment (nur falls die Seite echt öffentlich gehen soll): Anbieter mit Rechenzentrum in DE (Favorit Uberspace, Alternative eigener VPS), Domain, SMTP, Ablauf – dazu alles Domain-Abhängige: `og:url`, `canonical`, absolute `og:image`, `sitemap.xml`/`robots.txt`, JSON-LD `JobPosting` (echte Daten), Link zum Google-Profil, Impressum/Datenschutz ausfüllen, HSTS, Lighthouse auf dem echten Server | zurückgestellt, Übungsprojekt wird vorerst nicht gehostet |
-| 15 | Leitfaden „Vorlage für neue Projekte“: Aufbau, Reihenfolge der Schritte, Entscheidungen mit Begründung, Stolpersteine, Checkliste für ein neues Gewerk (ganz am Ende, wenn sich nichts Grundlegendes mehr ändert) | offen |
+| 15 | Leitfaden „Vorlage für neue Projekte“: Aufbau, Reihenfolge der Schritte, Entscheidungen mit Begründung, Stolpersteine, Checkliste für ein neues Gewerk (ganz am Ende, wenn sich nichts Grundlegendes mehr ändert) | **nächster Schritt:** Plan vorstellen (Schritt 14 bleibt zurückgestellt) |
 
 ### Schritt 6 (umgesetzt am 06.11.2026)
 
@@ -315,6 +315,34 @@ Ohne Backend greift der Demo-Modus des Formulars; ohne JS führt das Absenden au
 4. npm-Workspaces mit einem gemeinsamen Startbefehl
 
 Hinweis für Schritt 14: `og:image` braucht dann eine feste Datei-URL (z. B. eigenes Vorschaubild in `frontend/public/`), da die Bilder im Build einen Hash bekommen.
+
+### Schritt 13b (Plan freigegeben, umgesetzt am 08.11.2026)
+
+**Ausgangslage (Lighthouse Handy, lokal):** Performance 98, Barrierefreiheit 100, Best Practices 96, SEO 100. Befunde: Favicon fehlt (404), keine Komprimierung im Backend, Bilder teils zu groß, LCP 2,3 s.
+**Ergebnis:** Startseite 99 / 100 / 100 / 100, LCP 1,3 s, 198 KB Übertragung. Unterseiten 100 / 100 / 100, SEO 50 gewollt (`noindex`).
+
+**Umgesetzt:**
+- **Favicon/App-Icon** aus einer Quelle `frontend/img-src/icon.svg`: `favicon.ico` (32 px), `icon.svg`, `apple-touch-icon.png` (180 px), erzeugt von der Bild-Pipeline nach `frontend/public/` (feste Namen, nicht im Repo), eingebunden über `partials/head-icons.hbs` auf allen Seiten.
+- **Bilder:** zusätzlich AVIF, Zwischengrößen (Hero 800–2400, Kacheln 400–1200, Über uns 480–960 bzw. 600–1200). `images.config.js` arbeitet mit benannten Bildsätzen (`tile`, `full`, …); `img/manifest.json` liefert Dateinamen und Maße. Im HTML erzeugen Helfer (`srcset`, `src`, `dim`) bzw. `partials/picture.hbs` die Angaben – Größen stehen nur noch an einer Stelle. Erzeugung parallel, Überspringen per Fingerabdruck (Original + Einstellungen) statt Datum; erster Lauf ca. 50 s, danach 0,3 s. Im Workflow werden die Bilder zwischengespeichert (`actions/cache`).
+- **Komprimierung:** `frontend/scripts/compress.js` legt nach dem Build `.br`/`.gz` an (118 KB → 26 KB). Das Backend liefert sie je nach `Accept-Encoding` aus (`Vary: Accept-Encoding`), direkt abrufbar sind sie nicht. Auf Pages werden sie entfernt (GitHub komprimiert selbst).
+- **Fehler gefunden und behoben:** Das Backend kannte `.avif` nicht (404 → Hero ohne Foto). Neuer Test prüft, dass jeder Dateityp aus `dist/` ausgeliefert wird.
+- **Barrierefreiheit:**
+  - axe 4.14 (WCAG 2.2 AA + Best Practice), alle Seiten, 375 und 1280 px: ein Befund – zwei Bereiche namens „Kontakt“ (Footer-Spalten waren `<section>` mit Namen = Landmark). Footer-Spalten jetzt `<div>`, nur die Footer-Navigation bleibt Landmark.
+  - Tastatur: Im mobilen Menü sprang Tab nach dem Öffnen an den Links vorbei (Button stand im HTML hinter der Navigation). Button jetzt direkt vor der Navigation, sichtbar weiterhin rechts (CSS `order`). Sonst ohne Befund: Fokusring überall, Skip-Link, Lightbox (Fokus bleibt im Dialog, Esc, Pfeile, Fokus zurück auf die Kachel), Details, Formular-Fehlerführung, Esc im Menü.
+  - Kontrast Text über dem Hero-Foto pixelgenau gemessen (320–1920 px): schlechteste Stelle 5,5 : 1 (AA verlangt 4,5 : 1).
+  - Umfließen bei 320 px (= 400 % Zoom): Impressum/Datenschutz liefen seitlich über (lange Komposita in Überschriften). Überschriften trennen jetzt sehr lange Wörter (`hyphens: auto`, `hyphenate-limit-chars: 15 6 6`); geprüft, dass sich sonst kein Umbruch ändert. Anruf-Leiste bricht bei vergrößerten Textabständen (WCAG 1.4.12) um statt überzulaufen.
+  - Hochkontrast (`forced-colors`): Buttons, Karten und Felder behalten Rahmen, ohne Befund.
+  - „Bewegung reduzieren“ war bereits vollständig umgesetzt (alle Übergänge und Animationen).
+- **SEO:** Gliederung h1 → h2 → h3 → h4 lückenlos, Titel 59 Zeichen, Beschreibung 129 Zeichen, Alt-Texte vollständig (Hero dekorativ). JSON-LD: `aggregateRating` entfernt (eigene Bewertungen im LocalBusiness-Markup wertet Google nicht aus), `founder` (Thomas Berger, aus den Firmendaten) ergänzt.
+- **Qualitätsprüfung bei jedem Push/PR** (`.github/workflows/quality.yml`): Build, Tests, Backend starten, Lighthouse CI (`lighthouserc.json`: Barrierefreiheit 100, Best Practices ≥ 95, SEO Startseite ≥ 95, Performance nur Warnung) und axe (WCAG 2.2 AA). Berichte als Download am Workflow-Lauf, kein Upload zu externen Diensten. Blockiert den Pages-Deploy nicht.
+
+**Entscheidungen (freigegeben):**
+1. AVIF zusätzlich zu WebP/JPG
+2. Kein Web-App-Manifest
+3. Kein kritisches CSS im HTML
+4. Automatische Qualitätsprüfung auf GitHub
+
+Für Schritt 14 vorgemerkt: `image`/`logo` im JSON-LD und `og:image` als absolute URL (feste Datei in `frontend/public/`).
 
 ## 8. Getroffene Entscheidungen
 

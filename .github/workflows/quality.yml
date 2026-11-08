@@ -1,0 +1,69 @@
+# Qualitätsprüfung bei jedem Push und Pull Request (Schritt 13b)
+# Tests, Lighthouse (alle Seiten) und axe (Barrierefreiheit) gegen die gebaute Seite auf dem eigenen Backend.
+# Läuft unabhängig vom Pages-Deploy: Ein Fehler hier blockiert die Demo nicht, wird aber auf GitHub rot angezeigt.
+# Schwellen: lighthouserc.json (Barrierefreiheit 100, Best Practices ≥ 95, SEO Startseite ≥ 95, Performance nur Warnung).
+
+name: Qualität
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            frontend/img
+            frontend/public/favicon.ico
+            frontend/public/icon.svg
+            frontend/public/apple-touch-icon.png
+          key: images-${{ hashFiles('frontend/img-src/**', 'frontend/images.config.js', 'frontend/scripts/images.js') }}
+          restore-keys: images-
+
+      - run: npm run build
+
+      - run: npm test
+
+      - name: Backend starten (liefert frontend/dist/ aus)
+        run: |
+          npm start &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/ > /dev/null && exit 0; sleep 1; done
+          echo "Backend nicht erreichbar"; exit 1
+
+      - name: Lighthouse
+        run: npx --yes @lhci/cli@0.16.0 autorun
+
+      # Berichte als Download am Workflow-Lauf (kein Upload zu externen Diensten)
+      - name: Lighthouse-Berichte sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-berichte
+          path: .lighthouseci/reports
+          if-no-files-found: ignore
+
+      - name: axe (WCAG 2.2 AA)
+        run: |
+          npx --yes @axe-core/cli@4.14.0 \
+            http://localhost:3000/ http://localhost:3000/impressum.html \
+            http://localhost:3000/datenschutz.html http://localhost:3000/danke.html \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,best-practice \
+            --chromedriver-path "$CHROMEWEBDRIVER/chromedriver" \
+            --exit

@@ -18,6 +18,8 @@ before(async () => {
   await mkdir(path.join(root, 'assets'));
   await writeFile(path.join(root, 'assets', 'index-AbCd12_-.js'), 'console.log(1)');
   await writeFile(path.join(root, 'unterseite.html'), '<!doctype html><script>window.x = 1;</script>');
+  await writeFile(path.join(root, 'css', 'a.css.br'), 'BROTLI');
+  await writeFile(path.join(root, 'css', 'a.css.gz'), 'GZIP');
   await mkdir(path.join(root, '.git'));
   await writeFile(path.join(root, 'index.html'), "<!doctype html><script>document.documentElement.classList.add('js');</script>");
   await writeFile(path.join(root, 'css', 'a.css'), 'body{}');
@@ -83,6 +85,16 @@ test('Gehashte Assets werden dauerhaft gecacht, andere Dateien nicht', () => wit
   assert.equal((await raw(port, { path: '/css/a.css' })).headers['cache-control'], 'no-cache');
 }));
 
+test('Alle Dateitypen aus dem Build werden ausgeliefert', async () => {
+  // Jede Endung in frontend/dist/ braucht einen Eintrag in MIME, sonst 404 (z. B. .avif)
+  const { readdir } = await import('node:fs/promises');
+  const dist = new URL('../../frontend/dist/', import.meta.url);
+  const files = await readdir(dist, { recursive: true }).catch(() => []);
+  const exts = new Set(files.map((f) => path.extname(f)).filter((e) => e && !['.br', '.gz'].includes(e)));
+  const { MIME } = await import('../server.js');
+  for (const ext of exts) assert.ok(MIME[ext], `Dateityp ${ext} fehlt in MIME`);
+});
+
 test('CSP enthält die Inline-Skripte aller Seiten', () => withServer({}, async ({ port }) => {
   const csp = (await raw(port, { path: '/' })).headers['content-security-policy'];
   assert.equal(csp.match(/'sha256-/g).length, 2);
@@ -91,6 +103,21 @@ test('CSP enthält die Inline-Skripte aller Seiten', () => withServer({}, async 
 test('Fehlender Build-Ordner → verständliche Fehlermeldung', async () => {
   await assert.rejects(createApp({ root: path.join(dir, 'gibt-es-nicht') }), /npm run build/);
 });
+
+test('Vorkomprimiert: Brotli bevorzugt, sonst gzip, sonst unkomprimiert', () => withServer({}, async ({ port }) => {
+  const br = await raw(port, { path: '/css/a.css', headers: { 'Accept-Encoding': 'gzip, deflate, br' } });
+  assert.equal(br.headers['content-encoding'], 'br');
+  assert.equal(br.headers.vary, 'Accept-Encoding');
+  assert.equal(br.body, 'BROTLI');
+  const gz = await raw(port, { path: '/css/a.css', headers: { 'Accept-Encoding': 'gzip' } });
+  assert.equal(gz.headers['content-encoding'], 'gzip');
+  const plain = await raw(port, { path: '/css/a.css' });
+  assert.equal(plain.headers['content-encoding'], undefined);
+  assert.equal(plain.body, 'body{}');
+  assert.notEqual(br.headers.etag, plain.headers.etag);
+  // .br/.gz selbst sind nicht direkt abrufbar
+  assert.equal((await raw(port, { path: '/css/a.css.br' })).status, 404);
+}));
 
 test('ETag: unveränderte Datei → 304', () => withServer({}, async ({ port }) => {
   const first = await raw(port, { path: '/css/a.css' });

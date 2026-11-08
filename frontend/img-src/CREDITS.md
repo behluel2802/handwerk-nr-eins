@@ -2,7 +2,7 @@
 
 Alle Fotos stammen von [Unsplash](https://unsplash.com) und stehen unter der [Unsplash-Lizenz](https://unsplash.com/license): kostenlos, auch kommerziell nutzbar, Bearbeitung erlaubt, Namensnennung nicht erforderlich, aber erwünscht.
 
-Originale liegen in `frontend/img-src/` (im Repo). Alle Größen und Formate erzeugt `npm run images` nach `frontend/img/` (nicht im Repo), Ausschnitte und Spiegelung stehen in `frontend/images.config.js`.
+Originale liegen in `frontend/img-src/` (im Repo). `icon.svg` (Favicon) ist selbst gezeichnet, kein Fremdmaterial. Alle Größen und Formate erzeugt `npm run images` nach `frontend/img/` (nicht im Repo), Ausschnitte und Spiegelung stehen in `frontend/images.config.js`.
 
 | Datei(en) | Motiv | Fotograf | Quelle | Bearbeitung |
 |---|---|---|---|---|

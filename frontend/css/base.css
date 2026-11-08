@@ -66,6 +66,11 @@ h1, h2, h3, h4 {
   font-weight: var(--fw-bold);
   color: var(--color-primary);
   text-wrap: balance;
+  /* Nur sehr lange Komposita („Berufshaftpflichtversicherung“) trennen statt seitlich überlaufen,
+     kürzere Wörter wie „Meisterbetrieb“ bleiben ganz */
+  hyphens: auto;
+  hyphenate-limit-chars: 15 6 6;
+  overflow-wrap: break-word;
 }
 
 h1 { font-size: var(--fs-3xl); }
